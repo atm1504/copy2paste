@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const uploadButton = document.getElementById('uploadButton');
   const filesList = document.getElementById('filesList');
   const noFiles = document.getElementById('noFiles');
+  const copyAllBtn = document.getElementById('copyAllBtn');
+  const copyAllFeedback = document.getElementById('copyAllFeedback');
 
   // Store uploaded files
   let uploadedFiles = new Map();
@@ -35,10 +37,25 @@ document.addEventListener('DOMContentLoaded', function() {
     fileInput.click();
   });
 
-  // Remove drop zone click-to-open
-  // dropZone.addEventListener('click', () => {
-  //   fileInput.click();
-  // });
+  // Copy All button logic
+  copyAllBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (uploadedFiles.size === 0) return;
+    let allText = '';
+    uploadedFiles.forEach((fileData, fileName) => {
+      if (fileData.status === 'ready' && fileData.text) {
+        allText += `----- ${fileName} -----\n`;
+        allText += fileData.text + '\n\n';
+      }
+    });
+    if (allText.trim() === '') return;
+    navigator.clipboard.writeText(allText).then(function() {
+      copyAllBtn.classList.add('copied');
+      setTimeout(() => {
+        copyAllBtn.classList.remove('copied');
+      }, 1800);
+    });
+  });
 
   function preventDefaults(e) {
     e.preventDefault();
@@ -176,7 +193,14 @@ document.addEventListener('DOMContentLoaded', function() {
         copyButton.className = 'action-button copy-button';
         copyButton.innerHTML = '📋';
         copyButton.title = 'Copy text';
-        copyButton.onclick = () => copyText(fileName);
+        copyButton.onclick = (e) => {
+          copyText(fileName, copyButton);
+        };
+        // Feedback span
+        const feedback = document.createElement('span');
+        feedback.className = 'copy-feedback';
+        feedback.textContent = 'Copied!';
+        copyButton.appendChild(feedback);
         fileActions.appendChild(copyButton);
       }
 
@@ -219,17 +243,14 @@ document.addEventListener('DOMContentLoaded', function() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
-  function copyText(fileName) {
+  function copyText(fileName, buttonEl) {
     const fileData = uploadedFiles.get(fileName);
     if (fileData && fileData.text) {
       navigator.clipboard.writeText(fileData.text).then(function() {
-        const copyButton = document.querySelector(`.file-item:has(.file-name:contains('${fileName}')) .copy-button`);
-        if (copyButton) {
-          copyButton.innerHTML = '✓';
-          setTimeout(() => {
-            copyButton.innerHTML = '📋';
-          }, 2000);
-        }
+        buttonEl.classList.add('copied');
+        setTimeout(() => {
+          buttonEl.classList.remove('copied');
+        }, 1200);
       }).catch(function(err) {
         console.error('Failed to copy text: ', err);
       });
