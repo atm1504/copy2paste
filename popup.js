@@ -1,8 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
   const dropZone = document.getElementById('dropZone');
-  const result = document.getElementById('result');
-  const fileInfo = document.getElementById('fileInfo');
-  const copyButton = document.getElementById('copyButton');
+  const fileInput = document.getElementById('fileInput');
+  const uploadButton = document.getElementById('uploadButton');
+  const filesList = document.getElementById('filesList');
+  const noFiles = document.getElementById('noFiles');
+
+  // Store uploaded files
+  let uploadedFiles = new Map();
 
   // Prevent default drag behaviors
   ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -22,6 +26,20 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle dropped files
   dropZone.addEventListener('drop', handleDrop, false);
 
+  // Handle file input change
+  fileInput.addEventListener('change', handleFileSelect, false);
+
+  // Handle upload button click (ONLY the button, not the whole drop zone)
+  uploadButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    fileInput.click();
+  });
+
+  // Remove drop zone click-to-open
+  // dropZone.addEventListener('click', () => {
+  //   fileInput.click();
+  // });
+
   function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -38,14 +56,28 @@ document.addEventListener('DOMContentLoaded', function() {
   function handleDrop(e) {
     const dt = e.dataTransfer;
     const files = dt.files;
+    handleFiles(files);
+  }
 
+  function handleFileSelect(e) {
+    const files = e.target.files;
+    handleFiles(files);
+    // Reset file input
+    e.target.value = '';
+  }
+
+  function handleFiles(files) {
     if (files.length > 0) {
-      const file = files[0];
-      handleFile(file);
+      Array.from(files).forEach(file => {
+        if (!uploadedFiles.has(file.name)) {
+          processFile(file);
+        }
+      });
+      updateFilesList();
     }
   }
 
-  function handleFile(file) {
+  function processFile(file) {
     const supportedTypes = [
       'application/pdf',
       'application/msword',
@@ -58,42 +90,154 @@ document.addEventListener('DOMContentLoaded', function() {
       'application/vnd.openxmlformats-officedocument.presentationml.presentation'
     ];
 
-    if (!supportedTypes.includes(file.type)) {
-      fileInfo.textContent = 'Unsupported file type. Please upload a supported file format.';
-      result.style.display = 'block';
-      copyButton.style.display = 'none';
+    // Only extract text for .txt and .csv
+    const textTypes = ['text/plain', 'text/csv'];
+    const ext = file.name.split('.').pop().toLowerCase();
+    const isText = textTypes.includes(file.type) || ['txt', 'csv'].includes(ext);
+
+    if (!supportedTypes.includes(file.type) && !['txt', 'csv'].includes(ext)) {
+      showError(file.name, 'Unsupported file type');
+      return;
+    }
+
+    if (!isText) {
+      uploadedFiles.set(file.name, {
+        file: file,
+        text: '',
+        status: 'error',
+        error: 'Text extraction for this file type is not yet supported.'
+      });
+      updateFilesList();
       return;
     }
 
     const reader = new FileReader();
     reader.onload = function(e) {
       const text = e.target.result;
-      fileInfo.textContent = `File: ${file.name}\nSize: ${(file.size / 1024).toFixed(2)} KB`;
-      result.style.display = 'block';
-      copyButton.style.display = 'block';
-
-      // Store the text in chrome.storage for copying
-      chrome.storage.local.set({ 'fileText': text }, function() {
-        console.log('Text saved');
+      uploadedFiles.set(file.name, {
+        file: file,
+        text: text,
+        status: 'ready'
       });
+      updateFilesList();
     };
 
+    reader.onerror = function() {
+      showError(file.name, 'Error reading file');
+    };
+
+    uploadedFiles.set(file.name, {
+      file: file,
+      text: '',
+      status: 'loading'
+    });
+    updateFilesList();
     reader.readAsText(file);
   }
 
-  // Handle copy button click
-  copyButton.addEventListener('click', function() {
-    chrome.storage.local.get(['fileText'], function(result) {
-      if (result.fileText) {
-        navigator.clipboard.writeText(result.fileText).then(function() {
-          copyButton.textContent = 'Copied!';
-          setTimeout(() => {
-            copyButton.textContent = 'Copy Text';
-          }, 2000);
-        }).catch(function(err) {
-          console.error('Failed to copy text: ', err);
-        });
-      }
+  function showError(fileName, message) {
+    uploadedFiles.set(fileName, {
+      file: { name: fileName },
+      text: '',
+      status: 'error',
+      error: message
     });
-  });
+    updateFilesList();
+  }
+
+  function updateFilesList() {
+    filesList.innerHTML = '';
+    noFiles.style.display = uploadedFiles.size === 0 ? 'block' : 'none';
+    filesList.style.display = uploadedFiles.size === 0 ? 'none' : 'block';
+
+    uploadedFiles.forEach((fileData, fileName) => {
+      const fileItem = document.createElement('div');
+      fileItem.className = 'file-item';
+      
+      const fileInfo = document.createElement('div');
+      fileInfo.className = 'file-info';
+      
+      const fileNameElement = document.createElement('div');
+      fileNameElement.className = 'file-name';
+      fileNameElement.textContent = fileName;
+      
+      const fileSizeElement = document.createElement('div');
+      fileSizeElement.className = 'file-size';
+      fileSizeElement.textContent = formatFileSize(fileData.file.size);
+
+      fileInfo.appendChild(fileNameElement);
+      fileInfo.appendChild(fileSizeElement);
+
+      const fileActions = document.createElement('div');
+      fileActions.className = 'file-actions';
+
+      if (fileData.status === 'ready') {
+        const copyButton = document.createElement('button');
+        copyButton.className = 'action-button copy-button';
+        copyButton.innerHTML = '📋';
+        copyButton.title = 'Copy text';
+        copyButton.onclick = () => copyText(fileName);
+        fileActions.appendChild(copyButton);
+      }
+
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'action-button delete-button';
+      deleteButton.innerHTML = '🗑️';
+      deleteButton.title = 'Remove file';
+      deleteButton.onclick = () => removeFile(fileName);
+      fileActions.appendChild(deleteButton);
+
+      fileItem.appendChild(fileInfo);
+      fileItem.appendChild(fileActions);
+
+      if (fileData.status === 'loading') {
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        const progress = document.createElement('div');
+        progress.className = 'progress';
+        progress.style.width = '100%';
+        progressBar.appendChild(progress);
+        fileItem.appendChild(progressBar);
+      } else if (fileData.status === 'error') {
+        const errorMessage = document.createElement('div');
+        errorMessage.style.color = '#d93025';
+        errorMessage.style.fontSize = '12px';
+        errorMessage.style.marginTop = '4px';
+        errorMessage.textContent = fileData.error;
+        fileItem.appendChild(errorMessage);
+      }
+
+      filesList.appendChild(fileItem);
+    });
+  }
+
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  function copyText(fileName) {
+    const fileData = uploadedFiles.get(fileName);
+    if (fileData && fileData.text) {
+      navigator.clipboard.writeText(fileData.text).then(function() {
+        const copyButton = document.querySelector(`.file-item:has(.file-name:contains('${fileName}')) .copy-button`);
+        if (copyButton) {
+          copyButton.innerHTML = '✓';
+          setTimeout(() => {
+            copyButton.innerHTML = '📋';
+          }, 2000);
+        }
+      }).catch(function(err) {
+        console.error('Failed to copy text: ', err);
+      });
+    }
+  }
+
+  function removeFile(fileName) {
+    uploadedFiles.delete(fileName);
+    updateFilesList();
+  }
 }); 
