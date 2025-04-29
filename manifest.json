@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Hello World Extension",
+  "name": "Copy Paste File Text",
   "version": "1.0",
-  "description": "A simple Hello World Chrome extension",
+  "description": "A Chrome extension to extract text from various file formats",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -11,5 +11,7 @@
       "128": "images/icon128.png"
     }
   },
-  "permissions": []
+  "permissions": [
+    "storage"
+  ]
 } 
