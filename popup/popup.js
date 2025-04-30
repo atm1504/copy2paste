@@ -1,4 +1,13 @@
+// Copy Paste File Text Extension - popup.js
+// Organized, readable, and well-commented for maintainability
+
+console.log('Copy Paste File Text Extension - popup script loaded');
+
+// -------------------- DOMContentLoaded --------------------
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM Content Loaded');
+  
+  // --- DOM Elements ---
   const dropZone = document.getElementById('dropZone');
   const fileInput = document.getElementById('fileInput');
   const uploadButton = document.getElementById('uploadButton');
@@ -7,93 +16,91 @@ document.addEventListener('DOMContentLoaded', function() {
   const copyAllBtn = document.getElementById('copyAllBtn');
   const copyAllFeedback = document.getElementById('copyAllFeedback');
 
-  // Store uploaded files
+  // --- State: Map of uploaded files ---
   let uploadedFiles = new Map();
 
-  // Prevent default drag behaviors
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dropZone.addEventListener(eventName, preventDefaults, false);
-    document.body.addEventListener(eventName, preventDefaults, false);
-  });
+  // -------------------- Initialization --------------------
+  loadFilesFromStorage();
+  setupEventListeners();
 
-  // Highlight drop zone when item is dragged over it
-  ['dragenter', 'dragover'].forEach(eventName => {
-    dropZone.addEventListener(eventName, highlight, false);
-  });
-
-  ['dragleave', 'drop'].forEach(eventName => {
-    dropZone.addEventListener(eventName, unhighlight, false);
-  });
-
-  // Handle dropped files
-  dropZone.addEventListener('drop', handleDrop, false);
-
-  // Handle file input change
-  fileInput.addEventListener('change', handleFileSelect, false);
-
-  // Handle upload button click (ONLY the button, not the whole drop zone)
-  uploadButton.addEventListener('click', (e) => {
-    e.stopPropagation();
-    fileInput.click();
-  });
-
-  // Copy All button logic
-  copyAllBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    if (uploadedFiles.size === 0) return;
-    let allText = '';
-    uploadedFiles.forEach((fileData, fileName) => {
-      if (fileData.status === 'ready' && fileData.text) {
-        allText += `----- ${fileName} -----\n`;
-        allText += fileData.text + '\n\n';
+  // -------------------- Storage Functions --------------------
+  // Load files from chrome.storage.local
+  function loadFilesFromStorage() {
+    chrome.storage.local.get(['uploadedFiles'], (result) => {
+      if (result.uploadedFiles) {
+        try {
+          uploadedFiles = new Map(JSON.parse(result.uploadedFiles));
+          console.log('Loaded files from storage:', Array.from(uploadedFiles.keys()));
+          updateFilesList();
+        } catch (e) {
+          console.error('Failed to parse stored files:', e);
+        }
       }
     });
-    if (allText.trim() === '') return;
-    navigator.clipboard.writeText(allText).then(function() {
-      copyAllBtn.classList.add('copied');
-      setTimeout(() => {
-        copyAllBtn.classList.remove('copied');
-      }, 1800);
-    });
-  });
+  }
 
+  // Save files to chrome.storage.local
+  function saveFilesToStorage() {
+    chrome.storage.local.set({ uploadedFiles: JSON.stringify(Array.from(uploadedFiles.entries())) }, () => {
+      console.log('Files saved to storage:', Array.from(uploadedFiles.keys()));
+    });
+  }
+
+  // -------------------- Event Listeners Setup --------------------
+  function setupEventListeners() {
+    // Drag & Drop
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, highlight, false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, unhighlight, false);
+    });
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    // File input
+    fileInput.addEventListener('change', handleFileSelect, false);
+    uploadButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      fileInput.click();
+    });
+
+    // Copy All
+    copyAllBtn.addEventListener('click', handleCopyAll, false);
+  }
+
+  // -------------------- Drag & Drop Helpers --------------------
   function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();
   }
+  function highlight(e) { dropZone.classList.add('dragover'); }
+  function unhighlight(e) { dropZone.classList.remove('dragover'); }
 
-  function highlight(e) {
-    dropZone.classList.add('dragover');
-  }
-
-  function unhighlight(e) {
-    dropZone.classList.remove('dragover');
-  }
-
+  // -------------------- File Handling --------------------
   function handleDrop(e) {
     const dt = e.dataTransfer;
     const files = dt.files;
     handleFiles(files);
   }
-
   function handleFileSelect(e) {
     const files = e.target.files;
     handleFiles(files);
     // Reset file input
     e.target.value = '';
   }
-
   function handleFiles(files) {
     if (files.length > 0) {
       Array.from(files).forEach(file => {
-        if (!uploadedFiles.has(file.name)) {
-          processFile(file);
-        }
+        if (!uploadedFiles.has(file.name)) processFile(file);
       });
       updateFilesList();
+      saveFilesToStorage();
     }
   }
-
   function processFile(file) {
     const supportedTypes = [
       'application/pdf',
@@ -125,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         error: 'Text extraction for this file type is not yet supported.'
       });
       updateFilesList();
+      saveFilesToStorage();
       return;
     }
 
@@ -137,10 +145,12 @@ document.addEventListener('DOMContentLoaded', function() {
         status: 'ready'
       });
       updateFilesList();
+      saveFilesToStorage();
     };
 
     reader.onerror = function() {
       showError(file.name, 'Error reading file');
+      saveFilesToStorage();
     };
 
     uploadedFiles.set(file.name, {
@@ -149,9 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
       status: 'loading'
     });
     updateFilesList();
+    saveFilesToStorage();
     reader.readAsText(file);
   }
-
   function showError(fileName, message) {
     uploadedFiles.set(fileName, {
       file: { name: fileName },
@@ -160,8 +170,10 @@ document.addEventListener('DOMContentLoaded', function() {
       error: message
     });
     updateFilesList();
+    saveFilesToStorage();
   }
 
+  // -------------------- UI Update Functions --------------------
   function updateFilesList() {
     filesList.innerHTML = '';
     noFiles.style.display = uploadedFiles.size === 0 ? 'block' : 'none';
@@ -235,14 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  }
-
+  // -------------------- Copy & Remove Functions --------------------
   function copyText(fileName, buttonEl) {
     const fileData = uploadedFiles.get(fileName);
     if (fileData && fileData.text) {
@@ -256,9 +261,42 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   }
-
+  function handleCopyAll(e) {
+    e.preventDefault();
+    if (uploadedFiles.size === 0) return;
+    let allText = '';
+    uploadedFiles.forEach((fileData, fileName) => {
+      if (fileData.status === 'ready' && fileData.text) {
+        allText += `----- ${fileName} -----\n`;
+        allText += fileData.text + '\n\n';
+      }
+    });
+    if (allText.trim() === '') return;
+    navigator.clipboard.writeText(allText).then(function() {
+      copyAllBtn.classList.add('copied');
+      setTimeout(() => {
+        copyAllBtn.classList.remove('copied');
+      }, 1200);
+    });
+  }
   function removeFile(fileName) {
     uploadedFiles.delete(fileName);
     updateFilesList();
+    saveFilesToStorage();
   }
+
+  // -------------------- Utility --------------------
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  // Log popup dimensions
+  console.log('Popup width:', document.body.offsetWidth, 'height:', document.body.offsetHeight);
+
+  // Log all elements in the body
+  console.log('All elements in body:', Array.from(document.body.children).map(e => e.tagName));
 }); 

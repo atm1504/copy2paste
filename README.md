@@ -1,6 +1,28 @@
-# Hello World Chrome Extension
+# Copy Paste File Text Chrome Extension
 
-A simple Chrome extension that displays a "Hello World" message with the current time when clicked.
+A Chrome extension that allows you to extract text from various file formats and copy it to your clipboard.
+
+## Project Structure
+
+```
+/copy-paste_file_text_ai/
+│
+├── popup/
+│   ├── popup.html
+│   ├── popup.js
+│   ├── popup.css
+│   └── components/
+│       ├── (future: fileList.js, fileUploader.js, ...)
+│
+├── assets/
+│   └── icons/
+│       ├── icon16.png
+│       ├── icon48.png
+│       └── icon128.png
+│
+├── manifest.json
+└── README.md
+```
 
 ## Installation
 
@@ -12,19 +34,21 @@ A simple Chrome extension that displays a "Hello World" message with the current
 ## Usage
 
 1. Click the extension icon in your Chrome toolbar
-2. Click the "Click Me" button to see the current time
-3. The message will update with the current time each time you click
+2. Drag and drop files or click "Choose Files" to select files
+3. For supported text files (.txt, .csv), the text will be extracted automatically
+4. Click the copy icon next to a file to copy its text to your clipboard
+5. Click "Copy All" to copy text from all files at once
 
 ## Features
 
 - Clean, modern UI
-- Interactive button
-- Displays current time
-- Simple and lightweight
+- Drag and drop file upload
+- Support for multiple file formats
+- Individual and bulk text copying
+- Persistent storage between popup sessions
+- Modular, maintainable codebase
 
-## Files Structure
-
-- `manifest.json` - Extension configuration
-- `popup.html` - Extension popup interface
-- `popup.js` - Extension functionality
-- `images/` - Directory containing extension icons 
+## Development
+- Main popup logic is in `popup/popup.js` (ES module)
+- Styles are in `popup/popup.css`
+- UI and logic can be further split into `popup/components/` as the project grows 
