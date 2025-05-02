@@ -95,61 +95,76 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function processFile(file) {
-    const supportedTypes = [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'text/csv',
-      'text/plain',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-    ];
-
-    // Only extract text for .txt and .csv
-    const textTypes = ['text/plain', 'text/csv'];
-    const ext = file.name.split('.').pop().toLowerCase();
-    const isText = textTypes.includes(file.type) || ['txt', 'csv'].includes(ext);
-
-    if (!supportedTypes.includes(file.type) && !['txt', 'csv'].includes(ext)) {
-      showError(file.name, 'Unsupported file type');
-      return;
-    }
-
-    if (!isText) {
+    const MAX_SIZE = 2 * 1024 * 1024; // 2MB
+    if (file.size > MAX_SIZE) {
       uploadedFiles.set(file.name, {
         file: file,
         text: '',
         status: 'error',
-        error: 'Text extraction for this file type is not yet supported.'
+        error: 'File too large (max 2MB allowed).'
       });
       updateFilesList();
       return;
     }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const text = e.target.result;
+    try {
+      const supportedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'text/csv',
+        'text/plain',
+        'application/vnd.ms-powerpoint',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+      ];
+      // Only extract text for .txt and .csv
+      const textTypes = ['text/plain', 'text/csv'];
+      const ext = file.name.split('.').pop().toLowerCase();
+      const isText = textTypes.includes(file.type) || ['txt', 'csv'].includes(ext);
+      if (!supportedTypes.includes(file.type) && !['txt', 'csv'].includes(ext)) {
+        showError(file.name, 'Unsupported file type');
+        return;
+      }
+      if (!isText) {
+        uploadedFiles.set(file.name, {
+          file: file,
+          text: '',
+          status: 'error',
+          error: 'Text extraction for this file type is not yet supported.'
+        });
+        updateFilesList();
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
+        uploadedFiles.set(file.name, {
+          file: file,
+          text: text,
+          status: 'ready'
+        });
+        updateFilesList();
+      };
+      reader.onerror = function() {
+        showError(file.name, 'Error reading file');
+      };
       uploadedFiles.set(file.name, {
         file: file,
-        text: text,
-        status: 'ready'
+        text: '',
+        status: 'loading'
       });
       updateFilesList();
-    };
-
-    reader.onerror = function() {
-      showError(file.name, 'Error reading file');
-    };
-
-    uploadedFiles.set(file.name, {
-      file: file,
-      text: '',
-      status: 'loading'
-    });
-    updateFilesList();
-    reader.readAsText(file);
+      reader.readAsText(file);
+    } catch (err) {
+      uploadedFiles.set(file.name, {
+        file: file,
+        text: '',
+        status: 'error',
+        error: 'Unexpected error while reading file.'
+      });
+      updateFilesList();
+    }
   }
 
   function showError(fileName, message) {
