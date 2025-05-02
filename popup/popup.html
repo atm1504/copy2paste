@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Copy Paste File Text</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Copy Paste File Text</h1>
+    <div class="upload-section">
+      <div class="drop-zone" id="dropZone">
+        <div class="icon">📄</div>
+        <p>Drag and drop your files here</p>
+        <p class="file-types">Supported formats: PDF, DOC, DOCX, XLS, XLSX, CSV, TXT, PPT, PPTX</p>
+        <button class="upload-button" id="uploadButton">Choose Files</button>
+        <input type="file" id="fileInput" class="file-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.ppt,.pptx">
+      </div>
+      <div class="copy-all-section">
+        <button class="copy-all-btn" id="copyAllBtn">
+          <span class="big-copy-icon">📋</span>
+          Copy All
+        </button>
+        <span class="copy-all-feedback" id="copyAllFeedback">All text copied!</span>
+      </div>
+      <div class="files-list" id="filesList">
+        <!-- File items will be added here dynamically -->
+      </div>
+      <div class="no-files" id="noFiles">
+        No files uploaded yet
+      </div>
+    </div>
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html> 
