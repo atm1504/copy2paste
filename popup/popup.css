@@ -164,12 +164,28 @@ h1 {
 .file-info {
   flex-grow: 1;
 }
+.file-name-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
 .file-name {
   font-weight: 600;
   color: #202124;
-  margin-bottom: 2px;
   font-size: 13px;
   letter-spacing: 0.1px;
+}
+.file-type {
+  font-size: 10px;
+  padding: 2px 5px;
+  background-color: #e3f0fd;
+  color: #1765c1;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+  line-height: 1;
 }
 .file-size {
   font-size: 11px;

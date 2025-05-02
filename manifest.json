@@ -16,5 +16,11 @@
   },
   "permissions": [
     "activeTab"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["lib/pdfjs/*"],
+      "matches": ["<all_urls>"]
+    }
   ]
 } 

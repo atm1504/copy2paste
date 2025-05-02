@@ -19,9 +19,38 @@ document.addEventListener('DOMContentLoaded', function() {
   // --- State: Map of uploaded files ---
   let uploadedFiles = new Map();
 
+  // --- PDF.js script loader ---
+  let pdfJsLoaded = false;
+  
+  // Load PDF.js library asynchronously
+  function loadPdfJs() {
+    if (pdfJsLoaded) return Promise.resolve();
+    
+    return new Promise((resolve, reject) => {
+      // Use locally bundled PDF.js files instead of CDN
+      const script = document.createElement('script');
+      script.src = chrome.runtime.getURL('lib/pdfjs/pdf.js');
+      script.onload = () => {
+        console.log('PDF.js library loaded successfully');
+        // Set PDF.js to not use workers, which avoids CSP issues
+        window.pdfjsLib = window.pdfjsLib || {};
+        window.pdfjsLib.GlobalWorkerOptions = window.pdfjsLib.GlobalWorkerOptions || {};
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = '';  // Disable worker
+        pdfJsLoaded = true;
+        resolve();
+      };
+      script.onerror = (error) => {
+        console.error('Failed to load PDF.js:', error);
+        reject(error);
+      };
+      document.head.appendChild(script);
+    });
+  }
+
   // -------------------- Initialization --------------------
   loadFilesFromStorage();
   setupEventListeners();
+  loadPdfJs();
 
   // -------------------- Storage Functions --------------------
   // Load files from sessionStorage
@@ -128,92 +157,159 @@ document.addEventListener('DOMContentLoaded', function() {
       saveFilesToStorage();
     }
   }
-  function processFile(file) {
-    const MAX_SIZE = 2 * 1024 * 1024; // 2MB
-    if (file.size > MAX_SIZE) {
+  
+  // --- Process a file: extract text and update UI ---
+  async function processFile(file) {
+    console.log(`Processing file: ${file.name}`);
+    
+    // Determine file type
+    const isText = file.type === 'text/plain' || file.name.toLowerCase().endsWith('.txt');
+    const isCsv = file.type === 'text/csv' || file.name.toLowerCase().endsWith('.csv');
+    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+    
+    if (isPdf || isText || isCsv) {
+      // Show loading state
       uploadedFiles.set(file.name, {
         file: file,
-        text: '',
-        status: 'error',
-        error: 'File too large (max 2MB allowed).'
+        text: 'Extracting text...',
+        status: 'loading',
+        fileType: getFileTypeLabel(file)
       });
       updateFilesList();
-      saveFilesToStorage();
-      return;
-    }
-
-    try {
-      const supportedTypes = [
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'text/csv',
-        'text/plain',
-        'application/vnd.ms-powerpoint',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-      ];
       
-      // Only extract text for .txt and .csv
-      const textTypes = ['text/plain', 'text/csv'];
-      const ext = file.name.split('.').pop().toLowerCase();
-      const isText = textTypes.includes(file.type) || ['txt', 'csv'].includes(ext);
-      
-      if (!supportedTypes.includes(file.type) && !['txt', 'csv'].includes(ext)) {
-        showError(file.name, 'Unsupported file type');
-        return;
-      }
-
-      if (!isText) {
+      try {
+        let extractedText = '';
+        
+        if (isPdf) {
+          extractedText = await extractTextFromPDF(file);
+        } else if (isText) {
+          extractedText = await extractTextFromTextFile(file);
+        } else if (isCsv) {
+          extractedText = await extractTextFromCsv(file);
+        }
+        
+        // Update file data with extracted text
         uploadedFiles.set(file.name, {
           file: file,
-          text: '',
+          text: extractedText,
+          status: 'ready',
+          fileType: getFileTypeLabel(file)
+        });
+      } catch (error) {
+        console.error(`Error processing ${file.name}:`, error);
+        uploadedFiles.set(file.name, {
+          file: file,
+          text: `Error: ${error.message || 'Could not extract text'}`,
           status: 'error',
-          error: 'Text extraction for this file type is not yet supported.'
+          fileType: getFileTypeLabel(file)
         });
-        updateFilesList();
-        return;
       }
-
-      const reader = new FileReader();
       
-      reader.onload = function(e) {
-        const text = e.target.result;
-        uploadedFiles.set(file.name, {
-          file: file,
-          text: text,
-          status: 'ready'
-        });
-        updateFilesList();
-        saveFilesToStorage();
-      };
-
-      reader.onerror = function() {
-        showError(file.name, 'Error reading file');
-        saveFilesToStorage();
-      };
-
-      uploadedFiles.set(file.name, {
-        file: file,
-        text: '',
-        status: 'loading'
-      });
+      // Update UI and save to storage
       updateFilesList();
       saveFilesToStorage();
-      reader.readAsText(file);
-    } catch (error) {
-      console.error('Error processing file:', error);
-      showError(file.name, 'Error processing file');
+    } else {
+      console.warn(`Unsupported file type: ${file.type}`);
+      showError(file.name, 'Unsupported file type', getFileTypeLabel(file));
     }
   }
 
-  function showError(fileName, message) {
+  // --- Extract text from text files (txt) ---
+  function extractTextFromTextFile(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = function() {
+        resolve(reader.result);
+      };
+      
+      reader.onerror = function() {
+        reject(new Error('Failed to read text file'));
+      };
+      
+      reader.readAsText(file);
+    });
+  }
+
+  // --- Extract text from CSV files ---
+  function extractTextFromCsv(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = function() {
+        resolve(reader.result);
+      };
+      
+      reader.onerror = function() {
+        reject(new Error('Failed to read CSV file'));
+      };
+      
+      reader.readAsText(file);
+    });
+  }
+
+  // --- Extract text from PDF files ---
+  async function extractTextFromPDF(file) {
+    try {
+      await loadPdfJs(); // Ensure PDF.js is loaded
+      
+      // Read the file as ArrayBuffer
+      const arrayBuffer = await readFileAsArrayBuffer(file);
+      
+      // Load the PDF document
+      const loadingTask = pdfjsLib.getDocument({
+        data: arrayBuffer,
+        disableWorker: true, // Force disable worker
+        disableAutoFetch: true,
+        disableStream: true,
+        disableRange: true
+      });
+      
+      const pdf = await loadingTask.promise;
+      console.log('PDF document loaded, pages:', pdf.numPages);
+      
+      let extractedText = '';
+      
+      // Extract text from each page
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        
+        // Concatenate the text items
+        const pageText = textContent.items.map(item => item.str).join(' ');
+        extractedText += pageText + '\n\n';
+      }
+      
+      return extractedText.trim();
+    } catch (error) {
+      console.error('Error extracting text from PDF:', error);
+      return 'Error: Could not extract text from PDF file. ' + error.message;
+    }
+  }
+
+  // Read a file as ArrayBuffer (for PDF processing)
+  function readFileAsArrayBuffer(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  // Helper function to get file type label
+  function getFileTypeLabel(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    return ext.toUpperCase();
+  }
+
+  function showError(fileName, message, fileType) {
     uploadedFiles.set(fileName, {
       file: { name: fileName },
       text: '',
       status: 'error',
-      error: message
+      error: message,
+      fileType: fileType || 'UNKNOWN'
     });
     updateFilesList();
     saveFilesToStorage();
@@ -233,15 +329,25 @@ document.addEventListener('DOMContentLoaded', function() {
       const fileInfo = document.createElement('div');
       fileInfo.className = 'file-info';
       
+      const fileNameContainer = document.createElement('div');
+      fileNameContainer.className = 'file-name-container';
+      
       const fileNameElement = document.createElement('div');
       fileNameElement.className = 'file-name';
       fileNameElement.textContent = fileName;
+      
+      const fileTypeElement = document.createElement('span');
+      fileTypeElement.className = 'file-type';
+      fileTypeElement.textContent = fileData.fileType || '';
+      
+      fileNameContainer.appendChild(fileNameElement);
+      fileNameContainer.appendChild(fileTypeElement);
       
       const fileSizeElement = document.createElement('div');
       fileSizeElement.className = 'file-size';
       fileSizeElement.textContent = formatFileSize(fileData.file.size);
 
-      fileInfo.appendChild(fileNameElement);
+      fileInfo.appendChild(fileNameContainer);
       fileInfo.appendChild(fileSizeElement);
 
       const fileActions = document.createElement('div');
