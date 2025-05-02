@@ -45,7 +45,7 @@ A Chrome extension that allows you to extract text from various file formats and
 - Drag and drop file upload
 - Support for multiple file formats
 - Individual and bulk text copying
-- Persistent storage between popup sessions
+- Session-based storage (files are retained while browser is open)
 - Modular, maintainable codebase
 
 ## Development

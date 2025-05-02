@@ -4,14 +4,17 @@
   "version": "1.0",
   "description": "A Chrome extension to extract text from various file formats",
   "action": {
-    "default_popup": "popup/popup.html",
+    "default_title": "Copy Paste File Text",
     "default_icon": {
       "16": "assets/icons/icon16.png",
       "48": "assets/icons/icon48.png",
       "128": "assets/icons/icon128.png"
     }
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "permissions": [
-    "storage"
+    "activeTab"
   ]
 } 

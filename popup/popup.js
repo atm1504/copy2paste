@@ -24,26 +24,28 @@ document.addEventListener('DOMContentLoaded', function() {
   setupEventListeners();
 
   // -------------------- Storage Functions --------------------
-  // Load files from chrome.storage.local
+  // Load files from sessionStorage
   function loadFilesFromStorage() {
-    chrome.storage.local.get(['uploadedFiles'], (result) => {
-      if (result.uploadedFiles) {
-        try {
-          uploadedFiles = new Map(JSON.parse(result.uploadedFiles));
-          console.log('Loaded files from storage:', Array.from(uploadedFiles.keys()));
-          updateFilesList();
-        } catch (e) {
-          console.error('Failed to parse stored files:', e);
-        }
+    try {
+      const savedFiles = sessionStorage.getItem('uploadedFiles');
+      if (savedFiles) {
+        uploadedFiles = new Map(JSON.parse(savedFiles));
+        console.log('Loaded files from session storage:', Array.from(uploadedFiles.keys()));
+        updateFilesList();
       }
-    });
+    } catch (e) {
+      console.error('Failed to load files from session storage:', e);
+    }
   }
 
-  // Save files to chrome.storage.local
+  // Save files to sessionStorage
   function saveFilesToStorage() {
-    chrome.storage.local.set({ uploadedFiles: JSON.stringify(Array.from(uploadedFiles.entries())) }, () => {
-      console.log('Files saved to storage:', Array.from(uploadedFiles.keys()));
-    });
+    try {
+      sessionStorage.setItem('uploadedFiles', JSON.stringify(Array.from(uploadedFiles.entries())));
+      console.log('Files saved to session storage:', Array.from(uploadedFiles.keys()));
+    } catch (e) {
+      console.error('Failed to save files to session storage:', e);
+    }
   }
 
   // -------------------- Event Listeners Setup --------------------
@@ -61,14 +63,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     dropZone.addEventListener('drop', handleDrop, false);
 
-    // File input
+    // File input change event
     fileInput.addEventListener('change', handleFileSelect, false);
-    uploadButton.addEventListener('click', (e) => {
+    
+    // Upload button - simpler now that we're on a full page
+    uploadButton.addEventListener('click', function(e) {
+      e.preventDefault();
       e.stopPropagation();
+      console.log('Upload button clicked - full page mode');
+      
+      // Simply click the file input directly - no focus issues on full page
       fileInput.click();
     });
 
-    // Copy All
+    // Copy All button
     copyAllBtn.addEventListener('click', handleCopyAll, false);
   }
 
@@ -86,12 +94,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const files = dt.files;
     handleFiles(files);
   }
+  
   function handleFileSelect(e) {
+    console.log('File input change event triggered');
     const files = e.target.files;
-    handleFiles(files);
-    // Reset file input
-    e.target.value = '';
+    if (files && files.length > 0) {
+      console.log(`Selected ${files.length} files`);
+      
+      // Inform background script about completed file upload
+      chrome.runtime.sendMessage({
+        action: "fileUploaded", 
+        fileCount: files.length,
+        fileName: files.length === 1 ? files[0].name : "multiple files"
+      }, function(response) {
+        console.log("Background acknowledged file upload:", response);
+      });
+      
+      // Process the files
+      handleFiles(files);
+      // Reset file input
+      e.target.value = '';
+    } else {
+      console.log('No files selected or file selection cancelled');
+    }
   }
+  
   function handleFiles(files) {
     if (files.length > 0) {
       Array.from(files).forEach(file => {
@@ -225,14 +252,14 @@ document.addEventListener('DOMContentLoaded', function() {
         copyButton.className = 'action-button copy-button';
         copyButton.innerHTML = '📋';
         copyButton.title = 'Copy text';
-        copyButton.onclick = (e) => {
-          copyText(fileName, copyButton);
-        };
         // Feedback span
         const feedback = document.createElement('span');
         feedback.className = 'copy-feedback';
         feedback.textContent = 'Copied!';
         copyButton.appendChild(feedback);
+        copyButton.onclick = (e) => {
+          copyText(fileName, copyButton);
+        };
         fileActions.appendChild(copyButton);
       }
 
@@ -268,18 +295,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function copyText(fileName, buttonEl) {
     const fileData = uploadedFiles.get(fileName);
-    if (fileData && fileData.status === 'ready') {
-      navigator.clipboard.writeText(fileData.text)
-        .then(() => {
-          buttonEl.classList.add('copied');
-          setTimeout(() => {
-            buttonEl.classList.remove('copied');
-          }, 2000);
-        })
-        .catch(err => {
-          console.error('Failed to copy text:', err);
-          alert('Failed to copy text to clipboard');
-        });
+    if (fileData && fileData.text) {
+      navigator.clipboard.writeText(fileData.text).then(function() {
+        buttonEl.classList.add('copied');
+        setTimeout(() => {
+          buttonEl.classList.remove('copied');
+        }, 1200);
+      }).catch(function(err) {
+        console.error('Failed to copy text: ', err);
+      });
     }
   }
 
