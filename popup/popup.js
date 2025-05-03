@@ -28,32 +28,54 @@ document.addEventListener('DOMContentLoaded', function() {
     
     return new Promise((resolve, reject) => {
       try {
-        // Use locally bundled PDF.js files instead of CDN
-        const script = document.createElement('script');
-        script.src = chrome.runtime.getURL('lib/pdfjs/pdf.js');
-        script.onload = () => {
-          console.log('PDF.js library loaded successfully');
+        // First load the worker
+        const workerScript = document.createElement('script');
+        workerScript.src = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
+        workerScript.onload = () => {
+          console.log('PDF.js worker loaded successfully');
           
-          // PDF.js should be available as window.pdfjsLib
-          if (window.pdfjsLib) {
-            console.log('pdfjsLib is available:', window.pdfjsLib);
+          // Then load the main library
+          const script = document.createElement('script');
+          script.src = chrome.runtime.getURL('lib/pdfjs/pdf.js');
+          script.onload = () => {
+            console.log('PDF.js library loaded successfully');
             
-            // Configure worker
-            window.pdfjsLib.GlobalWorkerOptions = window.pdfjsLib.GlobalWorkerOptions || {};
-            window.pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
-            
-            pdfJsLoaded = true;
-            resolve();
-          } else {
-            console.error('PDF.js loaded but pdfjsLib object not found');
-            reject(new Error('PDF.js library not properly initialized'));
-          }
+            // Wait a short moment for the library to initialize
+            setTimeout(() => {
+              if (window.pdfjsLib) {
+                console.log('pdfjsLib is available:', window.pdfjsLib);
+                
+                // Configure worker
+                window.pdfjsLib.GlobalWorkerOptions = window.pdfjsLib.GlobalWorkerOptions || {};
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
+                
+                // Set up the PDF.js viewer
+                window.pdfjsLib.disableWorker = false;
+                window.pdfjsLib.disableStream = false;
+                window.pdfjsLib.disableAutoFetch = false;
+                
+                // Initialize the PDF.js viewer
+                window.pdfjsLib.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
+                
+                pdfJsLoaded = true;
+                resolve();
+              } else {
+                console.error('PDF.js loaded but pdfjsLib object not found');
+                reject(new Error('PDF.js library not properly initialized'));
+              }
+            }, 100);
+          };
+          script.onerror = (error) => {
+            console.error('Failed to load PDF.js:', error);
+            reject(error);
+          };
+          document.head.appendChild(script);
         };
-        script.onerror = (error) => {
-          console.error('Failed to load PDF.js:', error);
+        workerScript.onerror = (error) => {
+          console.error('Failed to load PDF.js worker:', error);
           reject(error);
         };
-        document.head.appendChild(script);
+        document.head.appendChild(workerScript);
       } catch (error) {
         console.error('Error setting up PDF.js:', error);
         reject(error);

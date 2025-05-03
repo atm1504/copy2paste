@@ -15,12 +15,16 @@
     "service_worker": "background.js"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "scripting"
   ],
   "web_accessible_resources": [
     {
       "resources": ["lib/pdfjs/*"],
       "matches": ["<all_urls>"]
     }
-  ]
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
 } 
