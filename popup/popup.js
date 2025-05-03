@@ -186,12 +186,68 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function isValidFileType(file) {
-    const validTypes = ["application/pdf", "text/plain", "text/csv"];
-    const validExtensions = [".pdf", ".txt", ".csv"];
-    return (
-      validTypes.includes(file.type) ||
-      validExtensions.some((ext) => file.name.toLowerCase().endsWith(ext))
-    );
+    // 1) Anything that really *is* text
+    if (file.type.startsWith("text/")) return true;
+
+    // 2) Common “application/…” catch-alls
+    const extraMIMEs = [
+      "application/json",
+      "application/javascript",
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/vnd.ms-powerpoint",
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "application/pdf",
+    ];
+    if (extraMIMEs.includes(file.type)) return true;
+
+    // 3) Fallback by extension for everything else
+    const ext = file.name.toLowerCase().split(".").pop();
+    const allowedExts = [
+      // Office & PDF
+      "doc",
+      "docx",
+      "xls",
+      "xlsx",
+      "ppt",
+      "pptx",
+      "numbers",
+      "pages",
+      "pdf",
+      // Code/config
+      "js",
+      "mjs",
+      "cjs",
+      "ts",
+      "tsx",
+      "jsx",
+      "json",
+      "py",
+      "java",
+      "rb",
+      "go",
+      "cpp",
+      "c",
+      "cs",
+      "php",
+      "html",
+      "htm",
+      "css",
+      "scss",
+      "less",
+      "xml",
+      "yaml",
+      "yml",
+      "md",
+      "sh",
+      "bash",
+      "rs",
+      "swift",
+      "kt",
+    ];
+    return allowedExts.includes(ext);
   }
 
   async function processFile(file) {
