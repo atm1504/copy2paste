@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 1) Anything that really *is* text
     if (file.type.startsWith("text/")) return true;
 
-    // 2) Common “application/…” catch-alls
+    // 2) Common "application/…" catch-alls
     const extraMIMEs = [
       "application/json",
       "application/javascript",
@@ -258,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function processFile(file) {
     console.log(`Processing file: ${file.name}`);
 
-    // Show “loading” state in your UI
+    // Show "loading" state in your UI
     uploadedFiles.set(file.name, {
       file,
       text: "Extracting text…",
@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
         extractedText = await extractTextFromTextFile(file);
       }
 
-      // Update map to “ready” state with the extracted text
+      // Update map to "ready" state with the extracted text
       uploadedFiles.set(file.name, {
         file,
         text: extractedText,
@@ -545,8 +545,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function copyText(fileName, buttonEl) {
     const fileData = uploadedFiles.get(fileName);
     if (fileData && fileData.text) {
+      const textToCopy = `File: ${fileName}\n${fileData.text}`;
       navigator.clipboard
-        .writeText(fileData.text)
+        .writeText(textToCopy)
         .then(function () {
           buttonEl.classList.add("copied");
           setTimeout(() => {
@@ -564,9 +565,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let allText = "";
     let hasReadyFiles = false;
 
-    uploadedFiles.forEach((fileData) => {
+    uploadedFiles.forEach((fileData, fileName) => {
       if (fileData.status === "ready") {
-        allText += fileData.text + "\n\n";
+        allText += `File: ${fileName}\n${fileData.text}\n\n`;
         hasReadyFiles = true;
       }
     });
