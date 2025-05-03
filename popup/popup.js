@@ -27,23 +27,37 @@ document.addEventListener('DOMContentLoaded', function() {
     if (pdfJsLoaded) return Promise.resolve();
     
     return new Promise((resolve, reject) => {
-      // Use locally bundled PDF.js files instead of CDN
-      const script = document.createElement('script');
-      script.src = chrome.runtime.getURL('lib/pdfjs/pdf.js');
-      script.onload = () => {
-        console.log('PDF.js library loaded successfully');
-        // Set PDF.js to not use workers, which avoids CSP issues
-        window.pdfjsLib = window.pdfjsLib || {};
-        window.pdfjsLib.GlobalWorkerOptions = window.pdfjsLib.GlobalWorkerOptions || {};
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = '';  // Disable worker
-        pdfJsLoaded = true;
-        resolve();
-      };
-      script.onerror = (error) => {
-        console.error('Failed to load PDF.js:', error);
+      try {
+        // Use locally bundled PDF.js files instead of CDN
+        const script = document.createElement('script');
+        script.src = chrome.runtime.getURL('lib/pdfjs/pdf.js');
+        script.onload = () => {
+          console.log('PDF.js library loaded successfully');
+          
+          // PDF.js should be available as window.pdfjsLib
+          if (window.pdfjsLib) {
+            console.log('pdfjsLib is available:', window.pdfjsLib);
+            
+            // Configure worker
+            window.pdfjsLib.GlobalWorkerOptions = window.pdfjsLib.GlobalWorkerOptions || {};
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
+            
+            pdfJsLoaded = true;
+            resolve();
+          } else {
+            console.error('PDF.js loaded but pdfjsLib object not found');
+            reject(new Error('PDF.js library not properly initialized'));
+          }
+        };
+        script.onerror = (error) => {
+          console.error('Failed to load PDF.js:', error);
+          reject(error);
+        };
+        document.head.appendChild(script);
+      } catch (error) {
+        console.error('Error setting up PDF.js:', error);
         reject(error);
-      };
-      document.head.appendChild(script);
+      }
     });
   }
 
@@ -253,37 +267,49 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       await loadPdfJs(); // Ensure PDF.js is loaded
       
+      console.log('Starting PDF extraction for:', file.name);
+      
+      if (!window.pdfjsLib) {
+        throw new Error('PDF.js library not available');
+      }
+      
       // Read the file as ArrayBuffer
       const arrayBuffer = await readFileAsArrayBuffer(file);
       
+      console.log('File read as ArrayBuffer, size:', arrayBuffer.byteLength);
+      
       // Load the PDF document
-      const loadingTask = pdfjsLib.getDocument({
+      const pdfDoc = await window.pdfjsLib.getDocument({
         data: arrayBuffer,
-        disableWorker: true, // Force disable worker
+        useSystemFonts: false, // Don't use system fonts to avoid issues
         disableAutoFetch: true,
         disableStream: true,
         disableRange: true
-      });
+      }).promise;
       
-      const pdf = await loadingTask.promise;
-      console.log('PDF document loaded, pages:', pdf.numPages);
+      console.log('PDF document loaded successfully, pages:', pdfDoc.numPages);
       
       let extractedText = '';
       
       // Extract text from each page
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
+      for (let i = 1; i <= pdfDoc.numPages; i++) {
+        console.log(`Processing page ${i}/${pdfDoc.numPages}`);
+        const page = await pdfDoc.getPage(i);
         const textContent = await page.getTextContent();
         
         // Concatenate the text items
-        const pageText = textContent.items.map(item => item.str).join(' ');
+        const pageText = textContent.items
+          .map(item => item.str)
+          .join(' ');
+          
         extractedText += pageText + '\n\n';
       }
       
+      console.log('PDF text extraction complete');
       return extractedText.trim();
     } catch (error) {
       console.error('Error extracting text from PDF:', error);
-      return 'Error: Could not extract text from PDF file. ' + error.message;
+      throw new Error(`PDF extraction failed: ${error.message}`);
     }
   }
 
