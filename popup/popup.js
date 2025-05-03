@@ -265,46 +265,29 @@ document.addEventListener('DOMContentLoaded', function() {
   // --- Extract text from PDF files ---
   async function extractTextFromPDF(file) {
     try {
-      await loadPdfJs(); // Ensure PDF.js is loaded
-      
+      // PDF.js is already imported as pdfjsLib at the top of the file
       console.log('Starting PDF extraction for:', file.name);
-      
-      if (!window.pdfjsLib) {
-        throw new Error('PDF.js library not available');
-      }
-      
+  
       // Read the file as ArrayBuffer
       const arrayBuffer = await readFileAsArrayBuffer(file);
-      
-      console.log('File read as ArrayBuffer, size:', arrayBuffer.byteLength);
-      
+  
       // Load the PDF document
-      const pdfDoc = await window.pdfjsLib.getDocument({
+      const pdfDoc = await pdfjsLib.getDocument({
         data: arrayBuffer,
-        useSystemFonts: false, // Don't use system fonts to avoid issues
         disableAutoFetch: true,
         disableStream: true,
         disableRange: true
       }).promise;
-      
+  
       console.log('PDF document loaded successfully, pages:', pdfDoc.numPages);
-      
+  
       let extractedText = '';
-      
-      // Extract text from each page
       for (let i = 1; i <= pdfDoc.numPages; i++) {
-        console.log(`Processing page ${i}/${pdfDoc.numPages}`);
         const page = await pdfDoc.getPage(i);
         const textContent = await page.getTextContent();
-        
-        // Concatenate the text items
-        const pageText = textContent.items
-          .map(item => item.str)
-          .join(' ');
-          
+        const pageText = textContent.items.map(item => item.str).join(' ');
         extractedText += pageText + '\n\n';
       }
-      
       console.log('PDF text extraction complete');
       return extractedText.trim();
     } catch (error) {
@@ -312,6 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
       throw new Error(`PDF extraction failed: ${error.message}`);
     }
   }
+  
 
   // Read a file as ArrayBuffer (for PDF processing)
   function readFileAsArrayBuffer(file) {
