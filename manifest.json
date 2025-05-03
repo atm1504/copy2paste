@@ -21,14 +21,13 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "lib/pdfjs/pdf.js",
-        "lib/pdfjs/pdf.worker.js",
-        "lib/pdfjs/pdf.worker.min.js"
+ "lib/pdfjs/pdf.mjs",
+        "lib/pdfjs/pdf.worker.mjs"
       ],
       "matches": ["<all_urls>"]
     }
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+    "extension_pages": "script-src 'self'; object-src 'self'"
   }
 } 

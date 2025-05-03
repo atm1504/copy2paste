@@ -92,12 +92,7 @@
       </div>
     </div>
   </div>
-  <script src="../lib/pdfjs/pdf.js"></script>
-  <script>
-    // configure the worker path
-    pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
-  </script>
-  <script src="popup.js"></script>
+  <script type="module" src="popup.js"></script>
 </body>
 
 </html>

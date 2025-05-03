@@ -2,14 +2,13 @@
 // Organized, readable, and well-commented for maintainability
 
 console.log('Copy Paste File Text Extension - popup script loaded');
+import * as pdfjsLib from '../lib/pdfjs/pdf.mjs';
 
-// Initialize PDF.js
-if (window.pdfjsLib) {
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.mjs');
-  console.log('PDF.js initialized successfully');
-} else {
-  console.error('PDF.js library not found');
-}
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  chrome.runtime.getURL('lib/pdfjs/pdf.worker.mjs');
+
+console.log('PDF.js (ESM) loaded, worker at', pdfjsLib.GlobalWorkerOptions.workerSrc);
+
 
 // -------------------- DOMContentLoaded --------------------
 document.addEventListener('DOMContentLoaded', function() {
