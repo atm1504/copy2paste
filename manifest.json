@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Copy2Paste",
+  "name": "copy2paste",
   "version": "1.0",
   "description": "Extract and copy text from various file formats including PDF, DOCX, XLSX, PPTX, and more",
   "action": {
