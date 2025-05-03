@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Copy Paste File Text Extractor</title>
+    <title>copy2paste - File Text Extractor</title>
     <link rel="stylesheet" href="popup.css" />
     <style>
       body {
@@ -13,6 +13,8 @@
         margin: 0 auto;
         background: linear-gradient(135deg, #e3f0fd 0%, #f4f6fb 100%);
         min-height: 100vh;
+        position: relative;
+        padding-bottom: 40px;
       }
 
       .container {
@@ -29,6 +31,28 @@
         font-weight: 700;
         letter-spacing: 0.5px;
         text-shadow: 0 2px 8px rgba(26, 115, 232, 0.08);
+      }
+
+      .copyright {
+        position: relative;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #5f6368;
+        font-size: 11px;
+        padding: 0 20px;
+      }
+
+      .copyright a {
+        color: #1765c1;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .copyright a:hover {
+        text-decoration: underline;
       }
 
       .upload-section {
@@ -61,7 +85,7 @@
 
   <body>
     <div class="container">
-      <h1>Copy Paste File Text</h1>
+      <h1>copy2paste</h1>
       <div class="upload-section">
         <div class="error-message" id="errorMessage"></div>
         <div class="loading-indicator" id="loadingIndicator">
@@ -71,7 +95,10 @@
         <div class="drop-zone" id="dropZone">
           <div class="icon">📄</div>
           <p>Drag and drop your files here</p>
-          <p class="file-types">Supported formats: PDF, TXT, CSV</p>
+          <p class="file-types">
+            Supported formats: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers,
+            Pages, and various code files
+          </p>
           <button class="upload-button" id="uploadButton">Choose Files</button>
           <input
             type="file"
@@ -108,6 +135,10 @@
         </div>
         <div class="no-files" id="noFiles">No files uploaded yet</div>
       </div>
+    </div>
+    <div class="copyright">
+      © 2025 copy2paste - File Text Extractor | Created with ❤️ by
+      <a href="https://github.com/atm1504" target="_blank">atm1504</a>
     </div>
     <!-- popup.html -->
     <!-- DOCX extractor -->
