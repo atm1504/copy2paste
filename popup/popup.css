@@ -141,7 +141,7 @@ h1 {
 .files-list {
   margin-top: 0;
   text-align: left;
-  max-height: 180px;
+  max-height: 400px;
   overflow-y: auto;
   display: none;
 }
