@@ -250,38 +250,53 @@ document.addEventListener("DOMContentLoaded", function () {
     return allowedExts.includes(ext);
   }
 
+  /**
+   * Process a single File object: extract text (PDF, DOCX, XLSX, PPTX, Numbers, Pages)
+   * or treat as plain text.
+   * Stores result in uploadedFiles map under file.name.
+   */
   async function processFile(file) {
     console.log(`Processing file: ${file.name}`);
 
-    // Show loading state
+    // Show “loading” state in your UI
     uploadedFiles.set(file.name, {
-      file: file,
-      text: "Extracting text...",
+      file,
+      text: "Extracting text…",
       status: "loading",
       fileType: getFileTypeLabel(file),
     });
     updateFilesList();
 
     try {
-      let extractedText = "";
-      const isPdf =
-        file.type === "application/pdf" ||
-        file.name.toLowerCase().endsWith(".pdf");
-      const isText =
-        file.type === "text/plain" || file.name.toLowerCase().endsWith(".txt");
-      const isCsv =
-        file.type === "text/csv" || file.name.toLowerCase().endsWith(".csv");
+      const name = file.name.toLowerCase();
+      let extractedText;
 
-      if (isPdf) {
+      if (name.endsWith(".pdf")) {
+        // PDF via PDF.js
         extractedText = await extractTextFromPDF(file);
-      } else if (isText) {
+      } else if (name.endsWith(".docx")) {
+        // Word documents via Mammoth
+        extractedText = await extractFromDocx(file);
+      } else if (name.endsWith(".xlsx")) {
+        // Spreadsheets via SheetJS
+        extractedText = await extractFromXlsx(file);
+      } else if (name.endsWith(".pptx")) {
+        // PowerPoint via JSZip + XML scan
+        extractedText = await extractFromPptx(file);
+      } else if (name.endsWith(".numbers")) {
+        // Apple Numbers via JSZip + XML scan
+        extractedText = await extractFromNumbers(file);
+      } else if (name.endsWith(".pages")) {
+        // Apple Pages via JSZip + XML scan
+        extractedText = await extractFromPages(file);
+      } else {
+        // All other files: plain text (code, JSON, CSV, TXT, etc.)
         extractedText = await extractTextFromTextFile(file);
-      } else if (isCsv) {
-        extractedText = await extractTextFromCsv(file);
       }
 
+      // Update map to “ready” state with the extracted text
       uploadedFiles.set(file.name, {
-        file: file,
+        file,
         text: extractedText,
         status: "ready",
         fileType: getFileTypeLabel(file),
@@ -289,13 +304,74 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error(`Error processing ${file.name}:`, error);
       uploadedFiles.set(file.name, {
-        file: file,
+        file,
         text: `Error: ${error.message || "Could not extract text"}`,
         status: "error",
         fileType: getFileTypeLabel(file),
       });
       showError(`Failed to process ${file.name}`);
     }
+
+    // Refresh the UI and persist
+    updateFilesList();
+    saveFilesToStorage();
+  }
+
+  // popup.js (at top of file)
+
+  // helper: extract text from .docx via Mammoth
+  async function extractFromDocx(file) {
+    const arrayBuffer = await readFileAsArrayBuffer(file);
+    const { value: text } = await mammoth.extractRawText({ arrayBuffer });
+    return text;
+  }
+
+  // helper: extract CSV‐style text from .xlsx via SheetJS
+  async function extractFromXlsx(file) {
+    const arrayBuffer = await readFileAsArrayBuffer(file);
+    const workbook = XLSX.read(arrayBuffer, { type: "array" });
+    let allText = "";
+    for (const name of workbook.SheetNames) {
+      const sheet = workbook.Sheets[name];
+      // CSV gives a good line‐by‐line fallback
+      allText += XLSX.utils.sheet_to_csv(sheet) + "\n\n";
+    }
+    return allText.trim();
+  }
+
+  // helper: extract slide text from .pptx, .numbers, .pages via JSZip + simple XML scan
+  async function extractFromZipXml(file, xmlFolder, xmlPattern) {
+    const arrayBuffer = await readFileAsArrayBuffer(file);
+    const zip = await JSZip.loadAsync(arrayBuffer);
+    let fullText = "";
+    for (const path of Object.keys(zip.files)) {
+      if (path.startsWith(xmlFolder) && xmlPattern.test(path)) {
+        const xml = await zip.files[path].async("text");
+        // grab all text in <a:t>…</a:t> or plain text nodes:
+        const matches = [...xml.matchAll(/<[^>]*>([^<]+)<\/[^>]*>/g)];
+        fullText += matches.map((m) => m[1]).join(" ") + "\n\n";
+      }
+    }
+    return fullText.trim();
+  }
+
+  async function extractFromPptx(file) {
+    // pptx slides live under ppt/slides/slideX.xml
+    return extractFromZipXml(
+      file,
+      "ppt/slides/",
+      /^ppt\/slides\/slide\d+\.xml$/
+    );
+  }
+
+  async function extractFromNumbers(file) {
+    // .numbers sheets under index/Worksheets/sheetX.xml
+    return extractFromZipXml(file, "Index/Worksheet/", /\.xml$/i);
+  }
+
+  async function extractFromPages(file) {
+    // .pages content is in index.xml
+    return extractFromZipXml(file, "", /^index\.xml$/i);
   }
 
   // --- Extract text from text files (txt) ---
