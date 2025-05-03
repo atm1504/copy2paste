@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Copy Paste File Text",
+  "name": "Copy2Paste",
   "version": "1.0",
-  "description": "A Chrome extension to extract text from various file formats",
+  "description": "Extract and copy text from various file formats including PDF, DOCX, XLSX, PPTX, and more",
   "action": {
     "default_title": "Copy Paste File Text",
     "default_icon": {
