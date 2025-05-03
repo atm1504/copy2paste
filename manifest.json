@@ -20,7 +20,11 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["lib/pdfjs/*"],
+      "resources": [
+        "lib/pdfjs/pdf.js",
+        "lib/pdfjs/pdf.worker.js",
+        "lib/pdfjs/pdf.worker.min.js"
+      ],
       "matches": ["<all_urls>"]
     }
   ],

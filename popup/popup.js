@@ -3,6 +3,14 @@
 
 console.log('Copy Paste File Text Extension - popup script loaded');
 
+// Initialize PDF.js
+if (window.pdfjsLib) {
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.mjs');
+  console.log('PDF.js initialized successfully');
+} else {
+  console.error('PDF.js library not found');
+}
+
 // -------------------- DOMContentLoaded --------------------
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM Content Loaded');
@@ -15,81 +23,18 @@ document.addEventListener('DOMContentLoaded', function() {
   const noFiles = document.getElementById('noFiles');
   const copyAllBtn = document.getElementById('copyAllBtn');
   const copyAllFeedback = document.getElementById('copyAllFeedback');
+  const errorMessage = document.getElementById('errorMessage');
+  const loadingIndicator = document.getElementById('loadingIndicator');
 
   // --- State: Map of uploaded files ---
   let uploadedFiles = new Map();
-
-  // --- PDF.js script loader ---
-  let pdfJsLoaded = false;
-  
-  // Load PDF.js library asynchronously
-  function loadPdfJs() {
-    if (pdfJsLoaded) return Promise.resolve();
-    
-    return new Promise((resolve, reject) => {
-      try {
-        // First load the worker
-        const workerScript = document.createElement('script');
-        workerScript.src = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
-        workerScript.onload = () => {
-          console.log('PDF.js worker loaded successfully');
-          
-          // Then load the main library
-          const script = document.createElement('script');
-          script.src = chrome.runtime.getURL('lib/pdfjs/pdf.js');
-          script.onload = () => {
-            console.log('PDF.js library loaded successfully');
-            
-            // Wait a short moment for the library to initialize
-            setTimeout(() => {
-              if (window.pdfjsLib) {
-                console.log('pdfjsLib is available:', window.pdfjsLib);
-                
-                // Configure worker
-                window.pdfjsLib.GlobalWorkerOptions = window.pdfjsLib.GlobalWorkerOptions || {};
-                window.pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
-                
-                // Set up the PDF.js viewer
-                window.pdfjsLib.disableWorker = false;
-                window.pdfjsLib.disableStream = false;
-                window.pdfjsLib.disableAutoFetch = false;
-                
-                // Initialize the PDF.js viewer
-                window.pdfjsLib.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
-                
-                pdfJsLoaded = true;
-                resolve();
-              } else {
-                console.error('PDF.js loaded but pdfjsLib object not found');
-                reject(new Error('PDF.js library not properly initialized'));
-              }
-            }, 100);
-          };
-          script.onerror = (error) => {
-            console.error('Failed to load PDF.js:', error);
-            reject(error);
-          };
-          document.head.appendChild(script);
-        };
-        workerScript.onerror = (error) => {
-          console.error('Failed to load PDF.js worker:', error);
-          reject(error);
-        };
-        document.head.appendChild(workerScript);
-      } catch (error) {
-        console.error('Error setting up PDF.js:', error);
-        reject(error);
-      }
-    });
-  }
+  let isProcessing = false;
 
   // -------------------- Initialization --------------------
   loadFilesFromStorage();
   setupEventListeners();
-  loadPdfJs();
 
   // -------------------- Storage Functions --------------------
-  // Load files from sessionStorage
   function loadFilesFromStorage() {
     try {
       const savedFiles = sessionStorage.getItem('uploadedFiles');
@@ -100,16 +45,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     } catch (e) {
       console.error('Failed to load files from session storage:', e);
+      showError('Failed to load saved files');
     }
   }
 
-  // Save files to sessionStorage
   function saveFilesToStorage() {
     try {
       sessionStorage.setItem('uploadedFiles', JSON.stringify(Array.from(uploadedFiles.entries())));
       console.log('Files saved to session storage:', Array.from(uploadedFiles.keys()));
     } catch (e) {
       console.error('Failed to save files to session storage:', e);
+      showError('Failed to save files');
     }
   }
 
@@ -131,13 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // File input change event
     fileInput.addEventListener('change', handleFileSelect, false);
     
-    // Upload button - simpler now that we're on a full page
+    // Upload button
     uploadButton.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log('Upload button clicked - full page mode');
-      
-      // Simply click the file input directly - no focus issues on full page
       fileInput.click();
     });
 
@@ -145,13 +88,40 @@ document.addEventListener('DOMContentLoaded', function() {
     copyAllBtn.addEventListener('click', handleCopyAll, false);
   }
 
+  // -------------------- UI Helpers --------------------
+  function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+    setTimeout(() => {
+      errorMessage.style.display = 'none';
+    }, 5000);
+  }
+
+  function showLoading() {
+    loadingIndicator.style.display = 'block';
+    isProcessing = true;
+  }
+
+  function hideLoading() {
+    loadingIndicator.style.display = 'none';
+    isProcessing = false;
+  }
+
   // -------------------- Drag & Drop Helpers --------------------
   function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();
   }
-  function highlight(e) { dropZone.classList.add('dragover'); }
-  function unhighlight(e) { dropZone.classList.remove('dragover'); }
+
+  function highlight(e) {
+    if (!isProcessing) {
+      dropZone.classList.add('dragover');
+    }
+  }
+
+  function unhighlight(e) {
+    dropZone.classList.remove('dragover');
+  }
 
   // -------------------- File Handling --------------------
   function handleDrop(e) {
@@ -161,92 +131,101 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   function handleFileSelect(e) {
-    console.log('File input change event triggered');
     const files = e.target.files;
     if (files && files.length > 0) {
-      console.log(`Selected ${files.length} files`);
-      
-      // Inform background script about completed file upload
-      chrome.runtime.sendMessage({
-        action: "fileUploaded", 
-        fileCount: files.length,
-        fileName: files.length === 1 ? files[0].name : "multiple files"
-      }, function(response) {
-        console.log("Background acknowledged file upload:", response);
-      });
-      
-      // Process the files
       handleFiles(files);
-      // Reset file input
       e.target.value = '';
-    } else {
-      console.log('No files selected or file selection cancelled');
     }
   }
   
-  function handleFiles(files) {
+  async function handleFiles(files) {
+    if (isProcessing) {
+      showError('Please wait for current files to finish processing');
+      return;
+    }
+
     if (files.length > 0) {
-      Array.from(files).forEach(file => {
-        if (!uploadedFiles.has(file.name)) processFile(file);
-      });
-      updateFilesList();
-      saveFilesToStorage();
+      showLoading();
+      try {
+        const fileArray = Array.from(files);
+        const validFiles = fileArray.filter(file => {
+          const isValid = isValidFileType(file);
+          if (!isValid) {
+            showError(`Unsupported file type: ${file.name}`);
+          }
+          return isValid;
+        });
+
+        if (validFiles.length > 0) {
+          for (const file of validFiles) {
+            if (!uploadedFiles.has(file.name)) {
+              await processFile(file);
+            }
+          }
+          updateFilesList();
+          saveFilesToStorage();
+        }
+      } catch (error) {
+        console.error('Error processing files:', error);
+        showError('Error processing files. Please try again.');
+      } finally {
+        hideLoading();
+      }
     }
   }
+
+  function isValidFileType(file) {
+    const validTypes = [
+      'application/pdf',
+      'text/plain',
+      'text/csv'
+    ];
+    const validExtensions = ['.pdf', '.txt', '.csv'];
+    return validTypes.includes(file.type) || 
+           validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+  }
   
-  // --- Process a file: extract text and update UI ---
   async function processFile(file) {
     console.log(`Processing file: ${file.name}`);
     
-    // Determine file type
-    const isText = file.type === 'text/plain' || file.name.toLowerCase().endsWith('.txt');
-    const isCsv = file.type === 'text/csv' || file.name.toLowerCase().endsWith('.csv');
-    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+    // Show loading state
+    uploadedFiles.set(file.name, {
+      file: file,
+      text: 'Extracting text...',
+      status: 'loading',
+      fileType: getFileTypeLabel(file)
+    });
+    updateFilesList();
     
-    if (isPdf || isText || isCsv) {
-      // Show loading state
-      uploadedFiles.set(file.name, {
-        file: file,
-        text: 'Extracting text...',
-        status: 'loading',
-        fileType: getFileTypeLabel(file)
-      });
-      updateFilesList();
+    try {
+      let extractedText = '';
+      const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+      const isText = file.type === 'text/plain' || file.name.toLowerCase().endsWith('.txt');
+      const isCsv = file.type === 'text/csv' || file.name.toLowerCase().endsWith('.csv');
       
-      try {
-        let extractedText = '';
-        
-        if (isPdf) {
-          extractedText = await extractTextFromPDF(file);
-        } else if (isText) {
-          extractedText = await extractTextFromTextFile(file);
-        } else if (isCsv) {
-          extractedText = await extractTextFromCsv(file);
-        }
-        
-        // Update file data with extracted text
-        uploadedFiles.set(file.name, {
-          file: file,
-          text: extractedText,
-          status: 'ready',
-          fileType: getFileTypeLabel(file)
-        });
-      } catch (error) {
-        console.error(`Error processing ${file.name}:`, error);
-        uploadedFiles.set(file.name, {
-          file: file,
-          text: `Error: ${error.message || 'Could not extract text'}`,
-          status: 'error',
-          fileType: getFileTypeLabel(file)
-        });
+      if (isPdf) {
+        extractedText = await extractTextFromPDF(file);
+      } else if (isText) {
+        extractedText = await extractTextFromTextFile(file);
+      } else if (isCsv) {
+        extractedText = await extractTextFromCsv(file);
       }
       
-      // Update UI and save to storage
-      updateFilesList();
-      saveFilesToStorage();
-    } else {
-      console.warn(`Unsupported file type: ${file.type}`);
-      showError(file.name, 'Unsupported file type', getFileTypeLabel(file));
+      uploadedFiles.set(file.name, {
+        file: file,
+        text: extractedText,
+        status: 'ready',
+        fileType: getFileTypeLabel(file)
+      });
+    } catch (error) {
+      console.error(`Error processing ${file.name}:`, error);
+      uploadedFiles.set(file.name, {
+        file: file,
+        text: `Error: ${error.message || 'Could not extract text'}`,
+        status: 'error',
+        fileType: getFileTypeLabel(file)
+      });
+      showError(`Failed to process ${file.name}`);
     }
   }
 
@@ -349,18 +328,6 @@ document.addEventListener('DOMContentLoaded', function() {
   function getFileTypeLabel(file) {
     const ext = file.name.split('.').pop().toLowerCase();
     return ext.toUpperCase();
-  }
-
-  function showError(fileName, message, fileType) {
-    uploadedFiles.set(fileName, {
-      file: { name: fileName },
-      text: '',
-      status: 'error',
-      error: message,
-      fileType: fileType || 'UNKNOWN'
-    });
-    updateFilesList();
-    saveFilesToStorage();
   }
 
   // -------------------- UI Update Functions --------------------

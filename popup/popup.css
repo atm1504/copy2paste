@@ -243,6 +243,36 @@ h1 {
   display: none;
   font-size: 12px;
 }
+.error-message {
+  display: none;
+  background: #fde8e8;
+  color: #d93025;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+.loading-indicator {
+  display: none;
+  text-align: center;
+  padding: 12px;
+  color: #1765c1;
+  font-size: 14px;
+}
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(23, 101, 193, 0.3);
+  border-radius: 50%;
+  border-top-color: #1765c1;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 .progress-bar {
   height: 3px;
   background: #e8f0fe;
@@ -250,9 +280,24 @@ h1 {
   margin-top: 4px;
   overflow: hidden;
 }
-.progress {
+.progress-bar-fill {
   height: 100%;
-  background: #1765c1;
+  background: linear-gradient(90deg, #1765c1 0%, #4285f4 100%);
   width: 0;
   transition: width 0.3s ease;
+}
+/* Scrollbar styling */
+.files-list::-webkit-scrollbar {
+  width: 6px;
+}
+.files-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+.files-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+.files-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 } 

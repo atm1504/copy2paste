@@ -20,6 +20,7 @@
       text-align: center;
       margin: 40px auto;
       max-width: 600px;
+      padding: 0 20px;
     }
 
     h1 {
@@ -38,6 +39,24 @@
       box-shadow: 0 2px 12px rgba(26, 115, 232, 0.10);
       margin-bottom: 24px;
     }
+
+    .error-message {
+      display: none;
+      background: #fde8e8;
+      color: #d93025;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+
+    .loading-indicator {
+      display: none;
+      text-align: center;
+      padding: 12px;
+      color: #1765c1;
+      font-size: 14px;
+    }
   </style>
 </head>
 
@@ -45,10 +64,15 @@
   <div class="container">
     <h1>Copy Paste File Text</h1>
     <div class="upload-section">
+      <div class="error-message" id="errorMessage"></div>
+      <div class="loading-indicator" id="loadingIndicator">
+        <div class="spinner"></div>
+        <span>Processing files...</span>
+      </div>
       <div class="drop-zone" id="dropZone">
         <div class="icon">📄</div>
         <p>Drag and drop your files here</p>
-        <p class="file-types">Currently extracting text from: PDF, TXT, CSV</p>
+        <p class="file-types">Supported formats: PDF, TXT, CSV</p>
         <button class="upload-button" id="uploadButton">Choose Files</button>
         <input type="file" id="fileInput" class="file-input" multiple
           accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.ppt,.pptx">
@@ -68,13 +92,12 @@
       </div>
     </div>
   </div>
-  <script type="module" src="popup.js"></script>
-  <script src="lib/pdfjs/pdf.js"></script>
+  <script src="../lib/pdfjs/pdf.js"></script>
   <script>
-    // configure the worker path immediately
+    // configure the worker path
     pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('lib/pdfjs/pdf.worker.js');
   </script>
-
+  <script src="popup.js"></script>
 </body>
 
 </html>
