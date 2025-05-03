@@ -1,98 +1,101 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Copy Paste File Text Extractor</title>
+    <link rel="stylesheet" href="popup.css" />
+    <style>
+      body {
+        width: 100%;
+        max-width: 800px;
+        padding: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        margin: 0 auto;
+        background: linear-gradient(135deg, #e3f0fd 0%, #f4f6fb 100%);
+        min-height: 100vh;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <title>Copy Paste File Text Extractor</title>
-  <link rel="stylesheet" href="popup.css">
-  <style>
-    body {
-      width: 100%;
-      max-width: 800px;
-      padding: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0 auto;
-      background: linear-gradient(135deg, #e3f0fd 0%, #f4f6fb 100%);
-      min-height: 100vh;
-    }
+      .container {
+        text-align: center;
+        margin: 40px auto;
+        max-width: 600px;
+        padding: 0 20px;
+      }
 
-    .container {
-      text-align: center;
-      margin: 40px auto;
-      max-width: 600px;
-      padding: 0 20px;
-    }
+      h1 {
+        color: #1765c1;
+        font-size: 28px;
+        margin-bottom: 20px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 8px rgba(26, 115, 232, 0.08);
+      }
 
-    h1 {
-      color: #1765c1;
-      font-size: 28px;
-      margin-bottom: 20px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-shadow: 0 2px 8px rgba(26, 115, 232, 0.08);
-    }
+      .upload-section {
+        background: #fff;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(26, 115, 232, 0.1);
+        margin-bottom: 24px;
+      }
 
-    .upload-section {
-      background: #fff;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 2px 12px rgba(26, 115, 232, 0.10);
-      margin-bottom: 24px;
-    }
+      .error-message {
+        display: none;
+        background: #fde8e8;
+        color: #d93025;
+        padding: 12px;
+        border-radius: 8px;
+        margin: 12px 0;
+        font-size: 14px;
+      }
 
-    .error-message {
-      display: none;
-      background: #fde8e8;
-      color: #d93025;
-      padding: 12px;
-      border-radius: 8px;
-      margin: 12px 0;
-      font-size: 14px;
-    }
+      .loading-indicator {
+        display: none;
+        text-align: center;
+        padding: 12px;
+        color: #1765c1;
+        font-size: 14px;
+      }
+    </style>
+  </head>
 
-    .loading-indicator {
-      display: none;
-      text-align: center;
-      padding: 12px;
-      color: #1765c1;
-      font-size: 14px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <h1>Copy Paste File Text</h1>
-    <div class="upload-section">
-      <div class="error-message" id="errorMessage"></div>
-      <div class="loading-indicator" id="loadingIndicator">
-        <div class="spinner"></div>
-        <span>Processing files...</span>
-      </div>
-      <div class="drop-zone" id="dropZone">
-        <div class="icon">📄</div>
-        <p>Drag and drop your files here</p>
-        <p class="file-types">Supported formats: PDF, TXT, CSV</p>
-        <button class="upload-button" id="uploadButton">Choose Files</button>
-        <input type="file" id="fileInput" class="file-input" multiple
-          accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.ppt,.pptx">
-      </div>
-      <div class="copy-all-section">
-        <button class="copy-all-btn" id="copyAllBtn">
-          <span class="big-copy-icon">📋</span>
-          Copy All
-        </button>
-        <span class="copy-all-feedback" id="copyAllFeedback">All text copied!</span>
-      </div>
-      <div class="files-list" id="filesList">
-        <!-- File items will be added here dynamically -->
-      </div>
-      <div class="no-files" id="noFiles">
-        No files uploaded yet
+  <body>
+    <div class="container">
+      <h1>Copy Paste File Text</h1>
+      <div class="upload-section">
+        <div class="error-message" id="errorMessage"></div>
+        <div class="loading-indicator" id="loadingIndicator">
+          <div class="spinner"></div>
+          <span>Processing files...</span>
+        </div>
+        <div class="drop-zone" id="dropZone">
+          <div class="icon">📄</div>
+          <p>Drag and drop your files here</p>
+          <p class="file-types">Supported formats: PDF, TXT, CSV</p>
+          <button class="upload-button" id="uploadButton">Choose Files</button>
+          <input
+            type="file"
+            id="fileInput"
+            class="file-input"
+            multiple
+            accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.ppt,.pptx"
+          />
+        </div>
+        <div class="copy-all-section">
+          <button class="copy-all-btn" id="copyAllBtn">
+            <span class="big-copy-icon">📋</span>
+            Copy All
+          </button>
+          <span class="copy-all-feedback" id="copyAllFeedback"
+            >All text copied!</span
+          >
+        </div>
+        <div class="files-list" id="filesList">
+          <!-- File items will be added here dynamically -->
+        </div>
+        <div class="no-files" id="noFiles">No files uploaded yet</div>
       </div>
     </div>
-  </div>
-  <script type="module" src="popup.js"></script>
-</body>
-
+    <script type="module" src="popup.js"></script>
+  </body>
 </html>

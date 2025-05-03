@@ -1,7 +1,7 @@
 body {
   width: 340px;
   padding: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   margin: 0;
   background: linear-gradient(135deg, #e3f0fd 0%, #f4f6fb 100%);
 }
@@ -16,13 +16,13 @@ h1 {
   margin-bottom: 14px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  text-shadow: 0 2px 8px rgba(26,115,232,0.08);
+  text-shadow: 0 2px 8px rgba(26, 115, 232, 0.08);
 }
 .upload-section {
   background: #fff;
   border-radius: 16px;
   padding: 18px 12px 14px 12px;
-  box-shadow: 0 2px 12px rgba(26,115,232,0.10);
+  box-shadow: 0 2px 12px rgba(26, 115, 232, 0.1);
   margin-bottom: 18px;
 }
 .drop-zone {
@@ -31,7 +31,7 @@ h1 {
   padding: 18px 8px 12px 8px;
   text-align: center;
   background: #f4f8fd;
-  transition: all 0.3s cubic-bezier(.4,0,.2,1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 10px;
   cursor: pointer;
   min-height: 60px;
@@ -70,10 +70,10 @@ h1 {
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
-  transition: all 0.2s cubic-bezier(.4,0,.2,1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 10px;
   display: inline-block;
-  box-shadow: 0 1px 4px rgba(26,115,232,0.10);
+  box-shadow: 0 1px 4px rgba(26, 115, 232, 0.1);
 }
 .upload-button:hover {
   background: linear-gradient(90deg, #4285f4 0%, #1765c1 100%);
@@ -106,7 +106,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 7px;
-  box-shadow: 0 1px 4px rgba(26,115,232,0.10);
+  box-shadow: 0 1px 4px rgba(26, 115, 232, 0.1);
   transition: background 0.2s, transform 0.2s;
   position: relative;
 }
@@ -126,7 +126,7 @@ h1 {
   background: #e3f0fd;
   border-radius: 8px;
   padding: 4px 16px;
-  box-shadow: 0 2px 8px rgba(26,115,232,0.08);
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.08);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s, transform 0.2s;
@@ -155,11 +155,11 @@ h1 {
   align-items: center;
   justify-content: space-between;
   transition: border 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 4px rgba(26,115,232,0.04);
+  box-shadow: 0 1px 4px rgba(26, 115, 232, 0.04);
 }
 .file-item:hover {
   border-color: #1765c1;
-  box-shadow: 0 2px 8px rgba(26,115,232,0.08);
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.08);
 }
 .file-info {
   flex-grow: 1;
@@ -271,7 +271,9 @@ h1 {
   vertical-align: middle;
 }
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 .progress-bar {
   height: 3px;
@@ -300,4 +302,4 @@ h1 {
 }
 .files-list::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
-} 
+}

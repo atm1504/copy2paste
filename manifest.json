@@ -14,20 +14,14 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": [
-    "activeTab",
-    "scripting"
-  ],
+  "permissions": ["activeTab", "scripting"],
   "web_accessible_resources": [
     {
-      "resources": [
- "lib/pdfjs/pdf.mjs",
-        "lib/pdfjs/pdf.worker.mjs"
-      ],
+      "resources": ["lib/pdfjs/pdf.mjs", "lib/pdfjs/pdf.worker.mjs"],
       "matches": ["<all_urls>"]
     }
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   }
-} 
+}

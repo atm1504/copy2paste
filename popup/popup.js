@@ -1,29 +1,32 @@
 // Copy Paste File Text Extension - popup.js
 // Organized, readable, and well-commented for maintainability
 
-console.log('Copy Paste File Text Extension - popup script loaded');
-import * as pdfjsLib from '../lib/pdfjs/pdf.mjs';
+console.log("Copy Paste File Text Extension - popup script loaded");
+import * as pdfjsLib from "../lib/pdfjs/pdf.mjs";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  chrome.runtime.getURL('lib/pdfjs/pdf.worker.mjs');
+pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL(
+  "lib/pdfjs/pdf.worker.mjs"
+);
 
-console.log('PDF.js (ESM) loaded, worker at', pdfjsLib.GlobalWorkerOptions.workerSrc);
-
+console.log(
+  "PDF.js (ESM) loaded, worker at",
+  pdfjsLib.GlobalWorkerOptions.workerSrc
+);
 
 // -------------------- DOMContentLoaded --------------------
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM Content Loaded');
-  
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOM Content Loaded");
+
   // --- DOM Elements ---
-  const dropZone = document.getElementById('dropZone');
-  const fileInput = document.getElementById('fileInput');
-  const uploadButton = document.getElementById('uploadButton');
-  const filesList = document.getElementById('filesList');
-  const noFiles = document.getElementById('noFiles');
-  const copyAllBtn = document.getElementById('copyAllBtn');
-  const copyAllFeedback = document.getElementById('copyAllFeedback');
-  const errorMessage = document.getElementById('errorMessage');
-  const loadingIndicator = document.getElementById('loadingIndicator');
+  const dropZone = document.getElementById("dropZone");
+  const fileInput = document.getElementById("fileInput");
+  const uploadButton = document.getElementById("uploadButton");
+  const filesList = document.getElementById("filesList");
+  const noFiles = document.getElementById("noFiles");
+  const copyAllBtn = document.getElementById("copyAllBtn");
+  const copyAllFeedback = document.getElementById("copyAllFeedback");
+  const errorMessage = document.getElementById("errorMessage");
+  const loadingIndicator = document.getElementById("loadingIndicator");
 
   // --- State: Map of uploaded files ---
   let uploadedFiles = new Map();
@@ -36,73 +39,82 @@ document.addEventListener('DOMContentLoaded', function() {
   // -------------------- Storage Functions --------------------
   function loadFilesFromStorage() {
     try {
-      const savedFiles = sessionStorage.getItem('uploadedFiles');
+      const savedFiles = sessionStorage.getItem("uploadedFiles");
       if (savedFiles) {
         uploadedFiles = new Map(JSON.parse(savedFiles));
-        console.log('Loaded files from session storage:', Array.from(uploadedFiles.keys()));
+        console.log(
+          "Loaded files from session storage:",
+          Array.from(uploadedFiles.keys())
+        );
         updateFilesList();
       }
     } catch (e) {
-      console.error('Failed to load files from session storage:', e);
-      showError('Failed to load saved files');
+      console.error("Failed to load files from session storage:", e);
+      showError("Failed to load saved files");
     }
   }
 
   function saveFilesToStorage() {
     try {
-      sessionStorage.setItem('uploadedFiles', JSON.stringify(Array.from(uploadedFiles.entries())));
-      console.log('Files saved to session storage:', Array.from(uploadedFiles.keys()));
+      sessionStorage.setItem(
+        "uploadedFiles",
+        JSON.stringify(Array.from(uploadedFiles.entries()))
+      );
+      console.log(
+        "Files saved to session storage:",
+        Array.from(uploadedFiles.keys())
+      );
     } catch (e) {
-      console.error('Failed to save files to session storage:', e);
-      showError('Failed to save files');
+      console.error("Failed to save files to session storage:", e);
+      showError("Failed to save files");
     }
   }
 
   // -------------------- Event Listeners Setup --------------------
   function setupEventListeners() {
     // Drag & Drop
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
       dropZone.addEventListener(eventName, preventDefaults, false);
       document.body.addEventListener(eventName, preventDefaults, false);
     });
-    ['dragenter', 'dragover'].forEach(eventName => {
+    ["dragenter", "dragover"].forEach((eventName) => {
       dropZone.addEventListener(eventName, highlight, false);
     });
-    ['dragleave', 'drop'].forEach(eventName => {
+    ["dragleave", "drop"].forEach((eventName) => {
       dropZone.addEventListener(eventName, unhighlight, false);
     });
-    dropZone.addEventListener('drop', handleDrop, false);
+    dropZone.addEventListener("drop", handleDrop, false);
 
     // File input change event
-    fileInput.addEventListener('change', handleFileSelect, false);
-    
+    fileInput.addEventListener("change", handleFileSelect, false);
+
     // Upload button
-    uploadButton.addEventListener('click', function(e) {
+    uploadButton.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
       fileInput.click();
     });
 
     // Copy All button
-    copyAllBtn.addEventListener('click', handleCopyAll, false);
+    copyAllBtn.addEventListener("click", handleCopyAll, false);
   }
 
   // -------------------- UI Helpers --------------------
   function showError(message) {
     errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
+    errorMessage.style.display = "block";
     setTimeout(() => {
-      errorMessage.style.display = 'none';
+      errorMessage.style.display = "none";
     }, 5000);
   }
 
   function showLoading() {
-    loadingIndicator.style.display = 'block';
+    loadingIndicator.style.display = "block";
     isProcessing = true;
   }
 
   function hideLoading() {
-    loadingIndicator.style.display = 'none';
+    loadingIndicator.style.display = "none";
     isProcessing = false;
   }
 
@@ -114,12 +126,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function highlight(e) {
     if (!isProcessing) {
-      dropZone.classList.add('dragover');
+      dropZone.classList.add("dragover");
     }
   }
 
   function unhighlight(e) {
-    dropZone.classList.remove('dragover');
+    dropZone.classList.remove("dragover");
   }
 
   // -------------------- File Handling --------------------
@@ -128,18 +140,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const files = dt.files;
     handleFiles(files);
   }
-  
+
   function handleFileSelect(e) {
     const files = e.target.files;
     if (files && files.length > 0) {
       handleFiles(files);
-      e.target.value = '';
+      e.target.value = "";
     }
   }
-  
+
   async function handleFiles(files) {
     if (isProcessing) {
-      showError('Please wait for current files to finish processing');
+      showError("Please wait for current files to finish processing");
       return;
     }
 
@@ -147,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
       showLoading();
       try {
         const fileArray = Array.from(files);
-        const validFiles = fileArray.filter(file => {
+        const validFiles = fileArray.filter((file) => {
           const isValid = isValidFileType(file);
           if (!isValid) {
             showError(`Unsupported file type: ${file.name}`);
@@ -165,8 +177,8 @@ document.addEventListener('DOMContentLoaded', function() {
           saveFilesToStorage();
         }
       } catch (error) {
-        console.error('Error processing files:', error);
-        showError('Error processing files. Please try again.');
+        console.error("Error processing files:", error);
+        showError("Error processing files. Please try again.");
       } finally {
         hideLoading();
       }
@@ -174,34 +186,36 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function isValidFileType(file) {
-    const validTypes = [
-      'application/pdf',
-      'text/plain',
-      'text/csv'
-    ];
-    const validExtensions = ['.pdf', '.txt', '.csv'];
-    return validTypes.includes(file.type) || 
-           validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+    const validTypes = ["application/pdf", "text/plain", "text/csv"];
+    const validExtensions = [".pdf", ".txt", ".csv"];
+    return (
+      validTypes.includes(file.type) ||
+      validExtensions.some((ext) => file.name.toLowerCase().endsWith(ext))
+    );
   }
-  
+
   async function processFile(file) {
     console.log(`Processing file: ${file.name}`);
-    
+
     // Show loading state
     uploadedFiles.set(file.name, {
       file: file,
-      text: 'Extracting text...',
-      status: 'loading',
-      fileType: getFileTypeLabel(file)
+      text: "Extracting text...",
+      status: "loading",
+      fileType: getFileTypeLabel(file),
     });
     updateFilesList();
-    
+
     try {
-      let extractedText = '';
-      const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
-      const isText = file.type === 'text/plain' || file.name.toLowerCase().endsWith('.txt');
-      const isCsv = file.type === 'text/csv' || file.name.toLowerCase().endsWith('.csv');
-      
+      let extractedText = "";
+      const isPdf =
+        file.type === "application/pdf" ||
+        file.name.toLowerCase().endsWith(".pdf");
+      const isText =
+        file.type === "text/plain" || file.name.toLowerCase().endsWith(".txt");
+      const isCsv =
+        file.type === "text/csv" || file.name.toLowerCase().endsWith(".csv");
+
       if (isPdf) {
         extractedText = await extractTextFromPDF(file);
       } else if (isText) {
@@ -209,20 +223,20 @@ document.addEventListener('DOMContentLoaded', function() {
       } else if (isCsv) {
         extractedText = await extractTextFromCsv(file);
       }
-      
+
       uploadedFiles.set(file.name, {
         file: file,
         text: extractedText,
-        status: 'ready',
-        fileType: getFileTypeLabel(file)
+        status: "ready",
+        fileType: getFileTypeLabel(file),
       });
     } catch (error) {
       console.error(`Error processing ${file.name}:`, error);
       uploadedFiles.set(file.name, {
         file: file,
-        text: `Error: ${error.message || 'Could not extract text'}`,
-        status: 'error',
-        fileType: getFileTypeLabel(file)
+        text: `Error: ${error.message || "Could not extract text"}`,
+        status: "error",
+        fileType: getFileTypeLabel(file),
       });
       showError(`Failed to process ${file.name}`);
     }
@@ -232,15 +246,15 @@ document.addEventListener('DOMContentLoaded', function() {
   function extractTextFromTextFile(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
-      reader.onload = function() {
+
+      reader.onload = function () {
         resolve(reader.result);
       };
-      
-      reader.onerror = function() {
-        reject(new Error('Failed to read text file'));
+
+      reader.onerror = function () {
+        reject(new Error("Failed to read text file"));
       };
-      
+
       reader.readAsText(file);
     });
   }
@@ -249,15 +263,15 @@ document.addEventListener('DOMContentLoaded', function() {
   function extractTextFromCsv(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
-      reader.onload = function() {
+
+      reader.onload = function () {
         resolve(reader.result);
       };
-      
-      reader.onerror = function() {
-        reject(new Error('Failed to read CSV file'));
+
+      reader.onerror = function () {
+        reject(new Error("Failed to read CSV file"));
       };
-      
+
       reader.readAsText(file);
     });
   }
@@ -266,36 +280,35 @@ document.addEventListener('DOMContentLoaded', function() {
   async function extractTextFromPDF(file) {
     try {
       // PDF.js is already imported as pdfjsLib at the top of the file
-      console.log('Starting PDF extraction for:', file.name);
-  
+      console.log("Starting PDF extraction for:", file.name);
+
       // Read the file as ArrayBuffer
       const arrayBuffer = await readFileAsArrayBuffer(file);
-  
+
       // Load the PDF document
       const pdfDoc = await pdfjsLib.getDocument({
         data: arrayBuffer,
         disableAutoFetch: true,
         disableStream: true,
-        disableRange: true
+        disableRange: true,
       }).promise;
-  
-      console.log('PDF document loaded successfully, pages:', pdfDoc.numPages);
-  
-      let extractedText = '';
+
+      console.log("PDF document loaded successfully, pages:", pdfDoc.numPages);
+
+      let extractedText = "";
       for (let i = 1; i <= pdfDoc.numPages; i++) {
         const page = await pdfDoc.getPage(i);
         const textContent = await page.getTextContent();
-        const pageText = textContent.items.map(item => item.str).join(' ');
-        extractedText += pageText + '\n\n';
+        const pageText = textContent.items.map((item) => item.str).join(" ");
+        extractedText += pageText + "\n\n";
       }
-      console.log('PDF text extraction complete');
+      console.log("PDF text extraction complete");
       return extractedText.trim();
     } catch (error) {
-      console.error('Error extracting text from PDF:', error);
+      console.error("Error extracting text from PDF:", error);
       throw new Error(`PDF extraction failed: ${error.message}`);
     }
   }
-  
 
   // Read a file as ArrayBuffer (for PDF processing)
   function readFileAsArrayBuffer(file) {
@@ -309,57 +322,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Helper function to get file type label
   function getFileTypeLabel(file) {
-    const ext = file.name.split('.').pop().toLowerCase();
+    const ext = file.name.split(".").pop().toLowerCase();
     return ext.toUpperCase();
   }
 
   // -------------------- UI Update Functions --------------------
   function updateFilesList() {
-    filesList.innerHTML = '';
-    noFiles.style.display = uploadedFiles.size === 0 ? 'block' : 'none';
-    filesList.style.display = uploadedFiles.size === 0 ? 'none' : 'block';
-    copyAllBtn.style.display = uploadedFiles.size === 0 ? 'none' : 'flex';
+    filesList.innerHTML = "";
+    noFiles.style.display = uploadedFiles.size === 0 ? "block" : "none";
+    filesList.style.display = uploadedFiles.size === 0 ? "none" : "block";
+    copyAllBtn.style.display = uploadedFiles.size === 0 ? "none" : "flex";
 
     uploadedFiles.forEach((fileData, fileName) => {
-      const fileItem = document.createElement('div');
-      fileItem.className = 'file-item';
-      
-      const fileInfo = document.createElement('div');
-      fileInfo.className = 'file-info';
-      
-      const fileNameContainer = document.createElement('div');
-      fileNameContainer.className = 'file-name-container';
-      
-      const fileNameElement = document.createElement('div');
-      fileNameElement.className = 'file-name';
+      const fileItem = document.createElement("div");
+      fileItem.className = "file-item";
+
+      const fileInfo = document.createElement("div");
+      fileInfo.className = "file-info";
+
+      const fileNameContainer = document.createElement("div");
+      fileNameContainer.className = "file-name-container";
+
+      const fileNameElement = document.createElement("div");
+      fileNameElement.className = "file-name";
       fileNameElement.textContent = fileName;
-      
-      const fileTypeElement = document.createElement('span');
-      fileTypeElement.className = 'file-type';
-      fileTypeElement.textContent = fileData.fileType || '';
-      
+
+      const fileTypeElement = document.createElement("span");
+      fileTypeElement.className = "file-type";
+      fileTypeElement.textContent = fileData.fileType || "";
+
       fileNameContainer.appendChild(fileNameElement);
       fileNameContainer.appendChild(fileTypeElement);
-      
-      const fileSizeElement = document.createElement('div');
-      fileSizeElement.className = 'file-size';
+
+      const fileSizeElement = document.createElement("div");
+      fileSizeElement.className = "file-size";
       fileSizeElement.textContent = formatFileSize(fileData.file.size);
 
       fileInfo.appendChild(fileNameContainer);
       fileInfo.appendChild(fileSizeElement);
 
-      const fileActions = document.createElement('div');
-      fileActions.className = 'file-actions';
+      const fileActions = document.createElement("div");
+      fileActions.className = "file-actions";
 
-      if (fileData.status === 'ready') {
-        const copyButton = document.createElement('button');
-        copyButton.className = 'action-button copy-button';
-        copyButton.innerHTML = '📋';
-        copyButton.title = 'Copy text';
+      if (fileData.status === "ready") {
+        const copyButton = document.createElement("button");
+        copyButton.className = "action-button copy-button";
+        copyButton.innerHTML = "📋";
+        copyButton.title = "Copy text";
         // Feedback span
-        const feedback = document.createElement('span');
-        feedback.className = 'copy-feedback';
-        feedback.textContent = 'Copied!';
+        const feedback = document.createElement("span");
+        feedback.className = "copy-feedback";
+        feedback.textContent = "Copied!";
         copyButton.appendChild(feedback);
         copyButton.onclick = (e) => {
           copyText(fileName, copyButton);
@@ -367,29 +380,29 @@ document.addEventListener('DOMContentLoaded', function() {
         fileActions.appendChild(copyButton);
       }
 
-      const deleteButton = document.createElement('button');
-      deleteButton.className = 'action-button delete-button';
-      deleteButton.innerHTML = '🗑️';
-      deleteButton.title = 'Remove file';
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "action-button delete-button";
+      deleteButton.innerHTML = "🗑️";
+      deleteButton.title = "Remove file";
       deleteButton.onclick = () => removeFile(fileName);
       fileActions.appendChild(deleteButton);
 
       fileItem.appendChild(fileInfo);
       fileItem.appendChild(fileActions);
 
-      if (fileData.status === 'loading') {
-        const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
-        const progress = document.createElement('div');
-        progress.className = 'progress';
+      if (fileData.status === "loading") {
+        const progressBar = document.createElement("div");
+        progressBar.className = "progress-bar";
+        const progress = document.createElement("div");
+        progress.className = "progress";
         progressBar.appendChild(progress);
         fileItem.appendChild(progressBar);
       }
 
-      if (fileData.status === 'error') {
-        const errorMessage = document.createElement('div');
-        errorMessage.className = 'error-message';
-        errorMessage.textContent = fileData.error || 'Error processing file';
+      if (fileData.status === "error") {
+        const errorMessage = document.createElement("div");
+        errorMessage.className = "error-message";
+        errorMessage.textContent = fileData.error || "Error processing file";
         fileItem.appendChild(errorMessage);
       }
 
@@ -400,44 +413,48 @@ document.addEventListener('DOMContentLoaded', function() {
   function copyText(fileName, buttonEl) {
     const fileData = uploadedFiles.get(fileName);
     if (fileData && fileData.text) {
-      navigator.clipboard.writeText(fileData.text).then(function() {
-        buttonEl.classList.add('copied');
-        setTimeout(() => {
-          buttonEl.classList.remove('copied');
-        }, 1200);
-      }).catch(function(err) {
-        console.error('Failed to copy text: ', err);
-      });
+      navigator.clipboard
+        .writeText(fileData.text)
+        .then(function () {
+          buttonEl.classList.add("copied");
+          setTimeout(() => {
+            buttonEl.classList.remove("copied");
+          }, 1200);
+        })
+        .catch(function (err) {
+          console.error("Failed to copy text: ", err);
+        });
     }
   }
 
   function handleCopyAll(e) {
     e.preventDefault();
-    let allText = '';
+    let allText = "";
     let hasReadyFiles = false;
 
-    uploadedFiles.forEach(fileData => {
-      if (fileData.status === 'ready') {
-        allText += fileData.text + '\n\n';
+    uploadedFiles.forEach((fileData) => {
+      if (fileData.status === "ready") {
+        allText += fileData.text + "\n\n";
         hasReadyFiles = true;
       }
     });
 
     if (!hasReadyFiles) {
-      alert('No files ready to copy');
+      alert("No files ready to copy");
       return;
     }
 
-    navigator.clipboard.writeText(allText.trim())
+    navigator.clipboard
+      .writeText(allText.trim())
       .then(() => {
-        copyAllBtn.classList.add('copied');
+        copyAllBtn.classList.add("copied");
         setTimeout(() => {
-          copyAllBtn.classList.remove('copied');
+          copyAllBtn.classList.remove("copied");
         }, 2000);
       })
-      .catch(err => {
-        console.error('Failed to copy all text:', err);
-        alert('Failed to copy text to clipboard');
+      .catch((err) => {
+        console.error("Failed to copy all text:", err);
+        alert("Failed to copy text to clipboard");
       });
   }
 
@@ -448,16 +465,24 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   }
 
   // Log popup dimensions
-  console.log('Popup width:', document.body.offsetWidth, 'height:', document.body.offsetHeight);
+  console.log(
+    "Popup width:",
+    document.body.offsetWidth,
+    "height:",
+    document.body.offsetHeight
+  );
 
   // Log all elements in the body
-  console.log('All elements in body:', Array.from(document.body.children).map(e => e.tagName));
-}); 
+  console.log(
+    "All elements in body:",
+    Array.from(document.body.children).map((e) => e.tagName)
+  );
+});
