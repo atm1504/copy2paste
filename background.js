@@ -1,3 +1,6 @@
+// Background script for copy2paste extension
+console.log("Background script initialized");
+
 // Listen for extension icon click
 chrome.action.onClicked.addListener((tab) => {
   chrome.tabs.create({
@@ -23,5 +26,3 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 });
-
-console.log("Background script initialized");
