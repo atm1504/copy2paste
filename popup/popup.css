@@ -16,6 +16,17 @@ body {
   display: flex;
   flex-direction: column;
 }
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.logo-image {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+}
 h1 {
   color: #1765c1;
   font-size: 22px;

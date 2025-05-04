@@ -6,10 +6,15 @@
   "action": {
     "default_title": "Copy Paste File Text",
     "default_icon": {
-      "16": "assets/icons/icon16.png",
-      "48": "assets/icons/icon48.png",
-      "128": "assets/icons/icon128.png"
+      "16": "assets/logo.png",
+      "48": "assets/logo.png",
+      "128": "assets/logo.png"
     }
+  },
+  "icons": {
+    "16": "assets/logo.png",
+    "48": "assets/logo.png",
+    "128": "assets/logo.png"
   },
   "background": {
     "service_worker": "background.js"
