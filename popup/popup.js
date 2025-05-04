@@ -679,8 +679,26 @@ document.addEventListener("DOMContentLoaded", function () {
           buttonEl.classList.add("copied");
           const feedback = buttonEl.querySelector(".copy-feedback");
           feedback.textContent = i18n.translate("copied");
+
+          // Make feedback fully visible with explicit properties
+          feedback.style.opacity = "1";
+          feedback.style.visibility = "visible";
+
+          // Position the tooltip properly in relation to the file item
+          const fileItem = buttonEl.closest(".file-item");
+          if (fileItem) {
+            // Ensure the file item has proper positioning
+            fileItem.style.position = "relative";
+          }
+
           setTimeout(() => {
             buttonEl.classList.remove("copied");
+
+            // After the class is removed, explicitly fade out
+            setTimeout(() => {
+              feedback.style.opacity = "0";
+              feedback.style.visibility = "hidden";
+            }, 100);
           }, 2000);
         })
         .catch((err) => {
