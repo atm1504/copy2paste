@@ -55,6 +55,92 @@
         text-decoration: underline;
       }
 
+      .theme-switch-wrapper {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        display: flex;
+        align-items: center;
+        z-index: 100;
+      }
+
+      .theme-switch {
+        position: relative;
+        width: 120px;
+        height: 38px;
+        background: #f0f0f0;
+        border-radius: 30px;
+        padding: 3px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .theme-slider {
+        position: absolute;
+        width: 36px;
+        height: 36px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+      }
+
+      .theme-option {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        z-index: 1;
+        transition: all 0.3s ease;
+        opacity: 0.6;
+      }
+
+      .theme-option.active {
+        opacity: 1;
+      }
+
+      .theme-option:first-child {
+        margin-left: 6px;
+      }
+
+      .theme-option:last-child {
+        margin-right: 6px;
+      }
+
+      [data-theme="light"] .theme-slider {
+        transform: translateX(0);
+      }
+
+      [data-theme="system"] .theme-slider {
+        transform: translateX(40px);
+      }
+
+      [data-theme="dark"] .theme-slider {
+        transform: translateX(80px);
+      }
+
+      /* Theme transitions */
+      body,
+      .upload-section,
+      .drop-zone,
+      .file-item,
+      .copy-all-btn,
+      .error-message,
+      .theme-switch {
+        transition: background-color 0.3s ease, color 0.3s ease,
+          border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
       .upload-section {
         background: #fff;
         border-radius: 16px;
@@ -83,7 +169,20 @@
     </style>
   </head>
 
-  <body>
+  <body data-theme="system">
+    <div class="theme-switch-wrapper">
+      <div class="theme-switch">
+        <button class="theme-btn" data-theme="light">
+          <span class="theme-icon">☀️</span>
+        </button>
+        <button class="theme-btn" data-theme="system">
+          <span class="theme-icon">⚙️</span>
+        </button>
+        <button class="theme-btn" data-theme="dark">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
+    </div>
     <div class="container">
       <div class="logo-container">
         <img

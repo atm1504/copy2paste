@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const copyAllFeedback = document.getElementById("copyAllFeedback");
   const errorMessage = document.getElementById("errorMessage");
   const loadingIndicator = document.getElementById("loadingIndicator");
+  const themeSwitch = document.querySelector(".theme-switch");
+  const themeOptions = document.querySelectorAll(".theme-option");
+  const themeSlider = document.querySelector(".theme-slider");
 
   // --- State: Map of uploaded files ---
   let uploadedFiles = new Map();
@@ -35,6 +38,73 @@ document.addEventListener("DOMContentLoaded", function () {
   // -------------------- Initialization --------------------
   loadFilesFromStorage();
   setupEventListeners();
+  initializeTheme();
+
+  // -------------------- Theme Functions --------------------
+  function initializeTheme() {
+    // Check for saved theme
+    const savedTheme = localStorage.getItem("theme") || "system";
+    document.body.setAttribute("data-theme", savedTheme);
+
+    // Update active buttons
+    const themeButtons = document.querySelectorAll(".theme-btn");
+    themeButtons.forEach((btn) => {
+      if (btn.getAttribute("data-theme") === savedTheme) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+
+    // Check for system dark mode if using system theme
+    if (savedTheme === "system") {
+      checkSystemDarkMode();
+    }
+  }
+
+  function checkSystemDarkMode() {
+    // Check if system is in dark mode
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }
+
+  function switchTheme(themeValue) {
+    // Save theme preference
+    localStorage.setItem("theme", themeValue);
+
+    // Apply theme
+    document.body.setAttribute("data-theme", themeValue);
+
+    // Update active buttons
+    const themeButtons = document.querySelectorAll(".theme-btn");
+    themeButtons.forEach((btn) => {
+      if (btn.getAttribute("data-theme") === themeValue) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+
+    // Check for system dark mode if system theme is selected
+    if (themeValue === "system") {
+      checkSystemDarkMode();
+    } else {
+      // Remove dark-mode class if not using system theme
+      document.body.classList.remove("dark-mode");
+    }
+
+    // Add pulse animation to body
+    document.body.classList.add("theme-pulse");
+    setTimeout(() => {
+      document.body.classList.remove("theme-pulse");
+    }, 500);
+  }
 
   // -------------------- Storage Functions --------------------
   function loadFilesFromStorage() {
@@ -97,6 +167,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Copy All button
     copyAllBtn.addEventListener("click", handleCopyAll, false);
+
+    // Theme switcher
+    const themeButtons = document.querySelectorAll(".theme-btn");
+    themeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const themeValue = btn.getAttribute("data-theme");
+        switchTheme(themeValue);
+      });
+    });
+
+    // Listen for system theme changes
+    if (window.matchMedia) {
+      const colorSchemeQuery = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      );
+      colorSchemeQuery.addEventListener("change", function () {
+        // Only update if the current theme is "system"
+        if (document.body.getAttribute("data-theme") === "system") {
+          checkSystemDarkMode();
+        }
+      });
+    }
   }
 
   // -------------------- UI Helpers --------------------
