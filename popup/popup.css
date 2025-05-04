@@ -109,12 +109,12 @@
   }
 }
 
-/* Global styles */
+/* Global cleanup to reduce unnecessary spacing */
 body {
   width: 340px;
   padding: 0;
-  font-family: "Segoe UI", "Noto Sans Bengali", "Noto Sans", Arial, sans-serif;
   margin: 0;
+  font-family: "Segoe UI", "Noto Sans Bengali", "Noto Sans", Arial, sans-serif;
   background: linear-gradient(
     135deg,
     var(--bg-gradient-from) 0%,
@@ -127,20 +127,14 @@ body {
   color: var(--text-color);
   transition: background 0.3s ease, color 0.3s ease;
   position: relative;
-  padding-bottom: 0; /* Remove padding at the bottom */
+  padding-bottom: 0;
   box-sizing: border-box;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-x: hidden;
 }
 
-/* Apply dark background to html as well to cover entire viewport */
 html {
   height: 100%;
-  background: linear-gradient(
-    135deg,
-    var(--bg-gradient-from) 0%,
-    var(--bg-gradient-to) 100%
-  ) !important;
-  background-color: var(--bg-gradient-from) !important;
+  background: var(--bg-gradient-from) !important;
   margin: 0;
   padding: 0;
   min-height: 100%;
@@ -173,15 +167,16 @@ html {
   }
 }
 
-/* Header styling with proper spacing */
+/* Header styling with minimal spacing */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
-  margin-bottom: 0; /* Reduced from 5px to 0 */
+  padding: 8px 10px;
+  margin: 0;
   width: 100%;
   box-sizing: border-box;
+  background: transparent;
 }
 
 /* Logo styling */
@@ -226,15 +221,15 @@ html {
 .theme-switch {
   display: flex;
   background: var(--surface-color);
-  border-radius: 18px;
-  padding: 3px;
-  box-shadow: 0 1px 4px var(--shadow-color);
+  border-radius: 16px;
+  padding: 2px;
+  box-shadow: 0 1px 3px var(--shadow-color);
   border: 1px solid var(--border-color);
 }
 
 .theme-btn {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border: none;
   background: transparent;
   border-radius: 50%;
@@ -289,16 +284,18 @@ html {
   animation: theme-pulse 0.5s ease;
 }
 
-/* Container adjustment to account for header */
+/* Container adjustment with minimal spacing */
 .container {
   text-align: center;
-  margin: 5px auto 40px auto; /* Reduced top margin from 10px to 5px */
-  max-width: 320px;
+  margin: 0 auto 36px auto; /* Only bottom margin for footer */
+  max-width: 340px;
+  width: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-top: 0;
+  padding: 0;
   min-height: 400px;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -310,38 +307,43 @@ h1 {
   text-shadow: 0 1px 4px var(--shadow-color);
 }
 
+/* Upload section with cleaner edges */
 .upload-section {
   background: var(--surface-color);
-  border-radius: 16px;
-  padding: 16px 12px 14px 12px;
-  box-shadow: 0 2px 12px var(--shadow-color);
-  margin-bottom: 18px;
+  border-radius: 12px;
+  padding: 12px 10px 10px 10px;
+  box-shadow: 0 1px 4px var(--shadow-color);
+  margin: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
-  max-height: calc(
-    100vh - 120px
-  ); /* Increased from 150px to allow more space */
+  max-height: calc(100vh - 90px);
   overflow: hidden;
-  height: 500px; /* Increased from 450px */
+  height: 500px;
   min-height: 300px;
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* Clean up drop zone */
 .drop-zone {
   border: 2px dashed var(--upload-area-border);
-  border-radius: 12px;
-  padding: 18px 8px 14px 8px;
+  border-radius: 10px;
+  padding: 15px 8px;
   text-align: center;
   background: var(--upload-area-bg);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-bottom: 10px;
+  margin: 0 0 8px 0;
   cursor: pointer;
-  min-height: 130px; /* Slightly increased from 120px */
+  min-height: 130px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* Prevent shrinking */
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .drop-zone.dragover {
@@ -390,16 +392,17 @@ h1 {
   transform: translateY(-1px);
 }
 
-/* Copy Button Styling with fixed dimensions */
+/* Copy Button Styling with fixed dimensions and clean edges */
 .copy-all-section {
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
-  height: 40px; /* Fixed height */
-  min-height: 40px; /* Minimum height */
+  height: 40px;
+  min-height: 40px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .copy-all-btn {
@@ -452,51 +455,52 @@ h1 {
   transform: translateY(0px) scale(1.05);
 }
 
-/* File list styling with fixed dimensions */
+/* File list styling with clean edges */
 .files-list {
-  margin-top: 0;
-  margin-bottom: 36px; /* Match footer height */
+  margin: 0 0 36px 0;
   text-align: left;
-  max-height: 300px; /* Increased from 200px to 300px */
-  height: auto; /* Allow height to adjust based on content */
+  max-height: 300px;
+  height: auto;
   flex: 1;
   overflow-y: auto;
   display: none;
   background-color: var(--file-list-bg);
   border-radius: 8px;
   padding: 5px;
-  overscroll-behavior: contain; /* Prevent scroll chaining */
-  width: 100%; /* Ensure consistent width */
+  overscroll-behavior: contain;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .file-item {
   background: var(--surface-color-secondary);
-  border: 1.5px solid var(--border-color);
-  border-radius: 10px;
-  padding: 10px 12px;
-  margin-bottom: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: border 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 4px var(--shadow-color);
-  height: 55px; /* Increased from 50px */
+  box-shadow: 0 1px 3px var(--shadow-color);
+  height: 55px;
   box-sizing: border-box;
+  width: 100%;
 }
 
-.file-item:hover {
-  border-color: var(--primary-color);
-  box-shadow: 0 2px 8px var(--shadow-color);
+.file-item:last-child {
+  margin-bottom: 0;
 }
 
 .file-info {
   flex-grow: 1;
+  padding-right: 5px;
 }
 
 .file-name-container {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   margin-bottom: 2px;
 }
 
@@ -533,17 +537,18 @@ h1 {
 .action-button {
   background: none;
   border: none;
-  padding: 8px;
+  padding: 6px;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: all 0.2s ease;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 34px;
+  min-height: 34px;
+  margin: 0 1px;
 }
 
 .action-button:hover {
@@ -584,48 +589,54 @@ h1 {
   opacity: 1;
 }
 
-/* Fix for the "no files" message to avoid layout shifts */
+/* Ensure the "no files" message is clean */
 .no-files {
-  text-align: center;
-  color: var(--text-secondary);
-  padding: 12px;
-  min-height: 120px; /* Increased from 100px */
-  display: flex;
+  min-height: 120px;
+  display: none; /* Hidden by default and controlled by JS */
   align-items: center;
   justify-content: center;
   width: 100%;
-  /* Display property will be controlled by JavaScript */
-  display: none; /* Start hidden and JS will toggle this */
   font-size: 12px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  color: var(--text-secondary);
+  text-align: center;
 }
 
+/* Error message clean up */
 .error-message {
   display: none;
   background: var(--error-bg);
   color: var(--error-color);
-  padding: 12px;
-  border-radius: 8px;
-  margin: 12px 0;
-  font-size: 14px;
+  padding: 10px;
+  border-radius: 6px;
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .loading-indicator {
   display: none;
   text-align: center;
-  padding: 12px;
+  padding: 8px;
   color: var(--primary-color);
-  font-size: 14px;
+  font-size: 13px;
+  margin: 0 0 8px 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .spinner {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(0, 0, 0, 0.1);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   border-top-color: var(--primary-color);
   animation: spin 1s ease-in-out infinite;
-  margin-right: 8px;
+  margin-right: 6px;
   vertical-align: middle;
 }
 
@@ -659,11 +670,11 @@ h1 {
   text-align: center;
   color: var(--text-secondary);
   font-size: 11px;
-  padding: 8px 0; /* Reduce horizontal padding */
-  height: 36px; /* Set exact height */
-  line-height: 20px; /* Center text vertically */
+  padding: 8px 0;
+  height: 36px;
+  line-height: 20px;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
-  background-color: rgba(255, 255, 255, 0.9); /* Make more opaque */
+  background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(5px);
   border-radius: 0;
   z-index: 100;
@@ -782,7 +793,7 @@ h1 {
 [data-theme="dark"] .upload-section,
 [data-theme="system"].dark-mode .upload-section {
   background: var(--surface-color);
-  border: 1px solid var(--border-color);
+  border: none;
 }
 
 [data-theme="dark"] .copy-all-btn,
@@ -831,7 +842,7 @@ textarea {
 
 /* Language selector styling */
 .language-select-container {
-  margin-right: 10px;
+  margin-right: 8px;
 }
 
 .language-select {
@@ -839,13 +850,13 @@ textarea {
   -webkit-appearance: none;
   background: var(--surface-color);
   border: 1px solid var(--border-color);
-  border-radius: 18px;
-  padding: 6px 30px 6px 10px;
+  border-radius: 16px;
+  padding: 5px 28px 5px 10px;
   font-size: 13px;
   color: var(--text-color);
   cursor: pointer;
   position: relative;
-  box-shadow: 0 1px 4px var(--shadow-color);
+  box-shadow: 0 1px 3px var(--shadow-color);
   transition: all 0.2s ease;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231765c1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
