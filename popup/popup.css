@@ -46,6 +46,8 @@
   --shadow-color: rgba(0, 0, 0, 0.2);
   --shadow-heavy: rgba(0, 0, 0, 0.3);
   --card-bg: #262d3d;
+  --file-list-bg: #1e2433;
+  --copy-btn-bg: #2c3444;
 }
 
 /* System theme (auto) */
@@ -72,6 +74,8 @@
     --shadow-color: rgba(0, 0, 0, 0.2);
     --shadow-heavy: rgba(0, 0, 0, 0.3);
     --card-bg: #262d3d;
+    --file-list-bg: #1e2433;
+    --copy-btn-bg: #2c3444;
   }
 }
 
@@ -333,7 +337,7 @@ h1 {
   color: var(--text-color);
   font-size: 13px;
   font-weight: 600;
-  background: var(--surface-color-secondary);
+  background: var(--copy-btn-bg);
   border-radius: 8px;
   padding: 4px 16px;
   box-shadow: 0 2px 8px var(--shadow-color);
@@ -358,6 +362,9 @@ h1 {
   flex: 1;
   overflow-y: auto;
   display: none;
+  background-color: var(--file-list-bg);
+  border-radius: 8px;
+  padding: 5px;
 }
 
 .file-item {
@@ -594,4 +601,37 @@ h1 {
 [data-theme="dark"] .theme-icon,
 [data-theme="system"].dark-mode .theme-icon {
   filter: brightness(1.2) contrast(1.1);
+}
+
+/* Ensure all surfaces are properly themed in dark mode */
+[data-theme="dark"] body,
+[data-theme="system"].dark-mode body {
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  );
+}
+
+[data-theme="dark"] .upload-section,
+[data-theme="system"].dark-mode .upload-section {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .copy-all-btn,
+[data-theme="system"].dark-mode .copy-all-btn {
+  background: var(--button-bg);
+}
+
+[data-theme="dark"] .copy-all-feedback,
+[data-theme="system"].dark-mode .copy-all-feedback {
+  background: var(--copy-btn-bg);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .file-item,
+[data-theme="system"].dark-mode .file-item {
+  background: var(--surface-color-secondary);
+  border-color: var(--border-color);
 }
