@@ -19,7 +19,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "web_accessible_resources": [
     {
       "resources": [
@@ -27,7 +27,9 @@
         "lib/xlsx/xlsx.full.min.js",
         "lib/jszip/jszip.min.js",
         "lib/pdfjs/pdf.mjs",
-        "lib/pdfjs/pdf.worker.mjs"
+        "lib/pdfjs/pdf.worker.mjs",
+        "popup/i18n.js",
+        "popup/languages.js"
       ],
       "matches": ["<all_urls>"]
     }

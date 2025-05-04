@@ -169,8 +169,21 @@
     </style>
   </head>
 
-  <body data-theme="system">
+  <body data-theme="system" data-language="en">
     <div class="theme-switch-wrapper">
+      <div class="language-select-container">
+        <select
+          id="languageSelect"
+          class="language-select"
+          aria-label="Select language"
+        >
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="zh">中文</option>
+        </select>
+      </div>
       <div class="theme-switch">
         <button class="theme-btn" data-theme="light">
           <span class="theme-icon">☀️</span>
@@ -190,18 +203,18 @@
           alt="copy2paste logo"
           class="logo-image"
         />
-        <h1>copy2paste</h1>
+        <h1 id="appTitle">copy2paste</h1>
       </div>
       <div class="upload-section">
         <div class="error-message" id="errorMessage"></div>
         <div class="loading-indicator" id="loadingIndicator">
           <div class="spinner"></div>
-          <span>Processing files...</span>
+          <span id="processingText">Processing files...</span>
         </div>
         <div class="drop-zone" id="dropZone">
           <div class="icon">📄</div>
-          <p>Drag and drop your files here</p>
-          <p class="file-types">
+          <p id="dragDropText">Drag and drop your files here</p>
+          <p class="file-types" id="supportedFormats">
             Supported formats: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers,
             Pages, and various code files
           </p>
@@ -230,7 +243,7 @@
         <div class="copy-all-section">
           <button class="copy-all-btn" id="copyAllBtn">
             <span class="big-copy-icon">📋</span>
-            Copy All
+            <span id="copyAllText">Copy All</span>
           </button>
           <span class="copy-all-feedback" id="copyAllFeedback"
             >All text copied!</span
@@ -243,10 +256,11 @@
       </div>
     </div>
     <div class="copyright">
-      © 2025 copy2paste - File Text Extractor | Created with ❤️ by
+      <span id="copyrightText"
+        >© 2025 copy2paste - File Text Extractor | Created with ❤️ by</span
+      >
       <a href="https://github.com/atm1504" target="_blank">atm1504</a>
     </div>
-    <!-- popup.html -->
     <!-- DOCX extractor -->
     <script src="../lib/mammoth/mammoth.browser.min.js"></script>
     <!-- XLSX extractor -->

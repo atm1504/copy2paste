@@ -3,6 +3,7 @@
 
 console.log("Copy Paste File Text Extension - popup script loaded");
 import * as pdfjsLib from "../lib/pdfjs/pdf.mjs";
+import i18n from "./i18n.js";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL(
   "lib/pdfjs/pdf.worker.mjs"
@@ -30,6 +31,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const themeSwitch = document.querySelector(".theme-switch");
   const themeOptions = document.querySelectorAll(".theme-option");
   const themeSlider = document.querySelector(".theme-slider");
+  const languageSelect = document.getElementById("languageSelect");
+
+  // Text elements that need translation
+  const appTitle = document.getElementById("appTitle");
+  const dragDropText = document.getElementById("dragDropText");
+  const supportedFormats = document.getElementById("supportedFormats");
+  const processingText = document.getElementById("processingText");
+  const copyAllText = document.getElementById("copyAllText");
+  const copyrightText = document.getElementById("copyrightText");
 
   // --- State: Map of uploaded files ---
   let uploadedFiles = new Map();
@@ -39,6 +49,27 @@ document.addEventListener("DOMContentLoaded", function () {
   loadFilesFromStorage();
   setupEventListeners();
   initializeTheme();
+  initializeLanguage();
+
+  // -------------------- Language Functions --------------------
+  function initializeLanguage() {
+    // Initialize i18n module
+    i18n.initialize();
+
+    // Register elements for automatic translation
+    i18n.registerElement(appTitle, "title");
+    i18n.registerElement(dragDropText, "dragDropText");
+    i18n.registerElement(supportedFormats, "supportedFormats");
+    i18n.registerElement(uploadButton, "chooseFiles");
+    i18n.registerElement(copyAllText, "copyAll");
+    i18n.registerElement(copyAllFeedback, "allTextCopied");
+    i18n.registerElement(noFiles, "noFilesYet");
+    i18n.registerElement(processingText, "processing");
+    i18n.registerElement(copyrightText, "copyright");
+
+    // Update selector value
+    languageSelect.value = i18n.getCurrentLanguage();
+  }
 
   // -------------------- Theme Functions --------------------
   function initializeTheme() {
@@ -120,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     } catch (e) {
       console.error("Failed to load files from session storage:", e);
-      showError("Failed to load saved files");
+      showError("failedToLoad");
     }
   }
 
@@ -136,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     } catch (e) {
       console.error("Failed to save files to session storage:", e);
-      showError("Failed to save files");
+      showError("failedToSave");
     }
   }
 
@@ -189,10 +220,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     }
+
+    // Language selector
+    languageSelect.addEventListener("change", function (e) {
+      i18n.setLanguage(e.target.value);
+    });
   }
 
   // -------------------- UI Helpers --------------------
-  function showError(message) {
+  function showError(messageKey) {
+    const message = i18n.translate(`errors.${messageKey}`);
+
     errorMessage.textContent = message;
     errorMessage.style.display = "block";
     setTimeout(() => {
@@ -243,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function handleFiles(files) {
     if (isProcessing) {
-      showError("Please wait for current files to finish processing");
+      showError("wait");
       return;
     }
 
@@ -270,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } catch (error) {
         console.error("Error processing files:", error);
-        showError("Error processing files. Please try again.");
+        showError("processingFile");
       } finally {
         hideLoading();
       }
@@ -278,68 +316,74 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function isValidFileType(file) {
-    // 1) Anything that really *is* text
-    if (file.type.startsWith("text/")) return true;
+    const validExtensions = [
+      ".txt",
+      ".pdf",
+      ".docx",
+      ".doc",
+      ".xlsx",
+      ".xls",
+      ".csv",
+      ".json",
+      ".js",
+      ".html",
+      ".css",
+      ".xml",
+      ".md",
+      ".pptx",
+      ".ppt",
+      ".java",
+      ".py",
+      ".c",
+      ".cpp",
+      ".php",
+      ".swift",
+      ".kt",
+      ".ts",
+      ".jsx",
+      ".tsx",
+      ".rb",
+      ".go",
+      ".rs",
+      ".sh",
+      ".bat",
+      ".sql",
+      ".numbers",
+      ".pages",
+    ];
 
-    // 2) Common "application/…" catch-alls
-    const extraMIMEs = [
+    // Check by extension first
+    const fileName = file.name.toLowerCase();
+    const fileExtension = "." + fileName.split(".").pop();
+
+    if (validExtensions.includes(fileExtension)) {
+      return true;
+    }
+
+    // Check by MIME type
+    const validMimeTypes = [
+      "text/",
       "application/json",
       "application/javascript",
-      "application/vnd.ms-excel",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "application/msword",
+      "application/pdf",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-excel",
       "application/vnd.ms-powerpoint",
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-      "application/pdf",
     ];
-    if (extraMIMEs.includes(file.type)) return true;
 
-    // 3) Fallback by extension for everything else
-    const ext = file.name.toLowerCase().split(".").pop();
-    const allowedExts = [
-      // Office & PDF
-      "doc",
-      "docx",
-      "xls",
-      "xlsx",
-      "ppt",
-      "pptx",
-      "numbers",
-      "pages",
-      "pdf",
-      // Code/config
-      "js",
-      "mjs",
-      "cjs",
-      "ts",
-      "tsx",
-      "jsx",
-      "json",
-      "py",
-      "java",
-      "rb",
-      "go",
-      "cpp",
-      "c",
-      "cs",
-      "php",
-      "html",
-      "htm",
-      "css",
-      "scss",
-      "less",
-      "xml",
-      "yaml",
-      "yml",
-      "md",
-      "sh",
-      "bash",
-      "rs",
-      "swift",
-      "kt",
-    ];
-    return allowedExts.includes(ext);
+    for (const mimePrefix of validMimeTypes) {
+      if (file.type.startsWith(mimePrefix)) {
+        return true;
+      }
+    }
+
+    // Show unsupported file type error
+    showError("unsupportedFile");
+    console.warn(`Unsupported file type: ${file.type}`);
+    return false;
   }
 
   /**
@@ -395,13 +439,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     } catch (error) {
       console.error(`Error processing ${file.name}:`, error);
-      uploadedFiles.set(file.name, {
-        file,
-        text: `Error: ${error.message || "Could not extract text"}`,
-        status: "error",
-        fileType: getFileTypeLabel(file),
-      });
-      showError(`Failed to process ${file.name}`);
+      showError("processingFile");
+      return null;
     }
 
     // Refresh the UI and persist
@@ -552,84 +591,81 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // -------------------- UI Update Functions --------------------
   function updateFilesList() {
+    const hasFiles = uploadedFiles.size > 0;
+    filesList.style.display = hasFiles ? "block" : "none";
+    noFiles.style.display = hasFiles ? "none" : "block";
+    copyAllBtn.style.display = hasFiles ? "flex" : "none";
+
+    if (!hasFiles) {
+      return;
+    }
+
     filesList.innerHTML = "";
-    noFiles.style.display = uploadedFiles.size === 0 ? "block" : "none";
-    filesList.style.display = uploadedFiles.size === 0 ? "none" : "block";
-    copyAllBtn.style.display = uploadedFiles.size === 0 ? "none" : "flex";
 
     uploadedFiles.forEach((fileData, fileName) => {
       const fileItem = document.createElement("div");
       fileItem.className = "file-item";
 
+      // File info section
       const fileInfo = document.createElement("div");
       fileInfo.className = "file-info";
 
+      // File name container with type label
       const fileNameContainer = document.createElement("div");
       fileNameContainer.className = "file-name-container";
 
-      const fileNameElement = document.createElement("div");
-      fileNameElement.className = "file-name";
-      fileNameElement.textContent = fileName;
+      const name = document.createElement("div");
+      name.className = "file-name";
+      name.textContent = fileName;
+      fileNameContainer.appendChild(name);
 
-      const fileTypeElement = document.createElement("span");
-      fileTypeElement.className = "file-type";
-      fileTypeElement.textContent = fileData.fileType || "";
-
-      fileNameContainer.appendChild(fileNameElement);
-      fileNameContainer.appendChild(fileTypeElement);
-
-      const fileSizeElement = document.createElement("div");
-      fileSizeElement.className = "file-size";
-      fileSizeElement.textContent = formatFileSize(fileData.file.size);
+      // Add file type label
+      const typeLabel = document.createElement("div");
+      typeLabel.className = "file-type";
+      typeLabel.textContent =
+        fileData.fileType || getFileTypeLabel(fileData.file);
+      fileNameContainer.appendChild(typeLabel);
 
       fileInfo.appendChild(fileNameContainer);
-      fileInfo.appendChild(fileSizeElement);
 
+      // Add file size
+      const size = document.createElement("div");
+      size.className = "file-size";
+      size.textContent = formatFileSize(fileData.file.size);
+      fileInfo.appendChild(size);
+
+      fileItem.appendChild(fileInfo);
+
+      // File actions
       const fileActions = document.createElement("div");
       fileActions.className = "file-actions";
 
-      if (fileData.status === "ready") {
-        const copyButton = document.createElement("button");
-        copyButton.className = "action-button copy-button";
-        copyButton.innerHTML = "📋";
-        copyButton.title = "Copy text";
-        // Feedback span
-        const feedback = document.createElement("span");
-        feedback.className = "copy-feedback";
-        feedback.textContent = "Copied!";
-        copyButton.appendChild(feedback);
-        copyButton.onclick = (e) => {
-          copyText(fileName, copyButton);
-        };
-        fileActions.appendChild(copyButton);
-      }
+      // Copy button
+      const copyButton = document.createElement("button");
+      copyButton.className = "action-button copy-button";
+      copyButton.innerHTML = '<i class="fas fa-copy">📋</i>';
 
+      // Create copy feedback with translated text
+      const feedback = document.createElement("span");
+      feedback.className = "copy-feedback";
+      feedback.textContent = i18n.translate("copied");
+      copyButton.appendChild(feedback);
+
+      copyButton.onclick = (e) => {
+        copyText(fileName, copyButton);
+      };
+      fileActions.appendChild(copyButton);
+
+      // Delete button
       const deleteButton = document.createElement("button");
       deleteButton.className = "action-button delete-button";
-      deleteButton.innerHTML = "🗑️";
-      deleteButton.title = "Remove file";
-      deleteButton.onclick = () => removeFile(fileName);
+      deleteButton.innerHTML = '<i class="fas fa-trash">🗑️</i>';
+      deleteButton.onclick = () => {
+        removeFile(fileName);
+      };
       fileActions.appendChild(deleteButton);
 
-      fileItem.appendChild(fileInfo);
       fileItem.appendChild(fileActions);
-
-      if (fileData.status === "loading") {
-        const progressBar = document.createElement("div");
-        progressBar.className = "progress-bar";
-        const progress = document.createElement("div");
-        progress.className = "progress";
-        progressBar.appendChild(progress);
-        fileItem.appendChild(progressBar);
-      }
-
-      if (fileData.status === "error") {
-        const errorMessage = document.createElement("div");
-        errorMessage.className = "error-message";
-        errorMessage.textContent = fileData.error || "Error processing file";
-        fileItem.appendChild(errorMessage);
-      }
-
       filesList.appendChild(fileItem);
     });
   }
@@ -637,49 +673,51 @@ document.addEventListener("DOMContentLoaded", function () {
   function copyText(fileName, buttonEl) {
     const fileData = uploadedFiles.get(fileName);
     if (fileData && fileData.text) {
-      const textToCopy = `File: ${fileName}\n${fileData.text}`;
       navigator.clipboard
-        .writeText(textToCopy)
-        .then(function () {
+        .writeText(fileData.text)
+        .then(() => {
           buttonEl.classList.add("copied");
+          const feedback = buttonEl.querySelector(".copy-feedback");
+          feedback.textContent = i18n.translate("copied");
           setTimeout(() => {
             buttonEl.classList.remove("copied");
-          }, 1200);
+          }, 2000);
         })
-        .catch(function (err) {
-          console.error("Failed to copy text: ", err);
+        .catch((err) => {
+          console.error("Could not copy text: ", err);
+          showError("failedToCopy");
         });
     }
   }
 
   function handleCopyAll(e) {
     e.preventDefault();
-    let allText = "";
-    let hasReadyFiles = false;
 
-    uploadedFiles.forEach((fileData, fileName) => {
-      if (fileData.status === "ready") {
-        allText += `File: ${fileName}\n${fileData.text}\n\n`;
-        hasReadyFiles = true;
-      }
-    });
-
-    if (!hasReadyFiles) {
-      alert("No files ready to copy");
+    if (uploadedFiles.size === 0) {
       return;
     }
 
+    // Collect all text from uploaded files
+    let allText = "";
+    uploadedFiles.forEach((fileData, fileName) => {
+      allText += `File: ${fileName}\n${fileData.text}\n\n`;
+    });
+
+    // Copy to clipboard
     navigator.clipboard
-      .writeText(allText.trim())
-      .then(() => {
+      .writeText(allText)
+      .then(function () {
         copyAllBtn.classList.add("copied");
+        copyAllFeedback.textContent = i18n.translate("allTextCopied");
+        copyAllFeedback.style.opacity = "1";
         setTimeout(() => {
           copyAllBtn.classList.remove("copied");
+          copyAllFeedback.style.opacity = "0";
         }, 2000);
       })
-      .catch((err) => {
-        console.error("Failed to copy all text:", err);
-        alert("Failed to copy text to clipboard");
+      .catch(function (err) {
+        console.error("Failed to copy all text: ", err);
+        showError("failedToCopyAll");
       });
   }
 
