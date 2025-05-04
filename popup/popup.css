@@ -113,7 +113,7 @@
 body {
   width: 340px;
   padding: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: "Segoe UI", "Noto Sans Bengali", "Noto Sans", Arial, sans-serif;
   margin: 0;
   background: linear-gradient(
     135deg,
@@ -763,6 +763,14 @@ body * {
   box-sizing: border-box;
 }
 
+body,
+input,
+button,
+select,
+textarea {
+  font-family: "Segoe UI", "Noto Sans Bengali", "Noto Sans", Arial, sans-serif;
+}
+
 /* Language selector styling */
 .language-select-container {
   margin-right: 10px;
@@ -804,4 +812,27 @@ body * {
   [data-theme="system"] .language-select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234d8ef7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   }
+}
+
+/* RTL language support */
+[data-language="ar"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[data-language="ar"] .theme-switch-wrapper {
+  left: 15px;
+  right: auto;
+}
+
+[data-language="ar"] .language-select {
+  padding: 6px 10px 6px 30px;
+  background-position: left 8px center;
+}
+
+/* Additional CSS for complex script rendering */
+[data-language="bn"],
+[data-language="hi"],
+[data-language="ar"] {
+  line-height: 1.5;
 }
