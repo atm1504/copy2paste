@@ -1,10 +1,12 @@
 :root {
-  /* Light theme variables with enhanced and more visible gradients */
-  --bg-gradient-from: #c7e1ff; /* Darker blue */
-  --bg-gradient-to: #e1f0ff; /* Light blue but more saturated */
+  /* Light theme variables with extremely vibrant, high-contrast multi-color gradients */
+  --bg-gradient-from: #3b82f6; /* Bright blue */
+  --bg-gradient-mid: #93c5fd; /* Medium bright blue */
+  --bg-gradient-to: #dbeafe; /* Very light blue */
   --bg-gradient: linear-gradient(
     135deg,
     var(--bg-gradient-from) 0%,
+    var(--bg-gradient-mid) 50%,
     var(--bg-gradient-to) 100%
   );
   --primary-color: #1765c1;
@@ -28,13 +30,15 @@
   --card-bg: rgba(255, 255, 255, 0.85);
 }
 
-/* Dark theme with enhanced gradients */
+/* Dark theme with very enhanced gradients */
 [data-theme="dark"] {
-  --bg-gradient-from: #0f172a;
-  --bg-gradient-to: #1e293b;
+  --bg-gradient-from: #0a1429; /* Dark blue base */
+  --bg-gradient-mid: #2a3d6e; /* Medium blue-purple */
+  --bg-gradient-to: #4361ad; /* Much lighter blue-purple for extreme contrast */
   --bg-gradient: linear-gradient(
     135deg,
     var(--bg-gradient-from) 0%,
+    var(--bg-gradient-mid) 50%,
     var(--bg-gradient-to) 100%
   );
   --primary-color: #4d8ef7;
@@ -63,11 +67,13 @@
 /* System theme (auto) with enhanced gradients */
 @media (prefers-color-scheme: dark) {
   [data-theme="system"] {
-    --bg-gradient-from: #0f172a;
-    --bg-gradient-to: #1e293b;
+    --bg-gradient-from: #0a1429; /* Dark blue base */
+    --bg-gradient-mid: #2a3d6e; /* Medium blue-purple */
+    --bg-gradient-to: #4361ad; /* Much lighter blue-purple for extreme contrast */
     --bg-gradient: linear-gradient(
       135deg,
       var(--bg-gradient-from) 0%,
+      var(--bg-gradient-mid) 50%,
       var(--bg-gradient-to) 100%
     );
     --primary-color: #4d8ef7;
@@ -99,6 +105,7 @@
   background: linear-gradient(
     135deg,
     var(--bg-gradient-from) 0%,
+    var(--bg-gradient-mid) 50%,
     var(--bg-gradient-to) 100%
   ) !important;
   background-color: var(--bg-gradient-from) !important;
@@ -108,6 +115,7 @@
   background: linear-gradient(
     135deg,
     var(--bg-gradient-from) 0%,
+    var(--bg-gradient-mid) 50%,
     var(--bg-gradient-to) 100%
   ) !important;
   background-color: var(--bg-gradient-from) !important;
@@ -118,22 +126,29 @@
     background: linear-gradient(
       135deg,
       var(--bg-gradient-from) 0%,
+      var(--bg-gradient-mid) 50%,
       var(--bg-gradient-to) 100%
     ) !important;
     background-color: var(--bg-gradient-from) !important;
   }
 }
 
-/* Add gradient animation */
+/* Add gradient animation - with enhanced diagonal movement */
 @keyframes gradientAnimation {
   0% {
-    background-position: 0% 50%;
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 0%;
   }
   50% {
-    background-position: 100% 50%;
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 0% 0%;
   }
 }
 
@@ -144,8 +159,8 @@ body {
   margin: 0;
   font-family: "Segoe UI", "Noto Sans Bengali", "Noto Sans", Arial, sans-serif;
   background: var(--bg-gradient) !important;
-  background-size: 200% 200% !important;
-  animation: gradientAnimation 15s ease infinite;
+  background-size: 400% 400% !important; /* Larger background size for more dramatic animation */
+  animation: gradientAnimation 10s ease infinite; /* Faster animation */
   min-height: 100vh;
   height: 100%;
   display: flex;
@@ -161,8 +176,8 @@ body {
 html {
   height: 100%;
   background: var(--bg-gradient) !important;
-  background-size: 200% 200% !important;
-  animation: gradientAnimation 15s ease infinite;
+  background-size: 400% 400% !important; /* Match body background size */
+  animation: gradientAnimation 10s ease infinite; /* Match body animation speed */
   margin: 0;
   padding: 0;
   min-height: 100%;
@@ -177,6 +192,7 @@ html {
   background: linear-gradient(
     135deg,
     var(--bg-gradient-from) 0%,
+    var(--bg-gradient-mid) 50%,
     var(--bg-gradient-to) 100%
   ) !important;
   background-color: var(--bg-gradient-from) !important;
@@ -189,6 +205,7 @@ html {
     background: linear-gradient(
       135deg,
       var(--bg-gradient-from) 0%,
+      var(--bg-gradient-mid) 50%,
       var(--bg-gradient-to) 100%
     ) !important;
     background-color: var(--bg-gradient-from) !important;
@@ -820,6 +837,7 @@ h1 {
   background: linear-gradient(
     135deg,
     var(--bg-gradient-from) 0%,
+    var(--bg-gradient-mid) 50%,
     var(--bg-gradient-to) 100%
   );
 }
