@@ -121,14 +121,20 @@ body {
     var(--bg-gradient-to) 100%
   ) !important;
   min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   color: var(--text-color);
   transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
+  padding-bottom: 0; /* Remove padding at the bottom */
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Apply dark background to html as well to cover entire viewport */
 html {
+  height: 100%;
   background: linear-gradient(
     135deg,
     var(--bg-gradient-from) 0%,
@@ -139,6 +145,8 @@ html {
   padding: 0;
   min-height: 100%;
   transition: background 0.3s ease;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Ensure dark mode applies to both html and body elements */
@@ -276,12 +284,13 @@ html {
 /* Upload area styles */
 .container {
   text-align: center;
-  margin: 15px auto;
+  margin: 15px auto 40px auto;
   max-width: 320px;
   flex: 1;
   display: flex;
   flex-direction: column;
   padding-top: 15px;
+  min-height: 400px; /* Set minimum height for consistency */
 }
 
 h1 {
@@ -302,6 +311,10 @@ h1 {
   flex: 1;
   display: flex;
   flex-direction: column;
+  max-height: calc(100vh - 150px);
+  overflow: hidden;
+  height: 450px; /* Fixed height instead of auto */
+  min-height: 300px;
 }
 
 .drop-zone {
@@ -313,11 +326,12 @@ h1 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 10px;
   cursor: pointer;
-  min-height: 60px;
+  min-height: 120px; /* Set consistent min height */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 .drop-zone.dragover {
@@ -366,13 +380,16 @@ h1 {
   transform: translateY(-1px);
 }
 
-/* Copy Button Styling */
+/* Copy Button Styling with fixed dimensions */
 .copy-all-section {
   margin: 0 0 10px 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
+  height: 40px; /* Fixed height */
+  min-height: 40px; /* Minimum height */
+  width: 100%;
 }
 
 .copy-all-btn {
@@ -425,17 +442,21 @@ h1 {
   transform: translateY(0px) scale(1.05);
 }
 
-/* File list styling */
+/* File list styling with fixed dimensions */
 .files-list {
   margin-top: 0;
+  margin-bottom: 36px; /* Match footer height */
   text-align: left;
-  max-height: none;
+  max-height: 200px; /* Reduced max height */
+  height: auto; /* Allow height to adjust based on content */
   flex: 1;
   overflow-y: auto;
   display: none;
   background-color: var(--file-list-bg);
   border-radius: 8px;
   padding: 5px;
+  overscroll-behavior: contain; /* Prevent scroll chaining */
+  width: 100%; /* Ensure consistent width */
 }
 
 .file-item {
@@ -449,6 +470,8 @@ h1 {
   justify-content: space-between;
   transition: border 0.2s, box-shadow 0.2s;
   box-shadow: 0 1px 4px var(--shadow-color);
+  height: 50px; /* Fixed height for consistency */
+  box-sizing: border-box;
 }
 
 .file-item:hover {
@@ -551,11 +574,17 @@ h1 {
   opacity: 1;
 }
 
+/* Fix for the "no files" message to avoid layout shifts */
 .no-files {
   text-align: center;
   color: var(--text-secondary);
   padding: 12px;
-  display: none;
+  min-height: 100px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  /* Display property will be controlled by JavaScript */
+  display: none; /* Start hidden and JS will toggle this */
   font-size: 12px;
 }
 
@@ -612,32 +641,40 @@ h1 {
 
 /* Copyright section */
 .copyright {
-  position: relative;
-  margin-top: auto;
-  margin-bottom: 10px;
+  position: fixed;
+  bottom: 0;
   left: 0;
   right: 0;
   text-align: center;
   color: var(--text-secondary);
   font-size: 11px;
-  padding: 8px 20px;
+  padding: 8px 0; /* Reduce horizontal padding */
+  height: 36px; /* Set exact height */
+  line-height: 20px; /* Center text vertically */
   border-top: 1px solid rgba(0, 0, 0, 0.05);
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.9); /* Make more opaque */
   backdrop-filter: blur(5px);
-  border-radius: 0 0 12px 12px;
+  border-radius: 0;
+  z-index: 100;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 [data-theme="dark"] .copyright {
   color: rgba(255, 255, 255, 0.7);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(30, 36, 51, 0.8);
 }
 
 @media (prefers-color-scheme: dark) {
   [data-theme="system"] .copyright {
     color: rgba(255, 255, 255, 0.7);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(30, 36, 51, 0.8);
   }
 }
 
@@ -673,17 +710,18 @@ h1 {
 
 /* Scrollbar styling */
 .files-list::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 .files-list::-webkit-scrollbar-track {
   background: var(--surface-color-secondary);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .files-list::-webkit-scrollbar-thumb {
   background: var(--border-color);
-  border-radius: 3px;
+  border-radius: 4px;
+  border: 2px solid var(--surface-color-secondary);
 }
 
 .files-list::-webkit-scrollbar-thumb:hover {
