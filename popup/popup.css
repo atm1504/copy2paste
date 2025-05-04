@@ -79,6 +79,36 @@
   }
 }
 
+/* Ensure the entire extension window is themed */
+:root {
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  ) !important;
+  background-color: var(--bg-gradient-from) !important;
+}
+
+[data-theme="dark"]:root {
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  ) !important;
+  background-color: var(--bg-gradient-from) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="system"]:root {
+    background: linear-gradient(
+      135deg,
+      var(--bg-gradient-from) 0%,
+      var(--bg-gradient-to) 100%
+    ) !important;
+    background-color: var(--bg-gradient-from) !important;
+  }
+}
+
 /* Global styles */
 body {
   width: 340px;
@@ -89,12 +119,50 @@ body {
     135deg,
     var(--bg-gradient-from) 0%,
     var(--bg-gradient-to) 100%
-  );
+  ) !important;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   color: var(--text-color);
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Apply dark background to html as well to cover entire viewport */
+html {
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  ) !important;
+  background-color: var(--bg-gradient-from) !important;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  transition: background 0.3s ease;
+}
+
+/* Ensure dark mode applies to both html and body elements */
+[data-theme="dark"] html,
+[data-theme="dark"] body {
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  ) !important;
+  background-color: var(--bg-gradient-from) !important;
+}
+
+/* Same for system theme in dark mode */
+@media (prefers-color-scheme: dark) {
+  [data-theme="system"] html,
+  [data-theme="system"] body {
+    background: linear-gradient(
+      135deg,
+      var(--bg-gradient-from) 0%,
+      var(--bg-gradient-to) 100%
+    ) !important;
+    background-color: var(--bg-gradient-from) !important;
+  }
 }
 
 /* Logo styling */
@@ -634,4 +702,23 @@ h1 {
 [data-theme="system"].dark-mode .file-item {
   background: var(--surface-color-secondary);
   border-color: var(--border-color);
+}
+
+/* Fix for dark mode container sizing */
+[data-theme="dark"] .container,
+[data-theme="system"].dark-mode .container {
+  background-color: var(--surface-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+}
+
+/* Final dark mode overrides to ensure complete coverage */
+body,
+html,
+:root {
+  min-height: 100%;
+}
+
+body * {
+  box-sizing: border-box;
 }
