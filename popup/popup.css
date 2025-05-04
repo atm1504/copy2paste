@@ -1,81 +1,96 @@
 :root {
-  /* Light theme variables */
-  --bg-gradient-from: #e3f0fd;
-  --bg-gradient-to: #f4f6fb;
+  /* Light theme variables with enhanced and more visible gradients */
+  --bg-gradient-from: #c7e1ff; /* Darker blue */
+  --bg-gradient-to: #e1f0ff; /* Light blue but more saturated */
+  --bg-gradient: linear-gradient(
+    135deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  );
   --primary-color: #1765c1;
   --primary-light: #e3f0fd;
   --text-color: #202124;
   --text-secondary: #5f6368;
-  --surface-color: #fff;
-  --surface-color-secondary: #f8f9fa;
-  --upload-area-bg: #f4f8fd;
-  --upload-area-border: #c1d5f0;
-  --border-color: #e3e8f0;
+  --surface-color: rgba(255, 255, 255, 0.85);
+  --surface-color-secondary: rgba(248, 249, 250, 0.85);
+  --upload-area-bg: rgba(244, 248, 253, 0.7);
+  --upload-area-border: rgba(193, 213, 240, 0.7);
+  --border-color: rgba(227, 232, 240, 0.7);
   --border-accent: #1765c1;
-  --error-bg: #fde8e8;
+  --error-bg: rgba(253, 232, 232, 0.9);
   --error-color: #d93025;
   --accent-color: #4285f4;
-  --hover-bg: #f4f8fd;
+  --hover-bg: rgba(244, 248, 253, 0.9);
   --button-bg: linear-gradient(90deg, #1765c1 0%, #4285f4 100%);
   --button-hover-bg: linear-gradient(90deg, #4285f4 0%, #1765c1 100%);
   --shadow-color: rgba(26, 115, 232, 0.1);
   --shadow-heavy: rgba(26, 115, 232, 0.2);
-  --card-bg: #ffffff;
+  --card-bg: rgba(255, 255, 255, 0.85);
 }
 
-/* Dark theme */
+/* Dark theme with enhanced gradients */
 [data-theme="dark"] {
-  --bg-gradient-from: #121821;
-  --bg-gradient-to: #1a2030;
+  --bg-gradient-from: #0f172a;
+  --bg-gradient-to: #1e293b;
+  --bg-gradient: linear-gradient(
+    135deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  );
   --primary-color: #4d8ef7;
   --primary-light: #1c3b6e;
   --text-color: #e8eaed;
   --text-secondary: #b8bdc4;
-  --surface-color: #1e2433;
-  --surface-color-secondary: #262d3d;
-  --upload-area-bg: #2c3444;
+  --surface-color: rgba(30, 36, 51, 0.85);
+  --surface-color-secondary: rgba(38, 45, 61, 0.85);
+  --upload-area-bg: rgba(44, 52, 68, 0.7);
   --upload-area-border: #3d4757;
   --border-color: #3c4454;
   --border-accent: #4d90fe;
   --error-bg: #5c1c1c;
   --error-color: #ff6b6b;
   --accent-color: #64b5f6;
-  --hover-bg: #35394a;
+  --hover-bg: rgba(53, 57, 74, 0.9);
   --button-bg: linear-gradient(90deg, #4285f4 0%, #64b5f6 100%);
   --button-hover-bg: linear-gradient(90deg, #64b5f6 0%, #4285f4 100%);
   --shadow-color: rgba(0, 0, 0, 0.2);
   --shadow-heavy: rgba(0, 0, 0, 0.3);
-  --card-bg: #262d3d;
-  --file-list-bg: #1e2433;
-  --copy-btn-bg: #2c3444;
+  --card-bg: rgba(38, 45, 61, 0.9);
+  --file-list-bg: rgba(30, 36, 51, 0.7);
+  --copy-btn-bg: rgba(44, 52, 68, 0.8);
 }
 
-/* System theme (auto) */
+/* System theme (auto) with enhanced gradients */
 @media (prefers-color-scheme: dark) {
   [data-theme="system"] {
-    --bg-gradient-from: #121821;
-    --bg-gradient-to: #1a2030;
+    --bg-gradient-from: #0f172a;
+    --bg-gradient-to: #1e293b;
+    --bg-gradient: linear-gradient(
+      135deg,
+      var(--bg-gradient-from) 0%,
+      var(--bg-gradient-to) 100%
+    );
     --primary-color: #4d8ef7;
     --primary-light: #1c3b6e;
     --text-color: #e8eaed;
     --text-secondary: #b8bdc4;
-    --surface-color: #1e2433;
-    --surface-color-secondary: #262d3d;
-    --upload-area-bg: #2c3444;
+    --surface-color: rgba(30, 36, 51, 0.85);
+    --surface-color-secondary: rgba(38, 45, 61, 0.85);
+    --upload-area-bg: rgba(44, 52, 68, 0.7);
     --upload-area-border: #3d4757;
     --border-color: #3c4454;
     --border-accent: #4d90fe;
     --error-bg: #5c1c1c;
     --error-color: #ff6b6b;
     --accent-color: #64b5f6;
-    --hover-bg: #35394a;
+    --hover-bg: rgba(53, 57, 74, 0.9);
     --button-bg: linear-gradient(90deg, #4285f4 0%, #64b5f6 100%);
     --button-hover-bg: linear-gradient(90deg, #64b5f6 0%, #4285f4 100%);
     --shadow-color: rgba(0, 0, 0, 0.2);
     --shadow-heavy: rgba(0, 0, 0, 0.3);
-    --card-bg: #262d3d;
-    --file-list-bg: #1e2433;
-    --copy-btn-bg: #2c3444;
+    --card-bg: rgba(38, 45, 61, 0.9);
+    --file-list-bg: rgba(30, 36, 51, 0.7);
+    --copy-btn-bg: rgba(44, 52, 68, 0.8);
   }
 }
 
@@ -109,17 +124,28 @@
   }
 }
 
+/* Add gradient animation */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 /* Global cleanup to reduce unnecessary spacing */
 body {
   width: 340px;
   padding: 0;
   margin: 0;
   font-family: "Segoe UI", "Noto Sans Bengali", "Noto Sans", Arial, sans-serif;
-  background: linear-gradient(
-    135deg,
-    var(--bg-gradient-from) 0%,
-    var(--bg-gradient-to) 100%
-  ) !important;
+  background: var(--bg-gradient) !important;
+  background-size: 200% 200% !important;
+  animation: gradientAnimation 15s ease infinite;
   min-height: 100vh;
   height: 100%;
   display: flex;
@@ -134,7 +160,9 @@ body {
 
 html {
   height: 100%;
-  background: var(--bg-gradient-from) !important;
+  background: var(--bg-gradient) !important;
+  background-size: 200% 200% !important;
+  animation: gradientAnimation 15s ease infinite;
   margin: 0;
   padding: 0;
   min-height: 100%;
@@ -225,6 +253,7 @@ html {
   padding: 2px;
   box-shadow: 0 1px 3px var(--shadow-color);
   border: 1px solid var(--border-color);
+  backdrop-filter: blur(5px);
 }
 
 .theme-btn {
@@ -287,7 +316,7 @@ html {
 /* Container adjustment with minimal spacing */
 .container {
   text-align: center;
-  margin: 0 auto 36px auto; /* Only bottom margin for footer */
+  margin: 0 auto 36px auto;
   max-width: 340px;
   width: 100%;
   flex: 1;
@@ -296,6 +325,7 @@ html {
   padding: 0;
   min-height: 400px;
   box-sizing: border-box;
+  backdrop-filter: blur(5px);
 }
 
 h1 {
@@ -307,12 +337,12 @@ h1 {
   text-shadow: 0 1px 4px var(--shadow-color);
 }
 
-/* Upload section with cleaner edges */
+/* Upload section with cleaner edges and glass effect */
 .upload-section {
   background: var(--surface-color);
   border-radius: 12px;
   padding: 12px 10px 10px 10px;
-  box-shadow: 0 1px 4px var(--shadow-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   margin: 0;
   flex: 1;
   display: flex;
@@ -324,6 +354,7 @@ h1 {
   border: none;
   width: 100%;
   box-sizing: border-box;
+  backdrop-filter: blur(10px);
 }
 
 /* Clean up drop zone */
@@ -344,6 +375,7 @@ h1 {
   flex-shrink: 0;
   width: 100%;
   box-sizing: border-box;
+  backdrop-filter: blur(5px);
 }
 
 .drop-zone.dragover {
@@ -470,6 +502,7 @@ h1 {
   overscroll-behavior: contain;
   width: 100%;
   box-sizing: border-box;
+  backdrop-filter: blur(5px);
 }
 
 .file-item {
@@ -486,6 +519,7 @@ h1 {
   height: 55px;
   box-sizing: border-box;
   width: 100%;
+  backdrop-filter: blur(3px);
 }
 
 .file-item:last-child {
@@ -861,6 +895,7 @@ textarea {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231765c1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 8px center;
+  backdrop-filter: blur(5px);
 }
 
 .language-select:hover {
