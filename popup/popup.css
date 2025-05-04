@@ -447,19 +447,28 @@ h1 {
   color: white;
   border: none;
   padding: 8px 18px;
-  border-radius: 6px;
+  border-radius: 24px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 12px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 1px 4px var(--shadow-color);
+  min-width: 120px;
+  gap: 7px;
+}
+
+.upload-button::before {
+  content: "📁";
+  font-size: 18px;
 }
 
 .upload-button:hover {
   background: var(--button-hover-bg);
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.04);
 }
 
 /* Copy Button Styling with fixed dimensions and clean edges */
@@ -481,7 +490,7 @@ h1 {
   color: #fff;
   border: none;
   border-radius: 24px;
-  padding: 7px 18px 7px 14px;
+  padding: 8px 18px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -491,6 +500,8 @@ h1 {
   box-shadow: 0 1px 4px var(--shadow-color);
   transition: background 0.2s, transform 0.2s;
   position: relative;
+  min-width: 120px;
+  justify-content: center;
 }
 
 .copy-all-btn:hover {
@@ -499,8 +510,8 @@ h1 {
 }
 
 .copy-all-btn .big-copy-icon {
-  font-size: 20px;
-  margin-right: 2px;
+  font-size: 18px;
+  margin-right: 0;
 }
 
 .copy-all-feedback {
