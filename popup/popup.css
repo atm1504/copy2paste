@@ -473,6 +473,7 @@ h1 {
   min-height: 40px;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
 }
 
 .copy-all-btn {
@@ -505,24 +506,32 @@ h1 {
 .copy-all-feedback {
   display: block;
   margin-top: 4px;
-  color: var(--text-color);
+  color: #ffffff;
   font-size: 13px;
   font-weight: 600;
-  background: var(--copy-btn-bg);
+  background: var(--primary-color);
+  color: white;
   border-radius: 8px;
-  padding: 4px 16px;
-  box-shadow: 0 2px 8px var(--shadow-color);
+  padding: 6px 16px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.2s, transform 0.2s;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
   text-align: center;
   align-self: center;
-  position: static;
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  z-index: 100;
+  transform: translateY(-5px) scale(0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.copy-all-btn.copied + .copy-all-feedback {
+.copy-all-btn.copied ~ .copy-all-feedback {
   opacity: 1;
-  transform: translateY(0px) scale(1.05);
+  visibility: visible;
+  transform: translateY(0) scale(1.05);
 }
 
 /* File list styling with clean edges */

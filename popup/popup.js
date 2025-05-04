@@ -709,10 +709,20 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(function () {
         copyAllBtn.classList.add("copied");
         copyAllFeedback.textContent = i18n.translate("allTextCopied");
+
+        // Make sure the feedback is visible and with maximum opacity
         copyAllFeedback.style.opacity = "1";
+        copyAllFeedback.style.visibility = "visible";
+        copyAllFeedback.style.display = "block";
+
         setTimeout(() => {
           copyAllBtn.classList.remove("copied");
           copyAllFeedback.style.opacity = "0";
+
+          // After opacity transition, hide the element completely
+          setTimeout(() => {
+            copyAllFeedback.style.visibility = "hidden";
+          }, 300);
         }, 2000);
       })
       .catch(function (err) {
