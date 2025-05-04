@@ -643,7 +643,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Copy button
       const copyButton = document.createElement("button");
       copyButton.className = "action-button copy-button";
-      copyButton.innerHTML = '<i class="fas fa-copy">📋</i>';
+      copyButton.innerHTML = '<span style="font-size: 18px;">📄</span>';
 
       // Create copy feedback with translated text
       const feedback = document.createElement("span");
@@ -659,7 +659,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Delete button
       const deleteButton = document.createElement("button");
       deleteButton.className = "action-button delete-button";
-      deleteButton.innerHTML = '<i class="fas fa-trash">🗑️</i>';
+      deleteButton.innerHTML = '<span style="font-size: 18px;">🗑️</span>';
       deleteButton.onclick = () => {
         removeFile(fileName);
       };

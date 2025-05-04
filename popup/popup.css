@@ -398,7 +398,8 @@ h1 {
 }
 
 .copy-all-btn .big-copy-icon {
-  font-size: 18px;
+  font-size: 20px;
+  margin-right: 2px;
 }
 
 .copy-all-feedback {
@@ -499,14 +500,22 @@ h1 {
 .action-button {
   background: none;
   border: none;
-  padding: 5px;
+  padding: 8px;
   cursor: pointer;
-  border-radius: 6px;
-  transition: background 0.2s;
-  font-size: 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 18px;
   display: flex;
   align-items: center;
+  justify-content: center;
   position: relative;
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.action-button:hover {
+  background-color: var(--hover-bg);
+  transform: translateY(-1px);
 }
 
 .action-button:active {
