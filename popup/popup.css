@@ -173,12 +173,23 @@ html {
   }
 }
 
+/* Header styling with proper spacing */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 0; /* Reduced from 5px to 0 */
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* Logo styling */
 .logo-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 15px;
+  justify-content: flex-start;
+  margin-bottom: 0;
 }
 
 .logo-image {
@@ -205,12 +216,9 @@ html {
   clip: rect(0 0 0 0);
 }
 
-/* Theme toggle styles - new design */
+/* Theme toggle styles - updated positioning */
 .theme-switch-wrapper {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 10;
+  position: static;
   display: flex;
   align-items: center;
 }
@@ -281,16 +289,16 @@ html {
   animation: theme-pulse 0.5s ease;
 }
 
-/* Upload area styles */
+/* Container adjustment to account for header */
 .container {
   text-align: center;
-  margin: 15px auto 40px auto;
+  margin: 5px auto 40px auto; /* Reduced top margin from 10px to 5px */
   max-width: 320px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-top: 15px;
-  min-height: 400px; /* Set minimum height for consistency */
+  padding-top: 0;
+  min-height: 400px;
 }
 
 h1 {
@@ -311,9 +319,11 @@ h1 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 150px);
+  max-height: calc(
+    100vh - 120px
+  ); /* Increased from 150px to allow more space */
   overflow: hidden;
-  height: 450px; /* Fixed height instead of auto */
+  height: 500px; /* Increased from 450px */
   min-height: 300px;
 }
 
@@ -326,7 +336,7 @@ h1 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 10px;
   cursor: pointer;
-  min-height: 120px; /* Set consistent min height */
+  min-height: 130px; /* Slightly increased from 120px */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -447,7 +457,7 @@ h1 {
   margin-top: 0;
   margin-bottom: 36px; /* Match footer height */
   text-align: left;
-  max-height: 200px; /* Reduced max height */
+  max-height: 300px; /* Increased from 200px to 300px */
   height: auto; /* Allow height to adjust based on content */
   flex: 1;
   overflow-y: auto;
@@ -470,7 +480,7 @@ h1 {
   justify-content: space-between;
   transition: border 0.2s, box-shadow 0.2s;
   box-shadow: 0 1px 4px var(--shadow-color);
-  height: 50px; /* Fixed height for consistency */
+  height: 55px; /* Increased from 50px */
   box-sizing: border-box;
 }
 
@@ -579,7 +589,8 @@ h1 {
   text-align: center;
   color: var(--text-secondary);
   padding: 12px;
-  min-height: 100px;
+  min-height: 120px; /* Increased from 100px */
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -867,9 +878,12 @@ textarea {
   text-align: right;
 }
 
+[data-language="ar"] .header {
+  flex-direction: row-reverse;
+}
+
 [data-language="ar"] .theme-switch-wrapper {
-  left: 15px;
-  right: auto;
+  flex-direction: row-reverse;
 }
 
 [data-language="ar"] .language-select {

@@ -170,43 +170,7 @@
   </head>
 
   <body data-theme="system" data-language="en">
-    <div class="theme-switch-wrapper">
-      <div class="language-select-container">
-        <select
-          id="languageSelect"
-          class="language-select"
-          aria-label="Select language"
-        >
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="fr">Français</option>
-          <option value="de">Deutsch</option>
-          <option value="zh">中文</option>
-          <option value="ja">日本語</option>
-          <option value="ko">한국어</option>
-          <option value="pt">Português</option>
-          <option value="ru">Русский</option>
-          <option value="hi">हिन्दी</option>
-          <option value="ar">العربية</option>
-          <option value="it">Italiano</option>
-          <option value="tr">Türkçe</option>
-          <option value="nl">Nederlands</option>
-          <option value="bn">বাংলা</option>
-        </select>
-      </div>
-      <div class="theme-switch">
-        <button class="theme-btn" data-theme="light">
-          <span class="theme-icon">☀️</span>
-        </button>
-        <button class="theme-btn" data-theme="system">
-          <span class="theme-icon">⚙️</span>
-        </button>
-        <button class="theme-btn" data-theme="dark">
-          <span class="theme-icon">🌙</span>
-        </button>
-      </div>
-    </div>
-    <div class="container">
+    <div class="header">
       <div class="logo-container">
         <img
           src="../assets/logo.png"
@@ -215,6 +179,44 @@
         />
         <h1 id="appTitle">copy2paste</h1>
       </div>
+      <div class="theme-switch-wrapper">
+        <div class="language-select-container">
+          <select
+            id="languageSelect"
+            class="language-select"
+            aria-label="Select language"
+          >
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="pt">Português</option>
+            <option value="ru">Русский</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ar">العربية</option>
+            <option value="it">Italiano</option>
+            <option value="tr">Türkçe</option>
+            <option value="nl">Nederlands</option>
+            <option value="bn">বাংলা</option>
+          </select>
+        </div>
+        <div class="theme-switch">
+          <button class="theme-btn" data-theme="light">
+            <span class="theme-icon">☀️</span>
+          </button>
+          <button class="theme-btn" data-theme="system">
+            <span class="theme-icon">⚙️</span>
+          </button>
+          <button class="theme-btn" data-theme="dark">
+            <span class="theme-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="container">
       <div class="upload-section">
         <div class="error-message" id="errorMessage"></div>
         <div class="loading-indicator" id="loadingIndicator">
