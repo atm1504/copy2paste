@@ -217,11 +217,13 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 10px;
+  padding: 10px;
   margin: 0;
   width: 100%;
   box-sizing: border-box;
   background: transparent;
+  position: relative;
+  z-index: 10;
 }
 
 /* Logo styling */
@@ -230,12 +232,15 @@ html {
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 0;
+  flex-direction: column; /* Stack logo and title vertically for better visibility */
+  padding: 5px;
 }
 
 .logo-image {
   height: 40px;
   width: auto;
-  margin-right: 10px;
+  margin-bottom: 5px; /* Add space between logo and title */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)); /* Add shadow to logo */
 }
 
 /* Apply transitions to all themed elements */
@@ -346,12 +351,28 @@ html {
 }
 
 h1 {
-  color: var(--primary-color);
+  color: #fff; /* White text for maximum contrast against any background */
   font-size: 24px;
   margin: 0;
-  font-weight: 700;
+  font-weight: 800; /* Extra bold */
   letter-spacing: 0.5px;
-  text-shadow: 0 1px 4px var(--shadow-color);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 8px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+  background: rgba(
+    13,
+    71,
+    161,
+    0.85
+  ); /* Dark blue semi-transparent background - more opaque */
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25); /* Stronger shadow */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* More visible border */
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 5;
+  text-align: center;
 }
 
 /* Upload section with cleaner edges and glass effect */
@@ -823,6 +844,16 @@ h1 {
 [data-theme="system"].dark-mode .theme-btn.active {
   background: var(--primary-color);
   opacity: 1;
+}
+
+/* Add dark theme styling for the title */
+[data-theme="dark"] h1,
+[data-theme="system"].dark-mode h1 {
+  color: #fff;
+  background: rgba(18, 28, 59, 0.8);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 0 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Filter to brighten emojis in dark mode */
