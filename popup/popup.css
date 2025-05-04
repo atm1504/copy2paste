@@ -565,3 +565,33 @@ h1 {
 .files-list::-webkit-scrollbar-thumb:hover {
   background: var(--primary-color);
 }
+
+/* Dark mode theme switch adjustments */
+[data-theme="dark"] .theme-switch,
+[data-theme="system"].dark-mode .theme-switch {
+  background: var(--surface-color-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .theme-btn,
+[data-theme="system"].dark-mode .theme-btn {
+  color: #fff;
+  opacity: 0.7;
+}
+
+[data-theme="dark"] .theme-btn:hover,
+[data-theme="system"].dark-mode .theme-btn:hover {
+  opacity: 1;
+}
+
+[data-theme="dark"] .theme-btn.active,
+[data-theme="system"].dark-mode .theme-btn.active {
+  background: var(--primary-color);
+  opacity: 1;
+}
+
+/* Filter to brighten emojis in dark mode */
+[data-theme="dark"] .theme-icon,
+[data-theme="system"].dark-mode .theme-icon {
+  filter: brightness(1.2) contrast(1.1);
+}
