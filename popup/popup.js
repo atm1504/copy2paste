@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const noFiles = document.getElementById("noFiles");
   const copyAllBtn = document.getElementById("copyAllBtn");
   const copyAllFeedback = document.getElementById("copyAllFeedback");
+  const clearAllBtn = document.getElementById("clearAllBtn");
+  const clearAllFeedback = document.getElementById("clearAllFeedback");
   const errorMessage = document.getElementById("errorMessage");
   const loadingIndicator = document.getElementById("loadingIndicator");
   const themeSwitch = document.querySelector(".theme-switch");
@@ -39,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const supportedFormats = document.getElementById("supportedFormats");
   const processingText = document.getElementById("processingText");
   const copyAllText = document.getElementById("copyAllText");
+  const clearAllText = document.getElementById("clearAllText");
   const copyrightText = document.getElementById("copyrightText");
 
   // --- State: Map of uploaded files ---
@@ -62,7 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
     i18n.registerElement(supportedFormats, "supportedFormats");
     i18n.registerElement(uploadButton, "chooseFiles");
     i18n.registerElement(copyAllText, "copyAll");
+    i18n.registerElement(clearAllText, "clearAll");
     i18n.registerElement(copyAllFeedback, "allTextCopied");
+    i18n.registerElement(clearAllFeedback, "allFilesCleared");
     i18n.registerElement(noFiles, "noFilesYet");
     i18n.registerElement(processingText, "processing");
     i18n.registerElement(copyrightText, "copyright");
@@ -198,6 +203,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Copy All button
     copyAllBtn.addEventListener("click", handleCopyAll, false);
+
+    // Clear All button
+    clearAllBtn.addEventListener("click", handleClearAll, false);
 
     // Theme switcher
     const themeButtons = document.querySelectorAll(".theme-btn");
@@ -595,6 +603,7 @@ document.addEventListener("DOMContentLoaded", function () {
     filesList.style.display = hasFiles ? "block" : "none";
     noFiles.style.display = hasFiles ? "none" : "block";
     copyAllBtn.style.display = hasFiles ? "flex" : "none";
+    clearAllBtn.style.display = hasFiles ? "flex" : "none";
 
     if (!hasFiles) {
       return;
@@ -747,6 +756,48 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Failed to copy all text: ", err);
         showError("failedToCopyAll");
       });
+  }
+
+  function handleClearAll(e) {
+    e.preventDefault();
+
+    if (uploadedFiles.size === 0) {
+      return;
+    }
+
+    // Clear all files from uploadedFiles map
+    uploadedFiles.clear();
+    updateFilesList();
+    saveFilesToStorage();
+
+    // Clear clipboard by writing an empty string
+    navigator.clipboard
+      .writeText("")
+      .then(function () {
+        console.log("Clipboard cleared successfully");
+      })
+      .catch(function (err) {
+        console.error("Failed to clear clipboard: ", err);
+      });
+
+    // Show feedback
+    clearAllBtn.classList.add("cleared");
+    clearAllFeedback.textContent = i18n.translate("allFilesCleared");
+
+    // Make sure the feedback is visible and with maximum opacity
+    clearAllFeedback.style.opacity = "1";
+    clearAllFeedback.style.visibility = "visible";
+    clearAllFeedback.style.display = "block";
+
+    setTimeout(() => {
+      clearAllBtn.classList.remove("cleared");
+      clearAllFeedback.style.opacity = "0";
+
+      // After opacity transition, hide the element completely
+      setTimeout(() => {
+        clearAllFeedback.style.visibility = "hidden";
+      }, 300);
+    }, 2000);
   }
 
   function removeFile(fileName) {
