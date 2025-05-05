@@ -12,6 +12,7 @@ A browser extension that allows you to extract text from various file formats an
 - **Bulk Operations**: Copy text from all files at once
 - **File Previews**: See the extracted text before copying
 - **Session Storage**: Files are retained while the browser is open
+- **Internationalization**: Support for multiple languages
 
 ## Supported File Types
 
@@ -44,13 +45,16 @@ A browser extension that allows you to extract text from various file formats an
 ├── popup/
 │   ├── popup.html
 │   ├── popup.js
-│   └── popup.css
+│   ├── popup.css
+│   ├── i18n.js
+│   └── languages.js
 │
 ├── lib/
 │   ├── pdfjs/
 │   │   ├── pdf.mjs
 │   │   └── pdf.worker.mjs
-│   ├── jszip.min.js
+│   ├── jszip/
+│   │   └── jszip.min.js
 │   ├── mammoth/
 │   │   └── mammoth.browser.min.js
 │   └── xlsx/
@@ -58,9 +62,12 @@ A browser extension that allows you to extract text from various file formats an
 │
 ├── assets/
 │   ├── logo.png
-│   └── icons/
+│   ├── icon16.png
+│   ├── icon48.png
+│   └── icon128.png
 │
 ├── manifest.json
+├── background.js
 └── README.md
 ```
 
@@ -70,6 +77,8 @@ A browser extension that allows you to extract text from various file formats an
 - PDF processing uses PDF.js library
 - Document formats (DOCX, XLSX, PPTX) use respective libraries
 - Styles are in `popup/popup.css`
+- Internationalization support through `i18n.js` and `languages.js`
+- Background service worker in `background.js`
 
 ## Future Enhancements
 
@@ -77,6 +86,7 @@ A browser extension that allows you to extract text from various file formats an
 - File type detection improvements
 - Text extraction quality improvements
 - UI/UX enhancements
+- Additional language support
 
 ## Credits
 
