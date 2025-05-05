@@ -1,3 +1,0 @@
-This is a sample text file no 1.
-Let us see if the extension is working or not.
-Thanks man
