@@ -79,6 +79,15 @@ A browser extension that allows you to extract text from various file formats an
 - Styles are in `popup/popup.css`
 - Internationalization support through `i18n.js` and `languages.js`
 - Background service worker in `background.js`
+- Uses session storage for temporary file data
+- Minimal permissions required for operation
+
+## Permissions
+
+The extension uses minimal permissions to ensure user privacy and security:
+
+- `activeTab`: Required to interact with the current tab when copying text
+- No additional permissions are required as the extension uses web APIs for storage and file handling
 
 ## Future Enhancements
 
