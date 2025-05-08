@@ -17,14 +17,26 @@ class I18nManager {
    */
   initialize() {
     // Get saved language or detect from browser
-    const savedLanguage =
-      localStorage.getItem("language") || getDefaultLanguage();
+    const savedLanguage = localStorage.getItem("language") || getDefaultLanguage();
     this.setLanguage(savedLanguage);
 
     // Set up language change detection
     this.setupLanguageChangeObserver();
 
+    // Initialize all elements with data-i18n attributes
+    this.initializeI18nElements();
+
     return this.currentLanguage;
+  }
+
+  /**
+   * Initialize all elements with data-i18n attributes
+   */
+  initializeI18nElements() {
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+      const key = element.getAttribute('data-i18n');
+      this.registerElement(element, key);
+    });
   }
 
   /**
@@ -154,6 +166,31 @@ class I18nManager {
           this.setLanguage(e.target.value);
         });
       }
+
+      // Watch for new elements with data-i18n attributes
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              // Check the added node
+              if (node.hasAttribute('data-i18n')) {
+                const key = node.getAttribute('data-i18n');
+                this.registerElement(node, key);
+              }
+              // Check children of the added node
+              node.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                this.registerElement(element, key);
+              });
+            }
+          });
+        });
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
     });
   }
 

@@ -122,7 +122,7 @@ const languages = {
       wait: "Bitte warten Sie, bis die aktuellen Dateien fertig verarbeitet sind",
     },
   },
-  zh: {
+  zh_CN: {
     title: "copy2paste",
     dragDropText: "将文件拖放到这里",
     supportedFormats:
@@ -198,13 +198,13 @@ const languages = {
     system: "시스템",
     language: "언어",
     errors: {
-      failedToLoad: "저장된 파일을 불러오지 못했습니다",
+      failedToLoad: "보존된 파일을 불러오는데 실패했습니다",
       failedToSave: "파일 저장에 실패했습니다",
-      failedToCopy: "텍스트를 클립보드에 복사하지 못했습니다",
-      failedToCopyAll: "모든 텍스트 복사에 실패했습니다",
-      unsupportedFile: "지원되지 않는 파일 유형입니다",
+      failedToCopy: "텍스트를 클립보드에 복사하는데 실패했습니다",
+      failedToCopyAll: "모든 텍스트를 복사하는데 실패했습니다",
+      unsupportedFile: "지원되지 않는 파일 형식입니다",
       processingFile: "파일 처리 중 오류가 발생했습니다",
-      wait: "현재 파일 처리가 완료될 때까지 기다려주세요",
+      wait: "현재 파일의 처리가 완료될 때까지 기다려주세요",
     },
   },
   pt: {
@@ -212,15 +212,14 @@ const languages = {
     dragDropText: "Arraste e solte seus arquivos aqui",
     supportedFormats:
       "Formatos suportados: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers, Pages e vários arquivos de código",
-    chooseFiles: "Escolher arquivos",
-    copyAll: "Copiar tudo",
-    clearAll: "Limpar tudo",
+    chooseFiles: "Escolher Arquivos",
+    copyAll: "Copiar Tudo",
+    clearAll: "Limpar Tudo",
     allTextCopied: "Todo o texto copiado!",
-    allFilesCleared: "Todos os arquivos removidos!",
-    noFilesYet: "Nenhum arquivo enviado ainda",
+    allFilesCleared: "Todos os arquivos limpos!",
+    noFilesYet: "Nenhum arquivo carregado ainda",
     processing: "Processando arquivos...",
-    copyright:
-      "© 2025 copy2paste - Extrator de Texto de Arquivos | Criado com ❤️ por",
+    copyright: "© 2025 copy2paste - Extrator de Texto de Arquivos | Criado com ❤️ por",
     copied: "Copiado!",
     light: "Claro",
     dark: "Escuro",
@@ -230,10 +229,10 @@ const languages = {
       failedToLoad: "Falha ao carregar arquivos salvos",
       failedToSave: "Falha ao salvar arquivos",
       failedToCopy: "Falha ao copiar texto para a área de transferência",
-      failedToCopyAll: "Falha ao copiar todo o texto",
+      failedToCopyAll: "Falha ao copiar todo o texto para a área de transferência",
       unsupportedFile: "Tipo de arquivo não suportado",
       processingFile: "Erro ao processar arquivo",
-      wait: "Aguarde a conclusão do processamento dos arquivos atuais",
+      wait: "Aguarde o processamento dos arquivos atuais",
     },
   },
   ru: {
@@ -243,8 +242,10 @@ const languages = {
       "Поддерживаемые форматы: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers, Pages и различные файлы кода",
     chooseFiles: "Выбрать файлы",
     copyAll: "Копировать всё",
+    clearAll: "Очистить всё",
     allTextCopied: "Весь текст скопирован!",
-    noFilesYet: "Файлы ещё не загружены",
+    allFilesCleared: "Все файлы удалены!",
+    noFilesYet: "Файлы еще не загружены",
     processing: "Обработка файлов...",
     copyright: "© 2025 copy2paste - Извлечение текста из файлов | Создано с ❤️",
     copied: "Скопировано!",
@@ -256,7 +257,7 @@ const languages = {
       failedToLoad: "Не удалось загрузить сохраненные файлы",
       failedToSave: "Не удалось сохранить файлы",
       failedToCopy: "Не удалось скопировать текст в буфер обмена",
-      failedToCopyAll: "Не удалось скопировать весь текст",
+      failedToCopyAll: "Не удалось скопировать весь текст в буфер обмена",
       unsupportedFile: "Неподдерживаемый тип файла",
       processingFile: "Ошибка при обработке файла",
       wait: "Дождитесь завершения обработки текущих файлов",
@@ -264,16 +265,17 @@ const languages = {
   },
   hi: {
     title: "copy2paste",
-    dragDropText: "अपनी फ़ाइलें यहां खींचें और छोड़ें",
+    dragDropText: "अपनी फ़ाइलें यहाँ खींचें और छोड़ें",
     supportedFormats:
       "समर्थित प्रारूप: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers, Pages और विभिन्न कोड फ़ाइलें",
     chooseFiles: "फ़ाइलें चुनें",
     copyAll: "सभी कॉपी करें",
+    clearAll: "सभी साफ़ करें",
     allTextCopied: "सभी टेक्स्ट कॉपी किया गया!",
+    allFilesCleared: "सभी फ़ाइलें साफ़ की गईं!",
     noFilesYet: "अभी तक कोई फ़ाइल अपलोड नहीं की गई",
     processing: "फ़ाइलें प्रोसेस हो रही हैं...",
-    copyright:
-      "© 2025 copy2paste - फ़ाइल टेक्स्ट एक्सट्रैक्टर | ❤️ के साथ बनाया गया",
+    copyright: "© 2025 copy2paste - फ़ाइल टेक्स्ट एक्सट्रैक्टर | ❤️ से बनाया गया",
     copied: "कॉपी किया गया!",
     light: "लाइट",
     dark: "डार्क",
@@ -282,51 +284,54 @@ const languages = {
     errors: {
       failedToLoad: "सहेजी गई फ़ाइलें लोड करने में विफल",
       failedToSave: "फ़ाइलें सहेजने में विफल",
-      failedToCopy: "टेक्स्ट को क्लिपबोर्ड पर कॉपी करने में विफल",
-      failedToCopyAll: "सभी टेक्स्ट कॉपी करने में विफल",
+      failedToCopy: "क्लिपबोर्ड में टेक्स्ट कॉपी करने में विफल",
+      failedToCopyAll: "सभी टेक्स्ट क्लिपबोर्ड में कॉपी करने में विफल",
       unsupportedFile: "असमर्थित फ़ाइल प्रकार",
       processingFile: "फ़ाइल प्रोसेसिंग में त्रुटि",
-      wait: "कृपया वर्तमान फ़ाइलों की प्रोसेसिंग पूरी होने तक प्रतीक्षा करें",
+      wait: "कृपया वर्तमान फ़ाइलों की प्रोसेसिंग पूरी होने की प्रतीक्षा करें",
     },
   },
   ar: {
     title: "copy2paste",
     dragDropText: "اسحب وأفلت الملفات هنا",
     supportedFormats:
-      "التنسيقات المدعومة: PDF، DOCX، XLSX، PPTX، TXT، CSV، JSON، Numbers، Pages وملفات الكود المختلفة",
+      "الصيغ المدعومة: PDF، DOCX، XLSX، PPTX، TXT، CSV، JSON، Numbers، Pages وملفات الكود المختلفة",
     chooseFiles: "اختر الملفات",
     copyAll: "نسخ الكل",
+    clearAll: "مسح الكل",
     allTextCopied: "تم نسخ كل النص!",
-    noFilesYet: "لم يتم تحميل أي ملفات بعد",
+    allFilesCleared: "تم مسح جميع الملفات!",
+    noFilesYet: "لم يتم رفع أي ملفات بعد",
     processing: "جاري معالجة الملفات...",
-    copyright: "© 2025 copy2paste - مستخرج نص الملفات | تم إنشاؤه بواسطة ❤️",
+    copyright: "© 2025 copy2paste - مستخرج نصوص الملفات | صنع بـ ❤️",
     copied: "تم النسخ!",
     light: "فاتح",
     dark: "داكن",
     system: "النظام",
     language: "اللغة",
     errors: {
-      failedToLoad: "فشل في تحميل الملفات المحفوظة",
-      failedToSave: "فشل في حفظ الملفات",
-      failedToCopy: "فشل في نسخ النص إلى الحافظة",
-      failedToCopyAll: "فشل في نسخ كل النص",
+      failedToLoad: "فشل تحميل الملفات المحفوظة",
+      failedToSave: "فشل حفظ الملفات",
+      failedToCopy: "فشل نسخ النص إلى الحافظة",
+      failedToCopyAll: "فشل نسخ كل النص إلى الحافظة",
       unsupportedFile: "نوع ملف غير مدعوم",
       processingFile: "خطأ في معالجة الملف",
-      wait: "يرجى الانتظار حتى تكتمل معالجة الملفات الحالية",
+      wait: "الرجاء الانتظار حتى تكتمل معالجة الملفات الحالية",
     },
   },
   it: {
     title: "copy2paste",
-    dragDropText: "Trascina e rilascia i tuoi file qui",
+    dragDropText: "Trascina e rilascia i file qui",
     supportedFormats:
       "Formati supportati: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers, Pages e vari file di codice",
-    chooseFiles: "Scegli file",
-    copyAll: "Copia tutto",
+    chooseFiles: "Scegli File",
+    copyAll: "Copia Tutto",
+    clearAll: "Cancella Tutto",
     allTextCopied: "Tutto il testo copiato!",
+    allFilesCleared: "Tutti i file cancellati!",
     noFilesYet: "Nessun file caricato",
-    processing: "Elaborazione dei file in corso...",
-    copyright:
-      "© 2025 copy2paste - Estrattore di testo da file | Creato con ❤️ da",
+    processing: "Elaborazione file in corso...",
+    copyright: "© 2025 copy2paste - Estrattore di Testo da File | Creato con ❤️ da",
     copied: "Copiato!",
     light: "Chiaro",
     dark: "Scuro",
@@ -336,20 +341,22 @@ const languages = {
       failedToLoad: "Impossibile caricare i file salvati",
       failedToSave: "Impossibile salvare i file",
       failedToCopy: "Impossibile copiare il testo negli appunti",
-      failedToCopyAll: "Impossibile copiare tutto il testo",
+      failedToCopyAll: "Impossibile copiare tutto il testo negli appunti",
       unsupportedFile: "Tipo di file non supportato",
       processingFile: "Errore durante l'elaborazione del file",
-      wait: "Attendi il completamento dell'elaborazione dei file correnti",
+      wait: "Attendere il completamento dell'elaborazione dei file correnti",
     },
   },
   tr: {
     title: "copy2paste",
-    dragDropText: "Dosyalarınızı buraya sürükleyip bırakın",
+    dragDropText: "Dosyaları buraya sürükleyip bırakın",
     supportedFormats:
       "Desteklenen formatlar: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers, Pages ve çeşitli kod dosyaları",
     chooseFiles: "Dosya Seç",
     copyAll: "Tümünü Kopyala",
+    clearAll: "Tümünü Temizle",
     allTextCopied: "Tüm metin kopyalandı!",
+    allFilesCleared: "Tüm dosyalar temizlendi!",
     noFilesYet: "Henüz dosya yüklenmedi",
     processing: "Dosyalar işleniyor...",
     copyright: "© 2025 copy2paste - Dosya Metin Çıkarıcı | ❤️ ile oluşturuldu",
@@ -362,24 +369,25 @@ const languages = {
       failedToLoad: "Kaydedilen dosyalar yüklenemedi",
       failedToSave: "Dosyalar kaydedilemedi",
       failedToCopy: "Metin panoya kopyalanamadı",
-      failedToCopyAll: "Tüm metin kopyalanamadı",
+      failedToCopyAll: "Tüm metin panoya kopyalanamadı",
       unsupportedFile: "Desteklenmeyen dosya türü",
       processingFile: "Dosya işlenirken hata oluştu",
-      wait: "Lütfen mevcut dosyaların işlenmesi bitene kadar bekleyin",
+      wait: "Lütfen mevcut dosyaların işlenmesinin tamamlanmasını bekleyin",
     },
   },
   nl: {
     title: "copy2paste",
-    dragDropText: "Sleep je bestanden hierheen",
+    dragDropText: "Sleep bestanden hierheen of klik om te selecteren",
     supportedFormats:
-      "Ondersteunde formaten: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers, Pages en verschillende codebestanden",
-    chooseFiles: "Bestanden kiezen",
-    copyAll: "Alles kopiëren",
+      "Ondersteunde formaten: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers, Pages en diverse codebestanden",
+    chooseFiles: "Bestanden Kiezen",
+    copyAll: "Alles Kopiëren",
+    clearAll: "Alles Wissen",
     allTextCopied: "Alle tekst gekopieerd!",
+    allFilesCleared: "Alle bestanden gewist!",
     noFilesYet: "Nog geen bestanden geüpload",
     processing: "Bestanden verwerken...",
-    copyright:
-      "© 2025 copy2paste - Bestandstekst Extractor | Gemaakt met ❤️ door",
+    copyright: "© 2025 copy2paste - Bestandstekst Extractor | Gemaakt met ❤️ door",
     copied: "Gekopieerd!",
     light: "Licht",
     dark: "Donker",
@@ -389,45 +397,72 @@ const languages = {
       failedToLoad: "Kan opgeslagen bestanden niet laden",
       failedToSave: "Kan bestanden niet opslaan",
       failedToCopy: "Kan tekst niet naar klembord kopiëren",
-      failedToCopyAll: "Kan niet alle tekst kopiëren",
+      failedToCopyAll: "Kan niet alle tekst naar klembord kopiëren",
       unsupportedFile: "Niet-ondersteund bestandstype",
-      processingFile: "Fout bij verwerken van bestand",
+      processingFile: "Fout bij verwerken bestand",
       wait: "Wacht tot de huidige bestanden zijn verwerkt",
     },
   },
   bn: {
     title: "copy2paste",
-    dragDropText: "আপনার ফাইলগুলি এখানে টেনে আনুন",
+    dragDropText: "এখানে ফাইল টেনে আনুন",
     supportedFormats:
       "সমর্থিত ফরম্যাট: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers, Pages এবং বিভিন্ন কোড ফাইল",
-    chooseFiles: "ফাইল বেছে নিন",
+    chooseFiles: "ফাইল বাছুন",
     copyAll: "সব কপি করুন",
+    clearAll: "সব মুছুন",
     allTextCopied: "সমস্ত টেক্সট কপি করা হয়েছে!",
-    noFilesYet: "এখনো কোনো ফাইল আপলোড করা হয়নি",
+    allFilesCleared: "সমস্ত ফাইল মুছে ফেলা হয়েছে!",
+    noFilesYet: "এখনও কোন ফাইল আপলোড করা হয়নি",
     processing: "ফাইল প্রক্রিয়াকরণ চলছে...",
-    copyright:
-      "© 2025 copy2paste - ফাইল টেক্সট এক্সট্রাক্টর | ❤️ দিয়ে তৈরি করেছেন",
+    copyright: "© 2025 copy2paste - ফাইল টেক্সট এক্সট্র্যাক্টর | ❤️ দিয়ে তৈরি",
     copied: "কপি করা হয়েছে!",
-    light: "হালকা",
-    dark: "গাঢ়",
+    light: "লাইট",
+    dark: "ডার্ক",
     system: "সিস্টেম",
     language: "ভাষা",
     errors: {
       failedToLoad: "সংরক্ষিত ফাইল লোড করতে ব্যর্থ",
       failedToSave: "ফাইল সংরক্ষণ করতে ব্যর্থ",
       failedToCopy: "ক্লিপবোর্ডে টেক্সট কপি করতে ব্যর্থ",
-      failedToCopyAll: "সমস্ত টেক্সট কপি করতে ব্যর্থ",
-      unsupportedFile: "অসমর্থিত ফাইল টাইপ",
+      failedToCopyAll: "সমস্ত টেক্সট ক্লিপবোর্ডে কপি করতে ব্যর্থ",
+      unsupportedFile: "অসমর্থিত ফাইল ধরন",
       processingFile: "ফাইল প্রক্রিয়াকরণে ত্রুটি",
-      wait: "অনুগ্রহ করে বর্তমান ফাইলগুলি প্রক্রিয়াকরণ শেষ হওয়া পর্যন্ত অপেক্ষা করুন",
+      wait: "অনুগ্রহ করে বর্তমান ফাইলগুলির প্রক্রিয়াকরণ শেষ হওয়া পর্যন্ত অপেক্ষা করুন",
     },
   },
 };
 
-// Get browser language or default to English
+// Get default language based on browser settings
 function getDefaultLanguage() {
-  const browserLang = navigator.language.split("-")[0];
-  return languages[browserLang] ? browserLang : "en";
+  const browserLang = navigator.language.toLowerCase();
+  
+  // Map browser language codes to our supported languages
+  const langMap = {
+    'zh-cn': 'zh_CN',
+    'zh-tw': 'zh_CN', // Fallback to Simplified Chinese
+    'pt-br': 'pt',    // Use standard Portuguese
+    'pt-pt': 'pt'
+  };
+
+  // Check if we have an exact match
+  if (languages[browserLang]) {
+    return browserLang;
+  }
+
+  // Check if we have a mapping for this language
+  if (langMap[browserLang]) {
+    return langMap[browserLang];
+  }
+
+  // Check if we support the primary language code
+  const primaryLang = browserLang.split('-')[0];
+  if (languages[primaryLang]) {
+    return primaryLang;
+  }
+
+  // Default to English if no match found
+  return 'en';
 }
 
 export { languages, getDefaultLanguage };

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title data-i18n="extName"></title>
+    <title data-i18n="title"></title>
     <link rel="stylesheet" href="popup.css" />
     <style>
       body {
@@ -176,7 +176,7 @@
           alt="copy2paste logo"
           class="logo-image"
         />
-        <h1 data-i18n="extName"></h1>
+        <h1 data-i18n="title"></h1>
       </div>
       <div class="theme-switch-wrapper">
         <div class="language-select-container">
@@ -189,7 +189,7 @@
             <option value="es">Español</option>
             <option value="fr">Français</option>
             <option value="de">Deutsch</option>
-            <option value="zh">中文</option>
+            <option value="zh_CN">中文 (简体)</option>
             <option value="ja">日本語</option>
             <option value="ko">한국어</option>
             <option value="pt">Português</option>
@@ -220,16 +220,13 @@
         <div class="error-message" id="errorMessage"></div>
         <div class="loading-indicator" id="loadingIndicator">
           <div class="spinner"></div>
-          <span id="processingText">Processing files...</span>
+          <span id="processingText" data-i18n="processing"></span>
         </div>
         <div class="drop-zone" id="dropZone">
-          <div class="icon">��</div>
-          <p data-i18n="dragDropFiles"></p>
-          <p class="file-types" id="supportedFormats">
-            Supported formats: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, Numbers,
-            Pages, and various code files
-          </p>
-          <button class="upload-button" id="uploadButton">Choose Files</button>
+          <div class="icon">📄</div>
+          <p data-i18n="dragDropText"></p>
+          <p class="file-types" id="supportedFormats" data-i18n="supportedFormats"></p>
+          <button class="upload-button" id="uploadButton" data-i18n="chooseFiles"></button>
           <input
             type="file"
             id="fileInput"
@@ -254,29 +251,23 @@
         <div class="copy-all-section">
           <button class="copy-all-btn" id="copyAllBtn">
             <span class="big-copy-icon">📄</span>
-            <span id="copyAllText">Copy All</span>
+            <span id="copyAllText" data-i18n="copyAll"></span>
           </button>
-          <span class="copy-all-feedback" id="copyAllFeedback"
-            >All text copied!</span
-          >
+          <span class="copy-all-feedback" id="copyAllFeedback" data-i18n="allTextCopied"></span>
           <button class="clear-all-btn" id="clearAllBtn">
             <span class="big-clear-icon">🗑️</span>
-            <span id="clearAllText">Clear All</span>
+            <span id="clearAllText" data-i18n="clearAll"></span>
           </button>
-          <span class="clear-all-feedback" id="clearAllFeedback"
-            >All files cleared!</span
-          >
+          <span class="clear-all-feedback" id="clearAllFeedback" data-i18n="allFilesCleared"></span>
         </div>
         <div class="files-list" id="filesList">
           <!-- File items will be added here dynamically -->
         </div>
-        <div class="no-files" id="noFiles">No files uploaded yet</div>
+        <div class="no-files" id="noFiles" data-i18n="noFilesYet"></div>
       </div>
     </div>
     <div class="copyright">
-      <span id="copyrightText"
-        >© 2025 copy2paste - File Text Extractor | Created with ❤️ by</span
-      >
+      <span id="copyrightText" data-i18n="copyright"></span>
       <a href="https://github.com/atm1504" target="_blank">atm1504</a>
     </div>
     <!-- DOCX extractor -->

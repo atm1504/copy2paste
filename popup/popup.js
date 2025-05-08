@@ -59,19 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize i18n module
     i18n.initialize();
 
-    // Register elements for automatic translation
-    i18n.registerElement(appTitle, "title");
-    i18n.registerElement(dragDropText, "dragDropText");
-    i18n.registerElement(supportedFormats, "supportedFormats");
-    i18n.registerElement(uploadButton, "chooseFiles");
-    i18n.registerElement(copyAllText, "copyAll");
-    i18n.registerElement(clearAllText, "clearAll");
-    i18n.registerElement(copyAllFeedback, "allTextCopied");
-    i18n.registerElement(clearAllFeedback, "allFilesCleared");
-    i18n.registerElement(noFiles, "noFilesYet");
-    i18n.registerElement(processingText, "processing");
-    i18n.registerElement(copyrightText, "copyright");
-
     // Update selector value
     languageSelect.value = i18n.getCurrentLanguage();
   }
