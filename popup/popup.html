@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title data-i18n="title"></title>
+    <title data-i18n="extName"></title>
     <link rel="stylesheet" href="popup.css" />
     <style>
       body {
@@ -176,7 +176,7 @@
           alt="copy2paste logo"
           class="logo-image"
         />
-        <h1 data-i18n="title"></h1>
+        <h1 data-i18n="extName"></h1>
       </div>
       <div class="theme-switch-wrapper">
         <div class="language-select-container">
@@ -224,9 +224,9 @@
         </div>
         <div class="drop-zone" id="dropZone">
           <div class="icon">📄</div>
-          <p data-i18n="dragDropText"></p>
+          <p data-i18n="dragDropFiles"></p>
           <p class="file-types" id="supportedFormats" data-i18n="supportedFormats"></p>
-          <button class="upload-button" id="uploadButton" data-i18n="chooseFiles"></button>
+          <button class="upload-button" id="uploadButton" data-i18n="copy">Choose Files</button>
           <input
             type="file"
             id="fileInput"
@@ -253,21 +253,21 @@
             <span class="big-copy-icon">📄</span>
             <span id="copyAllText" data-i18n="copyAll"></span>
           </button>
-          <span class="copy-all-feedback" id="copyAllFeedback" data-i18n="allTextCopied"></span>
+          <span class="copy-all-feedback" id="copyAllFeedback" data-i18n="copySuccess"></span>
           <button class="clear-all-btn" id="clearAllBtn">
             <span class="big-clear-icon">🗑️</span>
-            <span id="clearAllText" data-i18n="clearAll"></span>
+            <span id="clearAllText" data-i18n="remove"></span>
           </button>
-          <span class="clear-all-feedback" id="clearAllFeedback" data-i18n="allFilesCleared"></span>
+          <span class="clear-all-feedback" id="clearAllFeedback" data-i18n="copySuccess"></span>
         </div>
         <div class="files-list" id="filesList">
           <!-- File items will be added here dynamically -->
         </div>
-        <div class="no-files" id="noFiles" data-i18n="noFilesYet"></div>
+        <div class="no-files" id="noFiles" data-i18n="noFiles"></div>
       </div>
     </div>
     <div class="copyright">
-      <span id="copyrightText" data-i18n="copyright"></span>
+      <span id="copyrightText" data-i18n="privacyNotice"></span>
       <a href="https://github.com/atm1504" target="_blank">atm1504</a>
     </div>
     <!-- DOCX extractor -->

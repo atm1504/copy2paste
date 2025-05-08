@@ -3,8 +3,6 @@
  * Handles language detection, translation, and UI updates
  */
 
-import { languages, getDefaultLanguage } from "./languages.js";
-
 class I18nManager {
   constructor() {
     this.currentLanguage = "en";
@@ -17,7 +15,7 @@ class I18nManager {
    */
   initialize() {
     // Get saved language or detect from browser
-    const savedLanguage = localStorage.getItem("language") || getDefaultLanguage();
+    const savedLanguage = localStorage.getItem("language") || this.getDefaultLanguage();
     this.setLanguage(savedLanguage);
 
     // Set up language change detection
@@ -27,6 +25,46 @@ class I18nManager {
     this.initializeI18nElements();
 
     return this.currentLanguage;
+  }
+
+  /**
+   * Get default language based on browser settings
+   */
+  getDefaultLanguage() {
+    const browserLang = navigator.language.toLowerCase();
+    
+    // Map browser language codes to our supported languages
+    const langMap = {
+      'zh-cn': 'zh_CN',
+      'zh-tw': 'zh_CN', // Fallback to Simplified Chinese
+      'pt-br': 'pt',    // Use standard Portuguese
+      'pt-pt': 'pt'
+    };
+
+    // Check if we have a mapping for this language
+    if (langMap[browserLang]) {
+      return langMap[browserLang];
+    }
+
+    // Check if we support the primary language code
+    const primaryLang = browserLang.split('-')[0];
+    if (this.isLanguageSupported(primaryLang)) {
+      return primaryLang;
+    }
+
+    // Default to English if no match found
+    return 'en';
+  }
+
+  /**
+   * Check if a language is supported by our extension
+   */
+  isLanguageSupported(langCode) {
+    const supportedLanguages = [
+      'en', 'es', 'fr', 'de', 'zh_CN', 'ja', 'ko', 
+      'pt', 'ru', 'hi', 'ar', 'it', 'tr', 'nl', 'bn'
+    ];
+    return supportedLanguages.includes(langCode);
   }
 
   /**
@@ -44,7 +82,7 @@ class I18nManager {
    * @param {string} langCode - The language code to set (e.g., 'en', 'es')
    */
   setLanguage(langCode) {
-    if (languages[langCode]) {
+    if (this.isLanguageSupported(langCode)) {
       this.currentLanguage = langCode;
       localStorage.setItem("language", langCode);
       document.body.setAttribute("data-language", langCode);
@@ -67,40 +105,24 @@ class I18nManager {
    * @returns {string} The translated text
    */
   translate(key, placeholders = {}) {
-    const translations = languages[this.currentLanguage] || languages["en"];
-
-    // Handle nested keys with dot notation (e.g., 'errors.fileNotFound')
-    const keyParts = key.split(".");
-    let result = translations;
-
-    for (const part of keyParts) {
-      if (result && result[part] !== undefined) {
-        result = result[part];
-      } else {
-        // Fallback to English if key not found
-        let englishResult = languages["en"];
-        for (const part of keyParts) {
-          if (englishResult && englishResult[part] !== undefined) {
-            englishResult = englishResult[part];
-          } else {
-            return key; // Key not found in any language
-          }
-        }
-        result = englishResult;
+    try {
+      let message = chrome.i18n.getMessage(key, placeholders);
+      
+      // If message is not found, try with the current language prefix
+      if (!message) {
+        message = chrome.i18n.getMessage(`${this.currentLanguage}_${key}`, placeholders);
       }
-    }
+      
+      // If still not found, fallback to English
+      if (!message) {
+        message = chrome.i18n.getMessage(`en_${key}`, placeholders) || key;
+      }
 
-    // Return directly if not a string (handles nested objects)
-    if (typeof result !== "string") {
-      return result;
+      return message;
+    } catch (error) {
+      console.error(`Translation error for key ${key}:`, error);
+      return key;
     }
-
-    // Replace placeholders: {name} becomes the value of placeholders.name
-    return result.replace(/{(\w+)}/g, (match, placeholder) => {
-      return placeholders[placeholder] !== undefined
-        ? placeholders[placeholder]
-        : match;
-    });
   }
 
   /**
@@ -208,9 +230,28 @@ class I18nManager {
    */
   getAvailableLanguages() {
     const result = {};
-    Object.keys(languages).forEach((code) => {
-      result[code] = languages[code].language || code.toUpperCase();
+    const supportedLanguages = [
+      { code: 'en', name: 'English' },
+      { code: 'es', name: 'Español' },
+      { code: 'fr', name: 'Français' },
+      { code: 'de', name: 'Deutsch' },
+      { code: 'zh_CN', name: '中文 (简体)' },
+      { code: 'ja', name: '日本語' },
+      { code: 'ko', name: '한국어' },
+      { code: 'pt', name: 'Português' },
+      { code: 'ru', name: 'Русский' },
+      { code: 'hi', name: 'हिन्दी' },
+      { code: 'ar', name: 'العربية' },
+      { code: 'it', name: 'Italiano' },
+      { code: 'tr', name: 'Türkçe' },
+      { code: 'nl', name: 'Nederlands' },
+      { code: 'bn', name: 'বাংলা' }
+    ];
+
+    supportedLanguages.forEach(lang => {
+      result[lang.code] = lang.name;
     });
+
     return result;
   }
 }
