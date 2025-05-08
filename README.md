@@ -37,6 +37,51 @@ A browser extension that allows you to extract text from various file formats an
 4. Click the copy icon next to a file to copy its text to your clipboard
 5. Click "Copy All" to copy text from all files at once
 
+## Use Cases
+
+### AI and Prompt Engineering
+
+- **Enhanced AI Prompting**: Combine content from multiple reference documents, code files, and data sheets into a single comprehensive prompt for AI tools like ChatGPT or Claude
+- **Context Building**: Upload multiple related documents to provide broader context without manual copy-pasting from each file
+- **Technical Documentation**: Extract and combine information from specifications, user manuals, and diagrams for technical documentation tasks
+
+### Programming and Development
+
+- **Code Review**: Upload multiple code files to copy their content for sharing in code review platforms
+- **Debugging Support**: Extract logs from multiple log files simultaneously to share with teammates or support forums
+- **API Documentation**: Combine API specs, examples, and sample responses from different files for comprehensive documentation
+- **Migration Projects**: Extract code from legacy files across different formats to assist in modernization efforts
+
+### Research and Academic Work
+
+- **Literature Review**: Extract key passages from multiple research papers (PDFs) to compile into notes
+- **Data Analysis**: Extract data from multiple sources (CSV, Excel, JSON) to prepare for analysis
+- **Citation Management**: Pull bibliographic information from multiple documents for reference management
+- **Collaborative Research**: Easily share content from multiple sources with research colleagues
+
+### Business and Professional
+
+- **Report Compilation**: Extract data and content from various quarterly reports, presentations, and spreadsheets
+- **Knowledge Base Creation**: Consolidate information from various files into knowledge base articles
+- **Legal Document Review**: Extract and compare text from multiple contracts or legal documents
+- **Training Material Development**: Combine content from various technical documents, manuals, and guides for training purposes
+
+### Creative and Content Creation
+
+- **Content Research**: Gather information from multiple sources for article or blog post writing
+- **Script Development**: Combine character descriptions, plot outlines, and dialogue from separate files
+- **Translation Workflow**: Extract content from various file formats for translation services
+- **Content Migration**: Pull content from legacy formats when migrating to new CMS or documentation systems
+
+### Productivity Hacks
+
+- **Meeting Preparation**: Extract agenda items, notes, and data from various documents before meetings
+- **Project Management**: Consolidate information from task lists, specifications, and project plans
+- **Email Communication**: Extract relevant information from multiple documents to include in detailed emails
+- **Note Consolidation**: Combine notes from various formats into a single comprehensive document
+
+This extension is particularly valuable when you need to work with content from multiple files simultaneously without the tedious process of opening each file, selecting content, and copying it manually.
+
 ## Project Structure
 
 ```
