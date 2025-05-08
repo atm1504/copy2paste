@@ -19,6 +19,10 @@
     "message": "Копировать",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "Выбрать Файлы",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "Предпросмотр",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "Вся обработка выполняется локально в вашем браузере. Ваши файлы никогда не загружаются.",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "Весь текст скопирован в буфер обмена",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "Все файлы удалены",
+    "description": "Success message when all files are cleared"
   }
-} 
+}

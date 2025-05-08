@@ -19,6 +19,10 @@
     "message": "복사",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "파일 선택",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "미리보기",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "모든 처리는 브라우저에서 로컬로 수행됩니다. 파일은 업로드되지 않습니다.",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "모든 텍스트가 클립보드에 복사됨",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "모든 파일이 삭제됨",
+    "description": "Success message when all files are cleared"
   }
-} 
+}

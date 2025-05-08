@@ -19,6 +19,10 @@
     "message": "复制",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "选择文件",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "预览",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "所有处理都在浏览器中本地完成。您的文件永远不会被上传。",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "所有文本已复制到剪贴板",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "所有文件已删除",
+    "description": "Success message when all files are cleared"
   }
-} 
+}

@@ -741,7 +741,14 @@ document.addEventListener("DOMContentLoaded", function () {
       .writeText(allText)
       .then(function () {
         copyAllBtn.classList.add("copied");
-        copyAllFeedback.textContent = i18n.translate("allTextCopied");
+
+        // Ensure we get the latest translation
+        const translatedText = i18n.translate("allTextCopied");
+        console.log(
+          "[DEBUG] Using translated text for allTextCopied:",
+          translatedText
+        );
+        copyAllFeedback.textContent = translatedText;
 
         // Make sure the feedback is visible and with maximum opacity
         copyAllFeedback.style.opacity = "1";

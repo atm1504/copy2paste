@@ -248,26 +248,37 @@ class I18nManager {
   async setLanguage(langCode) {
     console.log("[I18N] Setting language to:", langCode);
     if (this.isLanguageSupported(langCode)) {
-      // Load translations if not already loaded
-      if (!this.translationCache[langCode]) {
+      // Always force reload translations when changing language
+      console.log(
+        `[I18N] Force reloading translations for language: ${langCode}`
+      );
+
+      try {
+        // Clear the cache for this language to force a reload
+        delete this.translationCache[langCode];
+
+        // Load the translations (this will fetch the file)
         await this.loadTranslations(langCode);
+
+        this.currentLanguage = langCode;
+        localStorage.setItem("language", langCode);
+        document.body.setAttribute("data-language", langCode);
+        console.log("[I18N] Language set successfully, updating UI elements");
+
+        // Update the dropdown to reflect the new language
+        this.updateLanguageDropdown();
+
+        // Update all registered elements
+        this.updateAllElements();
+
+        // Notify observers
+        this.notifyObservers(langCode);
+
+        return true;
+      } catch (error) {
+        console.error(`[I18N] Error setting language to ${langCode}:`, error);
+        return false;
       }
-
-      this.currentLanguage = langCode;
-      localStorage.setItem("language", langCode);
-      document.body.setAttribute("data-language", langCode);
-      console.log("[I18N] Language set successfully, updating UI elements");
-
-      // Update the dropdown to reflect the new language
-      this.updateLanguageDropdown();
-
-      // Update all registered elements
-      this.updateAllElements();
-
-      // Notify observers
-      this.notifyObservers(langCode);
-
-      return true;
     }
     console.log("[I18N] Language not supported:", langCode);
     return false;
