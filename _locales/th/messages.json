@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "สกัดและคัดลอกข้อความจากรูปแบบไฟล์ต่างๆ รวมถึง PDF, DOCX, XLSX, PPTX และอื่นๆ",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "ลากและวางไฟล์ที่นี่หรือคลิกเพื่อเลือก",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "คัดลอกทั้งหมด",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "คัดลอก",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "ดูตัวอย่าง",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "ลบ",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "รูปแบบที่รองรับ: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON และอื่นๆ",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "เกิดข้อผิดพลาดในการอ่านไฟล์: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "ไฟล์มีขนาดใหญ่เกินไป: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "รูปแบบไฟล์ไม่รองรับ: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "คัดลอกข้อความไปยังคลิปบอร์ดแล้ว",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "ไม่สามารถคัดลอกข้อความได้",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "ยังไม่ได้เลือกไฟล์",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "กำลังประมวลผล...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "ขนาดไฟล์สูงสุด: 10 MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "การประมวลผลทั้งหมดทำในเบราว์เซอร์ของคุณ ไฟล์ของคุณจะไม่ถูกอัปโหลด",
+    "description": "Privacy notice about local processing"
+  }
+} 

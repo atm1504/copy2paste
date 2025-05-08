@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "Trích xuất và sao chép văn bản từ nhiều định dạng tệp khác nhau, bao gồm PDF, DOCX, XLSX, PPTX và nhiều định dạng khác",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "Kéo và thả tệp vào đây hoặc nhấp để chọn",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "Sao Chép Tất Cả",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "Sao Chép",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "Xem Trước",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "Xóa",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "Định dạng được hỗ trợ: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON và nhiều định dạng khác",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "Lỗi đọc tệp: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "Tệp quá lớn: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "Định dạng tệp không được hỗ trợ: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "Đã sao chép văn bản vào bộ nhớ tạm",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "Không thể sao chép văn bản",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "Chưa chọn tệp nào",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "Đang xử lý...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "Kích thước tệp tối đa: 10 MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "Tất cả xử lý được thực hiện cục bộ trong trình duyệt của bạn. Tệp của bạn không bao giờ được tải lên.",
+    "description": "Privacy notice about local processing"
+  }
+} 

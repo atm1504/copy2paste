@@ -236,8 +236,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // -------------------- UI Helpers --------------------
-  function showError(messageKey) {
-    const message = i18n.translate(`errors.${messageKey}`);
+  function showError(messageName, fileName = '') {
+    const message = i18n.translate(`errors.${messageName}`, [fileName]);
 
     errorMessage.textContent = message;
     errorMessage.style.display = "block";
@@ -827,4 +827,26 @@ document.addEventListener("DOMContentLoaded", function () {
     "All elements in body:",
     Array.from(document.body.children).map((e) => e.tagName)
   );
+
+  // i18n helper functions
+  function getMessage(messageName, substitutions = []) {
+    return chrome.i18n.getMessage(messageName, substitutions);
+  }
+
+  function updateI18nElements() {
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+      const messageName = element.getAttribute('data-i18n');
+      const message = getMessage(messageName);
+      if (message) {
+        if (element.tagName === 'INPUT' && element.type === 'placeholder') {
+          element.placeholder = message;
+        } else {
+          element.textContent = message;
+        }
+      }
+    });
+  }
+
+  // Update UI with localized strings when popup opens
+  updateI18nElements();
 });

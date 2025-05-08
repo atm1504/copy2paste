@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "Ekstrak dan salin teks dari berbagai format file, termasuk PDF, DOCX, XLSX, PPTX, dan lainnya",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "Seret dan lepas file di sini atau klik untuk memilih",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "Salin Semua",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "Salin",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "Pratinjau",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "Hapus",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "Format yang didukung: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, dan lainnya",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "Gagal membaca file: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "File terlalu besar: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "Format file tidak didukung: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "Teks berhasil disalin ke clipboard",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "Gagal menyalin teks",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "Belum ada file yang dipilih",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "Memproses...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "Ukuran file maksimum: 10 MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "Semua pemrosesan dilakukan secara lokal di browser Anda. File Anda tidak pernah diunggah.",
+    "description": "Privacy notice about local processing"
+  }
+} 

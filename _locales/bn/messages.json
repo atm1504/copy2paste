@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "PDF, DOCX, XLSX, PPTX এবং অন্যান্য বিভিন্ন ফাইল ফরম্যাট থেকে টেক্সট এক্সট্র্যাক্ট এবং কপি করুন",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "ফাইলগুলি এখানে টেনে আনুন বা নির্বাচন করতে ক্লিক করুন",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "সব কপি করুন",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "কপি করুন",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "প্রিভিউ",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "অপসারণ",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "সমর্থিত ফরম্যাট: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON এবং আরও",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "ফাইল পড়তে ত্রুটি: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "ফাইল খুব বড়: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "অসমর্থিত ফাইল ফরম্যাট: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "টেক্সট ক্লিপবোর্ডে কপি করা হয়েছে",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "টেক্সট কপি করতে ব্যর্থ",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "কোনো ফাইল নির্বাচন করা হয়নি",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "প্রক্রিয়াকরণ চলছে...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "সর্বোচ্চ ফাইল আকার: 10 MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "সমস্ত প্রক্রিয়াকরণ আপনার ব্রাউজারে স্থানীয়ভাবে করা হয়। আপনার ফাইলগুলি কখনই আপলোড করা হয় না।",
+    "description": "Privacy notice about local processing"
+  }
+} 

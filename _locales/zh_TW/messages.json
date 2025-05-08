@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "從各種檔案格式中提取和複製文字，包括 PDF、DOCX、XLSX、PPTX 等",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "將檔案拖放到此處或點擊選擇",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "複製全部",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "複製",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "預覽",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "移除",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "支援的格式：PDF、DOCX、XLSX、PPTX、TXT、CSV、JSON 等",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "讀取檔案時發生錯誤：$fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "檔案太大：$fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "不支援的檔案格式：$fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "文字已複製到剪貼簿",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "複製文字失敗",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "尚未選擇檔案",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "處理中...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "最大檔案大小：10 MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "所有處理都在您的瀏覽器中本地進行。您的檔案永遠不會被上傳。",
+    "description": "Privacy notice about local processing"
+  }
+} 

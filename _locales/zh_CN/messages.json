@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "从各种文件格式中提取和复制文本，包括PDF、DOCX、XLSX、PPTX等",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "拖放文件到此处或点击选择",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "全部复制",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "复制",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "预览",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "删除",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "支持的格式：PDF、DOCX、XLSX、PPTX、TXT、CSV、JSON等",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "读取文件错误：$fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "文件过大：$fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "不支持的文件格式：$fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "文本已复制到剪贴板",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "复制文本失败",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "未选择文件",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "处理中...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "最大文件大小：10MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "所有处理都在浏览器中本地完成。您的文件永远不会被上传。",
+    "description": "Privacy notice about local processing"
+  }
+} 

@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "חלץ והעתק טקסט מפורמטים שונים של קבצים, כולל PDF, DOCX, XLSX, PPTX ועוד",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "גרור ושחרר קבצים לכאן או לחץ לבחירה",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "העתק הכל",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "העתק",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "תצוגה מקדימה",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "הסר",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "פורמטים נתמכים: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON ועוד",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "שגיאה בקריאת הקובץ: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "הקובץ גדול מדי: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "פורמט קובץ לא נתמך: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "הטקסט הועתק ללוח",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "ההעתקה נכשלה",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "לא נבחרו קבצים",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "מעבד...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "גודל קובץ מקסימלי: 10 מגה-בייט",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "כל העיבוד מתבצע באופן מקומי בדפדפן שלך. הקבצים שלך לעולם לא מועלים.",
+    "description": "Privacy notice about local processing"
+  }
+} 

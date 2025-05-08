@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "Extract and copy text from various file formats including PDF, DOCX, XLSX, PPTX, and more",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "Drag and drop files here or click to select",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "Copy All",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "Copy",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "Preview",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "Remove",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "Supported formats: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON, and more",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "Error reading file: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "File is too large: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "Unsupported file format: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "Text copied to clipboard",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "Failed to copy text",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "No files selected",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "Processing...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "Maximum file size: 10MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "All processing is done locally in your browser. Your files are never uploaded.",
+    "description": "Privacy notice about local processing"
+  }
+} 

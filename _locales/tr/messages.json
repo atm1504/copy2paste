@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "PDF, DOCX, XLSX, PPTX ve diğer çeşitli dosya formatlarından metin çıkarın ve kopyalayın",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "Dosyaları buraya sürükleyip bırakın veya seçmek için tıklayın",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "Tümünü Kopyala",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "Kopyala",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "Önizleme",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "Kaldır",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "Desteklenen formatlar: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON ve daha fazlası",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "Dosya okuma hatası: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "Dosya çok büyük: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "Desteklenmeyen dosya formatı: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "Metin panoya kopyalandı",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "Metin kopyalanamadı",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "Hiç dosya seçilmedi",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "İşleniyor...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "Maksimum dosya boyutu: 10 MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "Tüm işlemler tarayıcınızda yerel olarak yapılır. Dosyalarınız asla yüklenmez.",
+    "description": "Privacy notice about local processing"
+  }
+} 

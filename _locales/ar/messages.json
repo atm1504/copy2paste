@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "استخرج وانسخ النص من تنسيقات الملفات المختلفة بما في ذلك PDF و DOCX و XLSX و PPTX والمزيد",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "اسحب وأفلت الملفات هنا أو انقر للاختيار",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "نسخ الكل",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "نسخ",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "معاينة",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "حذف",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "التنسيقات المدعومة: PDF و DOCX و XLSX و PPTX و TXT و CSV و JSON والمزيد",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "خطأ في قراءة الملف: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "الملف كبير جداً: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "تنسيق ملف غير مدعوم: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "تم نسخ النص إلى الحافظة",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "فشل نسخ النص",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "لم يتم اختيار أي ملفات",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "جاري المعالجة...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "الحد الأقصى لحجم الملف: 10 ميجابايت",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "يتم إجراء جميع المعالجة محلياً في متصفحك. لا يتم تحميل ملفاتك أبداً.",
+    "description": "Privacy notice about local processing"
+  }
+} 

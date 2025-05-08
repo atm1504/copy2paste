@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "Estrai e copia testo da vari formati di file, inclusi PDF, DOCX, XLSX, PPTX e altro",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "Trascina e rilascia i file qui o clicca per selezionare",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "Copia Tutto",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "Copia",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "Anteprima",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "Rimuovi",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "Formati supportati: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON e altro",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "Errore nella lettura del file: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "File troppo grande: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "Formato file non supportato: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "Testo copiato negli appunti",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "Impossibile copiare il testo",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "Nessun file selezionato",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "Elaborazione in corso...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "Dimensione massima file: 10 MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "Tutta l'elaborazione viene eseguita localmente nel tuo browser. I tuoi file non vengono mai caricati.",
+    "description": "Privacy notice about local processing"
+  }
+} 

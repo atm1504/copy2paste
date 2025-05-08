@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "PDF, DOCX, XLSX, PPTX और अन्य विभिन्न फ़ाइल प्रारूपों से टेक्स्ट निकालें और कॉपी करें",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "फ़ाइलों को यहां खींचें और छोड़ें या चुनने के लिए क्लिक करें",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "सभी कॉपी करें",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "कॉपी करें",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "पूर्वावलोकन",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "हटाएं",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "समर्थित प्रारूप: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON और अधिक",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "फ़ाइल पढ़ने में त्रुटि: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "फ़ाइल बहुत बड़ी है: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "असमर्थित फ़ाइल प्रारूप: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "टेक्स्ट क्लिपबोर्ड पर कॉपी किया गया",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "टेक्स्ट कॉपी करने में विफल",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "कोई फ़ाइल नहीं चुनी गई",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "प्रसंस्करण जारी है...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "अधिकतम फ़ाइल आकार: 10 MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "सभी प्रसंस्करण आपके ब्राउज़र में स्थानीय रूप से किया जाता है। आपकी फ़ाइलें कभी अपलोड नहीं की जातीं।",
+    "description": "Privacy notice about local processing"
+  }
+} 

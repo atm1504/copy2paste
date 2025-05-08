@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "Извлекайте и копируйте текст из различных форматов файлов, включая PDF, DOCX, XLSX, PPTX и другие",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "Перетащите файлы сюда или нажмите для выбора",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "Копировать Все",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "Копировать",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "Предпросмотр",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "Удалить",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "Поддерживаемые форматы: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON и другие",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "Ошибка чтения файла: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "Файл слишком большой: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "Неподдерживаемый формат файла: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "Текст скопирован в буфер обмена",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "Не удалось скопировать текст",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "Файлы не выбраны",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "Обработка...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "Максимальный размер файла: 10 МБ",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "Вся обработка выполняется локально в вашем браузере. Ваши файлы никогда не загружаются.",
+    "description": "Privacy notice about local processing"
+  }
+} 

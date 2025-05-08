@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "Extraheer en kopieer tekst uit verschillende bestandsformaten, waaronder PDF, DOCX, XLSX, PPTX en meer",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "Sleep bestanden hierheen of klik om te selecteren",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "Alles Kopiëren",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "Kopiëren",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "Voorbeeld",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "Verwijderen",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "Ondersteunde formaten: PDF, DOCX, XLSX, PPTX, TXT, CSV, JSON en meer",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "Fout bij het lezen van het bestand: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "Bestand is te groot: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "Niet-ondersteund bestandsformaat: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "Tekst gekopieerd naar klembord",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "Tekst kopiëren mislukt",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "Geen bestanden geselecteerd",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "Verwerken...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "Maximale bestandsgrootte: 10 MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "Alle verwerking gebeurt lokaal in uw browser. Uw bestanden worden nooit geüpload.",
+    "description": "Privacy notice about local processing"
+  }
+} 

@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "استخراج و کپی متن از فرمت‌های مختلف فایل، از جمله PDF، DOCX، XLSX، PPTX و موارد دیگر",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "فایل‌ها را اینجا رها کنید یا برای انتخاب کلیک کنید",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "کپی همه",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "کپی",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "پیش‌نمایش",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "حذف",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "فرمت‌های پشتیبانی شده: PDF، DOCX، XLSX، PPTX، TXT، CSV، JSON و موارد دیگر",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "خطا در خواندن فایل: $fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "فایل خیلی بزرگ است: $fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "فرمت فایل پشتیبانی نمی‌شود: $fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "متن در کلیپ‌بورد کپی شد",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "کپی متن ناموفق بود",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "هیچ فایلی انتخاب نشده است",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "در حال پردازش...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "حداکثر اندازه فایل: 10 مگابایت",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "تمام پردازش‌ها در مرورگر شما به صورت محلی انجام می‌شود. فایل‌های شما هرگز آپلود نمی‌شوند.",
+    "description": "Privacy notice about local processing"
+  }
+} 

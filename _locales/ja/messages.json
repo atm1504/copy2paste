@@ -1,0 +1,88 @@
+{
+  "extName": {
+    "message": "Copy2Paste",
+    "description": "The name of the extension"
+  },
+  "extDescription": {
+    "message": "PDF、DOCX、XLSX、PPTXなど、様々なファイル形式からテキストを抽出してコピー",
+    "description": "The description of the extension"
+  },
+  "dragDropFiles": {
+    "message": "ファイルをここにドラッグ＆ドロップするか、クリックして選択",
+    "description": "Text shown in the drop zone"
+  },
+  "copyAll": {
+    "message": "すべてコピー",
+    "description": "Button text for copying all files"
+  },
+  "copy": {
+    "message": "コピー",
+    "description": "Button text for copying a single file"
+  },
+  "preview": {
+    "message": "プレビュー",
+    "description": "Button text for previewing file content"
+  },
+  "remove": {
+    "message": "削除",
+    "description": "Button text for removing a file"
+  },
+  "supportedFormats": {
+    "message": "対応フォーマット：PDF、DOCX、XLSX、PPTX、TXT、CSV、JSONなど",
+    "description": "Text showing supported file formats"
+  },
+  "errorReadingFile": {
+    "message": "ファイルの読み取りエラー：$fileName$",
+    "description": "Error message when file cannot be read",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "fileTooLarge": {
+    "message": "ファイルが大きすぎます：$fileName$",
+    "description": "Error message when file size exceeds limit",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.pdf"
+      }
+    }
+  },
+  "unsupportedFormat": {
+    "message": "未対応のファイル形式：$fileName$",
+    "description": "Error message for unsupported file formats",
+    "placeholders": {
+      "fileName": {
+        "content": "$1",
+        "example": "document.xyz"
+      }
+    }
+  },
+  "copySuccess": {
+    "message": "クリップボードにコピーしました",
+    "description": "Success message when text is copied"
+  },
+  "copyError": {
+    "message": "テキストのコピーに失敗しました",
+    "description": "Error message when copying fails"
+  },
+  "noFiles": {
+    "message": "ファイルが選択されていません",
+    "description": "Message shown when no files are selected"
+  },
+  "processing": {
+    "message": "処理中...",
+    "description": "Message shown while processing files"
+  },
+  "maxFileSize": {
+    "message": "最大ファイルサイズ：10MB",
+    "description": "Message showing maximum file size limit"
+  },
+  "privacyNotice": {
+    "message": "すべての処理はブラウザ内でローカルに行われます。ファイルはアップロードされません。",
+    "description": "Privacy notice about local processing"
+  }
+} 
