@@ -3,11 +3,93 @@
  * Handles language detection, translation, and UI updates
  */
 
+// Debug chrome.i18n initialization
+console.log(
+  "[I18N DEBUG] chrome.i18n available:",
+  typeof chrome !== "undefined" && !!chrome.i18n
+);
+if (typeof chrome !== "undefined" && chrome.i18n) {
+  console.log(
+    "[I18N DEBUG] chrome.i18n.getMessage available:",
+    typeof chrome.i18n.getMessage === "function"
+  );
+  console.log(
+    "[I18N DEBUG] Test getMessage('extName'):",
+    chrome.i18n.getMessage("extName")
+  );
+  console.log("[I18N DEBUG] Test getMessage with each supported language:");
+  ["en", "es", "fr", "de", "zh_CN"].forEach((lang) => {
+    console.log(
+      `[I18N DEBUG] ${lang}_extName:`,
+      chrome.i18n.getMessage(`${lang}_extName`)
+    );
+  });
+
+  // Test common message keys
+  console.log("[I18N DEBUG] Testing common message keys across languages");
+  [
+    "extName",
+    "dragDropFiles",
+    "copyAll",
+    "supportedFormats",
+    "processing",
+    "privacyNotice",
+  ].forEach((key) => {
+    console.log(
+      `[I18N DEBUG] Key: "${key}", Direct: "${chrome.i18n.getMessage(key)}"`
+    );
+  });
+} else {
+  console.error("[I18N DEBUG] chrome.i18n is not available!");
+}
+
+// Test function to check Chrome extension message format compatibility
+function testChromeI18n() {
+  try {
+    console.log("[I18N TEST] Starting chrome.i18n test");
+
+    // Get the current UI language from Chrome (not the extension's selected language)
+    const uiLanguage = chrome.i18n.getUILanguage();
+    console.log("[I18N TEST] Chrome UI language:", uiLanguage);
+
+    // Test message retrieval with and without language prefixes
+    const tests = [
+      { key: "extName", prefix: null },
+      { key: "extName", prefix: "en_" },
+      { key: "extName", prefix: "es_" },
+      { key: "copyAll", prefix: null },
+      { key: "copyAll", prefix: "en_" },
+      { key: "copyAll", prefix: "es_" },
+      { key: "dragDropFiles", prefix: null },
+    ];
+
+    tests.forEach((test) => {
+      const fullKey = test.prefix ? `${test.prefix}${test.key}` : test.key;
+      const result = chrome.i18n.getMessage(fullKey);
+      console.log(
+        `[I18N TEST] getMessage("${fullKey}") => "${result || "NOT FOUND"}"`
+      );
+    });
+
+    console.log("[I18N TEST] Chrome i18n test completed");
+  } catch (error) {
+    console.error("[I18N TEST] Error during chrome.i18n test:", error);
+  }
+}
+
+// Run the test
+setTimeout(testChromeI18n, 1000);
+
 class I18nManager {
   constructor() {
     this.currentLanguage = "en";
     this.observers = [];
     this.translatedElements = new Map();
+    this.translationCache = {}; // Cache for loaded translation files
+    console.log(
+      "[I18N] Constructor initialized with default language:",
+      this.currentLanguage
+    );
   }
 
   /**
@@ -15,8 +97,17 @@ class I18nManager {
    */
   initialize() {
     // Get saved language or detect from browser
-    const savedLanguage = localStorage.getItem("language") || this.getDefaultLanguage();
-    this.setLanguage(savedLanguage);
+    const savedLanguage =
+      localStorage.getItem("language") || this.getDefaultLanguage();
+    console.log(
+      "[I18N] Initializing with saved/default language:",
+      savedLanguage
+    );
+
+    // Load the translations for the current language
+    this.loadTranslations(savedLanguage).then(() => {
+      this.setLanguage(savedLanguage);
+    });
 
     // Set up language change detection
     this.setupLanguageChangeObserver();
@@ -28,32 +119,78 @@ class I18nManager {
   }
 
   /**
+   * Load translation JSON file for a specific language
+   * @param {string} langCode - The language code to load
+   */
+  async loadTranslations(langCode) {
+    if (this.translationCache[langCode]) {
+      console.log(`[I18N] Translations for ${langCode} already loaded`);
+      return this.translationCache[langCode];
+    }
+
+    try {
+      console.log(`[I18N] Loading translations for ${langCode}`);
+      const url = chrome.runtime.getURL(`_locales/${langCode}/messages.json`);
+      console.log(`[I18N] Fetching from URL: ${url}`);
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to load translations for ${langCode}: ${response.status}`
+        );
+      }
+
+      const translations = await response.json();
+      console.log(
+        `[I18N] Loaded ${
+          Object.keys(translations).length
+        } translations for ${langCode}`
+      );
+
+      // Cache the translations
+      this.translationCache[langCode] = translations;
+      return translations;
+    } catch (error) {
+      console.error(
+        `[I18N] Error loading translations for ${langCode}:`,
+        error
+      );
+      // Fallback to English if available, otherwise empty object
+      return this.translationCache["en"] || {};
+    }
+  }
+
+  /**
    * Get default language based on browser settings
    */
   getDefaultLanguage() {
     const browserLang = navigator.language.toLowerCase();
-    
+    console.log("[I18N] Browser language detected:", browserLang);
+
     // Map browser language codes to our supported languages
     const langMap = {
-      'zh-cn': 'zh_CN',
-      'zh-tw': 'zh_CN', // Fallback to Simplified Chinese
-      'pt-br': 'pt',    // Use standard Portuguese
-      'pt-pt': 'pt'
+      "zh-cn": "zh_CN",
+      "zh-tw": "zh_CN", // Fallback to Simplified Chinese
+      "pt-br": "pt", // Use standard Portuguese
+      "pt-pt": "pt",
     };
 
     // Check if we have a mapping for this language
     if (langMap[browserLang]) {
+      console.log("[I18N] Mapped browser language to:", langMap[browserLang]);
       return langMap[browserLang];
     }
 
     // Check if we support the primary language code
-    const primaryLang = browserLang.split('-')[0];
+    const primaryLang = browserLang.split("-")[0];
     if (this.isLanguageSupported(primaryLang)) {
+      console.log("[I18N] Using primary language:", primaryLang);
       return primaryLang;
     }
 
     // Default to English if no match found
-    return 'en';
+    console.log("[I18N] No matching language found, defaulting to English");
+    return "en";
   }
 
   /**
@@ -61,18 +198,42 @@ class I18nManager {
    */
   isLanguageSupported(langCode) {
     const supportedLanguages = [
-      'en', 'es', 'fr', 'de', 'zh_CN', 'ja', 'ko', 
-      'pt', 'ru', 'hi', 'ar', 'it', 'tr', 'nl', 'bn'
+      "en",
+      "es",
+      "fr",
+      "de",
+      "zh_CN",
+      "ja",
+      "ko",
+      "pt",
+      "ru",
+      "hi",
+      "ar",
+      "it",
+      "tr",
+      "nl",
+      "bn",
     ];
-    return supportedLanguages.includes(langCode);
+    const isSupported = supportedLanguages.includes(langCode);
+    console.log(
+      "[I18N] Checking if language is supported:",
+      langCode,
+      isSupported
+    );
+    return isSupported;
   }
 
   /**
    * Initialize all elements with data-i18n attributes
    */
   initializeI18nElements() {
-    document.querySelectorAll('[data-i18n]').forEach(element => {
-      const key = element.getAttribute('data-i18n');
+    const elements = document.querySelectorAll("[data-i18n]");
+    console.log(
+      "[I18N] Found elements with data-i18n attributes:",
+      elements.length
+    );
+    elements.forEach((element) => {
+      const key = element.getAttribute("data-i18n");
       this.registerElement(element, key);
     });
   }
@@ -81,11 +242,18 @@ class I18nManager {
    * Set the current language and update the UI
    * @param {string} langCode - The language code to set (e.g., 'en', 'es')
    */
-  setLanguage(langCode) {
+  async setLanguage(langCode) {
+    console.log("[I18N] Setting language to:", langCode);
     if (this.isLanguageSupported(langCode)) {
+      // Load translations if not already loaded
+      if (!this.translationCache[langCode]) {
+        await this.loadTranslations(langCode);
+      }
+
       this.currentLanguage = langCode;
       localStorage.setItem("language", langCode);
       document.body.setAttribute("data-language", langCode);
+      console.log("[I18N] Language set successfully, updating UI elements");
 
       // Update all registered elements
       this.updateAllElements();
@@ -95,6 +263,7 @@ class I18nManager {
 
       return true;
     }
+    console.log("[I18N] Language not supported:", langCode);
     return false;
   }
 
@@ -106,21 +275,46 @@ class I18nManager {
    */
   translate(key, placeholders = {}) {
     try {
-      let message = chrome.i18n.getMessage(key, placeholders);
-      
-      // If message is not found, try with the current language prefix
-      if (!message) {
-        message = chrome.i18n.getMessage(`${this.currentLanguage}_${key}`, placeholders);
-      }
-      
-      // If still not found, fallback to English
-      if (!message) {
-        message = chrome.i18n.getMessage(`en_${key}`, placeholders) || key;
+      // Try to get translation from our loaded translations
+      const translations = this.translationCache[this.currentLanguage];
+
+      if (translations && translations[key] && translations[key].message) {
+        let message = translations[key].message;
+        console.log(
+          `[I18N] Found translation for "${key}" in ${this.currentLanguage}: "${message}"`
+        );
+
+        // Handle placeholders if any
+        if (placeholders && typeof placeholders === "object") {
+          for (const placeholder in placeholders) {
+            message = message.replace(
+              `$${placeholder}$`,
+              placeholders[placeholder]
+            );
+          }
+        }
+
+        return message;
       }
 
-      return message;
+      // Fallback to Chrome's i18n
+      console.log(
+        `[I18N] No manual translation, trying Chrome i18n for "${key}"`
+      );
+      const chromeMessage = chrome.i18n.getMessage(key, placeholders);
+
+      if (chromeMessage) {
+        console.log(`[I18N] Found Chrome i18n translation: "${chromeMessage}"`);
+        return chromeMessage;
+      }
+
+      // Last resort, use the key itself
+      console.log(
+        `[I18N] No translation found for "${key}", using key as fallback`
+      );
+      return key;
     } catch (error) {
-      console.error(`Translation error for key ${key}:`, error);
+      console.error(`[I18N] Translation error for key ${key}:`, error);
       return key;
     }
   }
@@ -135,9 +329,14 @@ class I18nManager {
     if (!element) return;
 
     this.translatedElements.set(element, { key, attribute });
+    console.log(
+      `[I18N] Registered element for key "${key}", will update ${attribute}`
+    );
 
     // Immediately translate the element
-    element[attribute] = this.translate(key);
+    const translation = this.translate(key);
+    element[attribute] = translation;
+    console.log(`[I18N] Element updated with translation: "${translation}"`);
   }
 
   /**
@@ -147,6 +346,7 @@ class I18nManager {
   registerObserver(callback) {
     if (typeof callback === "function") {
       this.observers.push(callback);
+      console.log("[I18N] Registered language change observer");
     }
   }
 
@@ -154,9 +354,16 @@ class I18nManager {
    * Update all registered elements with the current language
    */
   updateAllElements() {
+    console.log(
+      `[I18N] Updating all ${this.translatedElements.size} registered elements`
+    );
     this.translatedElements.forEach((config, element) => {
       if (element && element[config.attribute] !== undefined) {
-        element[config.attribute] = this.translate(config.key);
+        const translation = this.translate(config.key);
+        element[config.attribute] = translation;
+        console.log(
+          `[I18N] Updated element for key "${config.key}" with: "${translation}"`
+        );
       }
     });
   }
@@ -166,11 +373,15 @@ class I18nManager {
    * @param {string} langCode - The new language code
    */
   notifyObservers(langCode) {
+    console.log(
+      `[I18N] Notifying ${this.observers.length} observers about language change to: ${langCode}`
+    );
     this.observers.forEach((callback) => {
       try {
         callback(langCode);
+        console.log("[I18N] Observer callback executed successfully");
       } catch (error) {
-        console.error("Error in language change observer:", error);
+        console.error("[I18N] Error in language change observer:", error);
       }
     });
   }
@@ -181,27 +392,40 @@ class I18nManager {
   setupLanguageChangeObserver() {
     // Initialize language when DOM is ready
     document.addEventListener("DOMContentLoaded", () => {
+      console.log("[I18N] DOM content loaded, setting up language selector");
       const langSelector = document.getElementById("languageSelect");
       if (langSelector) {
         langSelector.value = this.currentLanguage;
+        console.log(
+          "[I18N] Language selector value set to:",
+          this.currentLanguage
+        );
         langSelector.addEventListener("change", (e) => {
+          console.log("[I18N] Language selector changed to:", e.target.value);
           this.setLanguage(e.target.value);
         });
+      } else {
+        console.log("[I18N] Language selector element not found");
       }
 
       // Watch for new elements with data-i18n attributes
+      console.log("[I18N] Setting up mutation observer for new i18n elements");
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           mutation.addedNodes.forEach((node) => {
             if (node.nodeType === Node.ELEMENT_NODE) {
               // Check the added node
-              if (node.hasAttribute('data-i18n')) {
-                const key = node.getAttribute('data-i18n');
+              if (node.hasAttribute("data-i18n")) {
+                const key = node.getAttribute("data-i18n");
+                console.log(`[I18N] New element with data-i18n found: ${key}`);
                 this.registerElement(node, key);
               }
               // Check children of the added node
-              node.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
+              node.querySelectorAll("[data-i18n]").forEach((element) => {
+                const key = element.getAttribute("data-i18n");
+                console.log(
+                  `[I18N] New child element with data-i18n found: ${key}`
+                );
                 this.registerElement(element, key);
               });
             }
@@ -211,7 +435,7 @@ class I18nManager {
 
       observer.observe(document.body, {
         childList: true,
-        subtree: true
+        subtree: true,
       });
     });
   }
@@ -231,24 +455,24 @@ class I18nManager {
   getAvailableLanguages() {
     const result = {};
     const supportedLanguages = [
-      { code: 'en', name: 'English' },
-      { code: 'es', name: 'Español' },
-      { code: 'fr', name: 'Français' },
-      { code: 'de', name: 'Deutsch' },
-      { code: 'zh_CN', name: '中文 (简体)' },
-      { code: 'ja', name: '日本語' },
-      { code: 'ko', name: '한국어' },
-      { code: 'pt', name: 'Português' },
-      { code: 'ru', name: 'Русский' },
-      { code: 'hi', name: 'हिन्दी' },
-      { code: 'ar', name: 'العربية' },
-      { code: 'it', name: 'Italiano' },
-      { code: 'tr', name: 'Türkçe' },
-      { code: 'nl', name: 'Nederlands' },
-      { code: 'bn', name: 'বাংলা' }
+      { code: "en", name: "English" },
+      { code: "es", name: "Español" },
+      { code: "fr", name: "Français" },
+      { code: "de", name: "Deutsch" },
+      { code: "zh_CN", name: "中文 (简体)" },
+      { code: "ja", name: "日本語" },
+      { code: "ko", name: "한국어" },
+      { code: "pt", name: "Português" },
+      { code: "ru", name: "Русский" },
+      { code: "hi", name: "हिन्दी" },
+      { code: "ar", name: "العربية" },
+      { code: "it", name: "Italiano" },
+      { code: "tr", name: "Türkçe" },
+      { code: "nl", name: "Nederlands" },
+      { code: "bn", name: "বাংলা" },
     ];
 
-    supportedLanguages.forEach(lang => {
+    supportedLanguages.forEach((lang) => {
       result[lang.code] = lang.name;
     });
 
@@ -258,4 +482,5 @@ class I18nManager {
 
 // Create and export a singleton instance
 const i18n = new I18nManager();
+console.log("[I18N] i18n manager initialized and exported");
 export default i18n;

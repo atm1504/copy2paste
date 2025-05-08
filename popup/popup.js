@@ -56,11 +56,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // -------------------- Language Functions --------------------
   function initializeLanguage() {
+    console.log("[POPUP] Initializing language...");
     // Initialize i18n module
-    i18n.initialize();
+    const currentLang = i18n.initialize();
+    console.log("[POPUP] i18n module initialized with language:", currentLang);
 
     // Update selector value
     languageSelect.value = i18n.getCurrentLanguage();
+    console.log("[POPUP] Language selector set to:", languageSelect.value);
+
+    // Register language change observer to update UI
+    console.log("[POPUP] Registering language change observer");
+    i18n.registerObserver((langCode) => {
+      console.log("[POPUP] Language change detected in observer:", langCode);
+      updateI18nElements();
+    });
   }
 
   // -------------------- Theme Functions --------------------
@@ -223,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // -------------------- UI Helpers --------------------
-  function showError(messageName, fileName = '') {
+  function showError(messageName, fileName = "") {
     const message = i18n.translate(`errors.${messageName}`, [fileName]);
 
     errorMessage.textContent = message;
@@ -817,21 +827,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // i18n helper functions
   function getMessage(messageName, substitutions = []) {
-    return chrome.i18n.getMessage(messageName, substitutions);
+    console.log(`[POPUP] Getting message for key: "${messageName}"`);
+    const message = i18n.translate(messageName, substitutions);
+    console.log(`[POPUP] Translated message: "${message}"`);
+    return message;
   }
 
   function updateI18nElements() {
-    document.querySelectorAll('[data-i18n]').forEach(element => {
-      const messageName = element.getAttribute('data-i18n');
-      const message = getMessage(messageName);
+    console.log("[POPUP] Updating all i18n elements in the UI");
+    const elements = document.querySelectorAll("[data-i18n]");
+    console.log(
+      `[POPUP] Found ${elements.length} elements with data-i18n attributes`
+    );
+
+    elements.forEach((element) => {
+      const messageName = element.getAttribute("data-i18n");
+      console.log(`[POPUP] Translating element with key: "${messageName}"`);
+      const message = i18n.translate(messageName);
+      console.log(
+        `[POPUP] Got translation: "${message}" for element:`,
+        element.tagName
+      );
+
       if (message) {
-        if (element.tagName === 'INPUT' && element.type === 'placeholder') {
+        const oldText =
+          element.tagName === "INPUT" && element.type === "placeholder"
+            ? element.placeholder
+            : element.textContent;
+
+        if (element.tagName === "INPUT" && element.type === "placeholder") {
           element.placeholder = message;
         } else {
           element.textContent = message;
         }
+
+        console.log(
+          `[POPUP] Element text updated from "${oldText}" to "${message}"`
+        );
+      } else {
+        console.log(`[POPUP] No translation found for key: "${messageName}"`);
       }
     });
+
+    console.log("[POPUP] Finished updating i18n elements");
   }
 
   // Update UI with localized strings when popup opens
