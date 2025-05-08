@@ -61,9 +61,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentLang = i18n.initialize();
     console.log("[POPUP] i18n module initialized with language:", currentLang);
 
-    // Update selector value
-    languageSelect.value = i18n.getCurrentLanguage();
-    console.log("[POPUP] Language selector set to:", languageSelect.value);
+    // Ensure the dropdown value matches the current language
+    setTimeout(() => {
+      const currentLanguage = i18n.getCurrentLanguage();
+      console.log(
+        "[POPUP] Ensuring dropdown is set to current language:",
+        currentLanguage
+      );
+      if (languageSelect.value !== currentLanguage) {
+        console.log("[POPUP] Fixing dropdown value mismatch");
+        languageSelect.value = currentLanguage;
+      }
+    }, 100);
 
     // Register language change observer to update UI
     console.log("[POPUP] Registering language change observer");

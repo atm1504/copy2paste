@@ -104,9 +104,12 @@ class I18nManager {
       savedLanguage
     );
 
-    // Load the translations for the current language
+    // Load the translations for the current language and update UI
     this.loadTranslations(savedLanguage).then(() => {
       this.setLanguage(savedLanguage);
+
+      // Update the language dropdown to reflect the current language
+      this.updateLanguageDropdown();
     });
 
     // Set up language change detection
@@ -255,6 +258,9 @@ class I18nManager {
       document.body.setAttribute("data-language", langCode);
       console.log("[I18N] Language set successfully, updating UI elements");
 
+      // Update the dropdown to reflect the new language
+      this.updateLanguageDropdown();
+
       // Update all registered elements
       this.updateAllElements();
 
@@ -395,11 +401,10 @@ class I18nManager {
       console.log("[I18N] DOM content loaded, setting up language selector");
       const langSelector = document.getElementById("languageSelect");
       if (langSelector) {
-        langSelector.value = this.currentLanguage;
-        console.log(
-          "[I18N] Language selector value set to:",
-          this.currentLanguage
-        );
+        // Set initial dropdown value to match current language
+        this.updateLanguageDropdown();
+
+        // Set up change listener
         langSelector.addEventListener("change", (e) => {
           console.log("[I18N] Language selector changed to:", e.target.value);
           this.setLanguage(e.target.value);
@@ -477,6 +482,32 @@ class I18nManager {
     });
 
     return result;
+  }
+
+  /**
+   * Update the language dropdown to reflect the current language
+   */
+  updateLanguageDropdown() {
+    const langSelector = document.getElementById("languageSelect");
+    if (langSelector) {
+      console.log(
+        "[I18N] Updating language dropdown to:",
+        this.currentLanguage
+      );
+      langSelector.value = this.currentLanguage;
+    } else {
+      // If dropdown isn't available yet, try again when DOM is ready
+      document.addEventListener("DOMContentLoaded", () => {
+        const langSelector = document.getElementById("languageSelect");
+        if (langSelector) {
+          console.log(
+            "[I18N] Setting dropdown after DOM load to:",
+            this.currentLanguage
+          );
+          langSelector.value = this.currentLanguage;
+        }
+      });
+    }
   }
 }
 
