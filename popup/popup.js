@@ -663,7 +663,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Create copy feedback with translated text
       const feedback = document.createElement("span");
       feedback.className = "copy-feedback";
-      feedback.textContent = i18n.translate("copied");
+      feedback.textContent = i18n.translate("copySuccess");
       copyButton.appendChild(feedback);
 
       copyButton.onclick = (e) => {
@@ -693,7 +693,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(() => {
           buttonEl.classList.add("copied");
           const feedback = buttonEl.querySelector(".copy-feedback");
-          feedback.textContent = i18n.translate("copied");
+          feedback.textContent = i18n.translate("copySuccess");
 
           // Make feedback fully visible with explicit properties
           feedback.style.opacity = "1";

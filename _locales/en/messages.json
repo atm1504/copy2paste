@@ -84,5 +84,13 @@
   "privacyNotice": {
     "message": "All processing is done locally in your browser. Your files are never uploaded.",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "All text copied to clipboard",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "All files removed",
+    "description": "Success message when all files are cleared"
   }
 } 
