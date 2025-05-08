@@ -19,6 +19,10 @@
     "message": "Kopyala",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "Dosya Seç",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "Önizleme",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "Tüm işlemler tarayıcınızda yerel olarak yapılır. Dosyalarınız asla yüklenmez.",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "Tüm metin panoya kopyalandı",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "Tüm dosyalar kaldırıldı",
+    "description": "Success message when all files are cleared"
   }
-} 
+}

@@ -19,6 +19,10 @@
     "message": "نسخ",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "اختيار الملفات",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "معاينة",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "يتم إجراء جميع المعالجة محلياً في متصفحك. لا يتم تحميل ملفاتك أبداً.",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "تم نسخ جميع النصوص إلى الحافظة",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "تمت إزالة جميع الملفات",
+    "description": "Success message when all files are cleared"
   }
-} 
+}

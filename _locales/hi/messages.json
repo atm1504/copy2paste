@@ -19,6 +19,10 @@
     "message": "कॉपी करें",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "फ़ाइलें चुनें",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "पूर्वावलोकन",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "सभी प्रसंस्करण आपके ब्राउज़र में स्थानीय रूप से किया जाता है। आपकी फ़ाइलें कभी अपलोड नहीं की जातीं।",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "सभी टेक्स्ट क्लिपबोर्ड पर कॉपी किया गया",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "सभी फ़ाइलें हटा दी गईं",
+    "description": "Success message when all files are cleared"
   }
-} 
+}

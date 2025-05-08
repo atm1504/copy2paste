@@ -19,6 +19,10 @@
     "message": "Kopiuj",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "Wybierz Pliki",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "Podgląd",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "Wszystkie operacje są wykonywane lokalnie w przeglądarce. Twoje pliki nigdy nie są przesyłane.",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "Cały tekst skopiowany do schowka",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "Wszystkie pliki usunięte",
+    "description": "Success message when all files are cleared"
   }
-} 
+}

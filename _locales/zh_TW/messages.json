@@ -19,6 +19,10 @@
     "message": "複製",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "選擇檔案",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "預覽",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "所有處理都在您的瀏覽器中本地進行。您的檔案永遠不會被上傳。",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "所有文字已複製到剪貼簿",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "所有檔案已移除",
+    "description": "Success message when all files are cleared"
   }
-} 
+}

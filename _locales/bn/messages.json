@@ -19,6 +19,10 @@
     "message": "কপি করুন",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "ফাইল নির্বাচন করুন",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "প্রিভিউ",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "সমস্ত প্রক্রিয়াকরণ আপনার ব্রাউজারে স্থানীয়ভাবে করা হয়। আপনার ফাইলগুলি কখনই আপলোড করা হয় না।",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "সমস্ত টেক্সট ক্লিপবোর্ডে কপি করা হয়েছে",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "সমস্ত ফাইল অপসারণ করা হয়েছে",
+    "description": "Success message when all files are cleared"
   }
-} 
+}

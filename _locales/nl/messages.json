@@ -19,6 +19,10 @@
     "message": "Kopiëren",
     "description": "Button text for copying a single file"
   },
+  "chooseFiles": {
+    "message": "Bestanden Kiezen",
+    "description": "Button text for uploading files"
+  },
   "preview": {
     "message": "Voorbeeld",
     "description": "Button text for previewing file content"
@@ -84,5 +88,13 @@
   "privacyNotice": {
     "message": "Alle verwerking gebeurt lokaal in uw browser. Uw bestanden worden nooit geüpload.",
     "description": "Privacy notice about local processing"
+  },
+  "allTextCopied": {
+    "message": "Alle tekst naar klembord gekopieerd",
+    "description": "Success message when all text is copied"
+  },
+  "allFilesCleared": {
+    "message": "Alle bestanden verwijderd",
+    "description": "Success message when all files are cleared"
   }
-} 
+}
