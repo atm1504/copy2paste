@@ -1,8 +1,7 @@
 {
   "manifest_version": 3,
   "name": "copy2paste",
-  "version": "1.0",
-  "default_locale": "en",
+  "version": "1.0.1",
   "description": "Extract and copy text from various file formats including PDF, DOCX, XLSX, PPTX, and more",
   "action": {
     "default_title": "Copy Paste File Text",
